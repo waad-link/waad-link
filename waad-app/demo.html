@@ -121,6 +121,75 @@
     .btn-close-drawer { font-size: 22px; color: #aaa; cursor: pointer; background: none; border: none; }
     .guest-item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
     .btn-export-excel { width: 100%; padding: 13px; background: #128c7e; color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 15px; }
+
+
+    /* ================= Responsive layout: mobile / tablet / desktop ================= */
+    html { width: 100%; min-width: 0; overflow-x: clip; }
+    body { width: 100%; min-width: 0; }
+    img, canvas, video { max-width: 100%; }
+    .app-screen {
+      width: 100%;
+      max-width: 760px;
+      min-height: 100dvh;
+      padding-bottom: max(70px, env(safe-area-inset-bottom));
+      box-shadow: 0 0 55px rgba(0,0,0,.3);
+    }
+    .invite-content {
+      width: 100%;
+      max-width: 720px;
+      margin-inline: auto;
+      padding: clamp(22px, 4vw, 42px) clamp(14px, 4vw, 42px);
+    }
+    .claim-card { max-height: calc(100dvh - 40px); overflow-y: auto; }
+    .slider-box { height: clamp(190px, 34vw, 360px); }
+    .admin-sheet {
+      width: min(100%, 620px);
+      max-width: 620px;
+      max-height: 88dvh;
+      padding: clamp(18px, 3vw, 28px);
+    }
+    .groom-admin-toggle {
+      top: max(15px, env(safe-area-inset-top));
+      left: max(15px, env(safe-area-inset-left));
+      max-width: calc(100vw - 30px);
+    }
+    .couple-title { font-size: clamp(30px, 6vw, 44px); }
+    .timer-strip div strong { font-size: clamp(18px, 3vw, 26px); }
+    .guest-item-row { gap: 12px; }
+    .guest-item-row > * { min-width: 0; overflow-wrap: anywhere; }
+
+    @media (max-width: 600px) {
+      .app-screen { max-width: 100%; }
+      .invite-content { padding: 24px 16px; }
+      .claim-modal-overlay { padding: 14px; }
+      .claim-card { padding: 26px 18px; }
+      .claim-card h2 { font-size: clamp(22px, 6vw, 26px); }
+      .couple-title { font-size: clamp(30px, 9vw, 38px); }
+      .slider-box { height: clamp(180px, 58vw, 260px); }
+      .timer-strip { gap: 4px; }
+      .timer-strip div strong { font-size: clamp(17px, 5vw, 22px); }
+      .timer-strip div span { font-size: 9px; }
+      .action-btn { padding: 13px 10px; font-size: 13px; }
+      .admin-sheet { width: 100%; border-radius: 18px 18px 0 0; }
+    }
+    @media (max-width: 360px) {
+      .invite-content { padding-inline: 12px; }
+      .vogue-issue-tag { letter-spacing: 1.5px; font-size: 9px; }
+      .vip-guest-badge { padding: 7px 11px; font-size: 12px; max-width: 100%; overflow-wrap: anywhere; }
+      .timer-strip div span { font-size: 8px; }
+      .action-btn { font-size: 12px; }
+      .groom-admin-toggle { font-size: 10px; padding: 6px 9px; }
+    }
+    @media (min-width: 768px) {
+      body { padding: 24px 16px; }
+      .app-screen { min-height: calc(100dvh - 48px); border: 1px solid rgba(197,160,89,.14); border-radius: 22px; overflow: hidden; }
+      .invite-content { padding-top: 42px; padding-bottom: 42px; }
+      .admin-sheet { border-radius: 20px; margin-bottom: 5vh; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; }
+    }
+
   </style>
 </head>
 <body>
