@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>فرحنا | دعوات أفراح ومفاجآت إلكترونية تخطف القلب 💍</title>
+  <meta name="description" content="اصنع دعوة فرحك أو مفاجأتك بأسلوب عصري راقي مع رابط مخصص لكل ضيف وبأعلى درجات الخصوصية. دفع سريع عبر InstaPay." />
+  
+  <!-- Open Graph لمعاينة شيك عند مشاركة الموقع على واتساب وفيسبوك -->
+  <meta property="og:title" content="فرحنا 💍 | دعوات إلكترونية ومفاجآت استثنائية" />
+  <meta property="og:description" content="دعوة خاصة باسم كل ضيف، موسيقى، خريطة القاعة، وتأكيد حضور على واتساب بدون تعقيد." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #25d366;
+      --primary-dark: #128c7e;
+      --accent-rose: #ff4d6d;
+      --gold: #c5a059;
+      --bg: #0b0c10;
+      --card-bg: #141720;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f2f5;
+      --text-muted: #9ba1a6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text-main); min-height: 100dvh; line-height: 1.6; overflow-x: hidden; }
+
+    .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 0 18px 90px; }
+
+    /* الهيدر والشعار */
+    header { padding: 25px 0 15px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: 900; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .logo span { color: var(--accent-rose); }
+    .badge-secure { font-size: 11px; background: rgba(37, 211, 102, 0.12); color: var(--primary); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(37, 211, 102, 0.3); font-weight: 700; }
+
+    /* الواجهة الترويجية Hero */
+    .hero { text-align: center; padding: 25px 0 35px; }
+    .hero-badge { display: inline-block; background: rgba(255, 77, 109, 0.12); color: var(--accent-rose); font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(255, 77, 109, 0.25); }
+    .hero h1 { font-family: 'Amiri', serif; font-size: 36px; line-height: 1.25; margin-bottom: 14px; font-weight: 700; }
+    .hero p { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 25px; }
+
+    .btn-main-cta {
+      display: flex; justify-content: center; align-items: center; gap: 10px;
+      width: 100%; padding: 15px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 16px;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: transform 0.2s;
+    }
+    .btn-main-cta:active { transform: scale(0.98); }
+
+    /* ميزات البيع السريعة */
+    .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 30px 0; }
+    .feature-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px 12px; text-align: right; }
+    .feature-card span { font-size: 24px; display: block; margin-bottom: 8px; }
+    .feature-card h4 { font-size: 14px; color: #fff; margin-bottom: 4px; }
+    .feature-card p { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+    /* قسم المعرض الحي المدمج */
+    .preview-section { margin: 35px 0; }
+    .section-title { font-family: 'Amiri', serif; font-size: 26px; text-align: center; margin-bottom: 6px; }
+    .section-subtitle { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+    .showroom-box {
+      border: 1px solid var(--card-border); border-radius: 18px; overflow: hidden;
+      background: #000; box-shadow: 0 15px 40px rgba(0,0,0,0.6); position: relative;
+    }
+    .showroom-bar { display: flex; gap: 5px; overflow-x: auto; padding: 10px 8px; background: #12141c; border-bottom: 1px solid #222634; }
+    .showroom-btn {
+      flex: 1; min-width: 78px; padding: 7px 5px; font-size: 11px; font-weight: 700;
+      border: 1px solid #333; background: #1a1e29; color: #aaa; border-radius: 20px;
+      cursor: pointer; white-space: nowrap; transition: 0.2s; text-align: center;
+    }
+    .showroom-btn.active { background: #fff; color: #000; border-color: #fff; }
+    .showroom-screen { min-height: 480px; padding: 25px 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+
+    /* تفاصيل الأسعار والباقات الذكية */
+    .pricing-section { margin: 45px 0; }
+    .pricing-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 16px; padding: 22px 18px; margin-bottom: 16px; position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--accent-rose);
+      box-shadow: 0 0 25px rgba(255, 77, 109, 0.15);
+    }
+    .featured-pill {
+      position: absolute; top: -11px; left: 18px; background: var(--accent-rose);
+      color: #fff; font-size: 10px; font-weight: 900; padding: 3px 10px; border-radius: 10px; letter-spacing: 0.5px;
+    }
+    .pricing-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .pricing-head h3 { font-size: 18px; color: #fff; }
+    .price-num { font-size: 26px; font-weight: 900; color: #fff; }
+    .price-num span { font-size: 13px; font-weight: 400; color: var(--text-muted); }
+    
+    .pricing-features { list-style: none; margin: 15px 0 20px; text-align: right; }
+    .pricing-features li { font-size: 13px; color: #d0d4dc; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .pricing-features li::before { content: "✓"; color: var(--primary); font-weight: bold; }
+
+    .btn-order-plan {
+      display: block; width: 100%; padding: 13px; border-radius: 10px;
+      background: #202430; color: #fff; text-decoration: none; font-weight: 700;
+      font-size: 14px; text-align: center; border: 1px solid #333a4d; transition: 0.2s;
+    }
+    .btn-order-plan:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* الأسئلة الشائعة */
+    .faq-section { margin: 40px 0; }
+    .faq-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; text-align: right; }
+    .faq-item h4 { font-size: 14px; color: #fff; margin-bottom: 6px; }
+    .faq-item p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+    /* الخصوصية التامة */
+    .privacy-box {
+      background: rgba(37, 211, 102, 0.05); border: 1px dashed rgba(37, 211, 102, 0.3);
+      border-radius: 14px; padding: 18px; margin: 30px 0; text-align: center;
+    }
+    .privacy-box h4 { color: var(--primary); font-size: 15px; margin-bottom: 6px; }
+    .privacy-box p { font-size: 12px; color: #cfd4dc; line-height: 1.6; }
+
+    /* زر الواتساب العائم الدائم للطلب */
+    .sticky-order-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; background: rgba(11, 12, 16, 0.95);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      padding: 12px 18px; border-top: 1px solid var(--card-border); z-index: 1000;
+      display: flex; justify-content: center;
+    }
+    .sticky-order-bar .btn-main-cta { max-width: 440px; margin: 0; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- الهيدر -->
+  <header>
+    <a href="#" class="logo">فرحنا <span>💍</span></a>
+    <div class="badge-secure">🛡️ خصوصية 100%</div>
+  </header>
+
+  <!-- الواجهة الترويجية الرئيسية -->
+  <section class="hero">
+    <div class="hero-badge">أحدث صيحة لدعوات الأفراح والمفاجآت في مصر</div>
+    <h1>دعوة فرحك أو مفاجأتك.. بأسلوب يخطف القلب ✨</h1>
+    <p>صفحة تفاعلية خاصة باسم كل ضيف، عد تنازلي، خريطة القاعة، وتأكيد حضور على واتساب.. بدون ما نخزن أرقام أو أسماء ضيوفك على أي سيرفر!</p>
+    
+    <a href="#pricing" class="btn-main-cta">
+      <span>🚀 اختر باقتك واطلب الآن</span>
+    </a>
+  </section>
+
+  <!-- المزايا التنافسية -->
+  <section class="features-grid">
+    <div class="feature-card">
+      <span>✉️</span>
+      <h4>رابط باسم كل ضيف</h4>
+      <p>«أهلاً أستاذ محمد».. رسالة ترحيب مخصصة لكل شخص في عيلتك وصحابك.</p>
+    </div>
+    <div class="feature-card">
+      <span>🔒</span>
+      <h4>خصوصية معازيمك خط أحمر</h4>
+      <p>مش بنخزن أرقام ولا أسماء معازيمك؛ كل المعالجة بتتم في متصفحك أنت بس.</p>
+    </div>
+    <div class="feature-card">
+      <span>📍</span>
+      <h4>GPS وعدّاد دقيق</h4>
+      <p>زرار مباشر يفتح لوكيشن القاعة على جوجل ماب وكالندر موبايل الضيف.</p>
+    </div>
+    <div class="feature-card">
+      <span>⚡</span>
+      <h4>استلام في ساعات</h4>
+      <p>بتملأ بياناتك وتدفع بـ InstaPay ورابطك بيوصلك جاهز للإرسال فوراً.</p>
+    </div>
+  </section>
+
+  <!-- المعرض الحي لتجربة النماذج -->
+  <section class="preview-section" id="demos">
+    <h2 class="section-title">جرّب النماذج بنفسك 👀</h2>
+    <p class="section-subtitle">بدّل بين الثيمات واختبر طريقة فتح التذكرة والشات</p>
+
+    <div class="showroom-box">
+      <div class="showroom-bar">
+        <button class="showroom-btn active" onclick="showDemo('ticket', this)">🎫 التذكرة</button>
+        <button class="showroom-btn" onclick="showDemo('chat', this)">💬 شات واتساب</button>
+        <button class="showroom-btn" onclick="showDemo('vogue', this)">📰 Vogue</button>
+        <button class="showroom-btn" onclick="showDemo('scratch', this)">✨ كارت الخدش</button>
+      </div>
+
+      <!-- مساحة عرض الديمو المصغر -->
+      <div class="showroom-screen" id="demoDisplay">
+        <!-- يتم التحميل ديناميكياً هنا -->
+      </div>
+    </div>
+  </section>
+
+  <!-- باقات الأسعار الذكية -->
+  <section class="pricing-section" id="pricing">
+    <h2 class="section-title">باقات بسيطة وواضحة 💰</h2>
+    <p class="section-subtitle">بدون اشتراكات شهرية، الدفع مرة واحدة عبر InstaPay أو فودافون كاش</p>
+
+    <!-- باقة 1: الديت والمفاجآت -->
+    <div class="pricing-card">
+      <div class="pricing-head">
+        <h3>باقة الديت والمفاجأة</h3>
+        <div class="price-num">50 <span>جنيه</span></div>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted);">مثالية لأعياد الميلاد، الفلانتين، وسهرات العشاء الرومانسية.</p>
+      <ul class="pricing-features">
+        <li>تذكرة سهرة VIP مقطوعة بالختم <b>أو</b> كارت خدش رقمي</li>
+        <li>عداد تنازلي وموقع المطعم بالـ GPS</li>
+        <li>صوت رومانسي وموسيقى هادئة</li>
+      </ul>
+      <a href="https://wa.me/201012345678?text=مرحباً،%20عايز%20أطلب%20باقة%20الديت%20والمفاجأة%20(50%20ج)" target="_blank" class="btn-order-plan">اطلب باقة المفاجأة 💬</a>
+    </div>
+
+    <!-- باقة 2: الفرح الشاملة الأكثر طلباً -->
+    <div class="pricing-card featured">
+      <div class="featured-pill">الأكثر طلباً 🔥</div>
+      <div class="pricing-head">
+        <h3>باقة الفرح المخصصة VIP</h3>
+        <div class="price-num">150 <span>جنيه</span></div>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted);">حتى 150 ضيف مع روابط مخصصة باسم كل معزوم وتأكيد حضور.</p>
+      <ul class="pricing-features">
+        <li>رابط مخصص باسم كل ضيف تلقائياً</li>
+        <li>اختيار الثيم (Vogue التحريري، الزجاج المودرن، أو شات واتساب)</li>
+        <li>زرار تأكيد الحضور المباشر على واتساب العروسين</li>
+        <li>إضافة لتقويم هواتف آيفون وأندرويد + لوكيشن القاعة</li>
+        <li>سلايدر لصور السيشن والموسيقى المرخصة</li>
+      </ul>
+      <a href="https://wa.me/201012345678?text=مرحباً،%20عايز%20أطلب%20باقة%20الفرح%20المخصصة%20VIP%20(150%20ج)" target="_blank" class="btn-order-plan" style="background: var(--accent-rose); border-color: var(--accent-rose);">اطلب باقة الفرح VIP 💍</a>
+    </div>
+
+    <!-- باقة 3: الباقة الملكية الكاملة (فرح + ذكريات) -->
+    <div class="pricing-card">
+      <div class="pricing-head">
+        <h3>الباقة الملكية المتكاملة</h3>
+        <div class="price-num">250 <span>جنيه</span></div>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted);">دعوة الفرح الكاملة + صفحة قصة حبنا ومحطات الذكريات كاملة.</p>
+      <ul class="pricing-features">
+        <li>كل مميزات باقة الفرح المخصصة VIP</li>
+        <li>صفحة "حكايتنا" بتايم لاين الصور ومحطات العلاقة</li>
+        <li>عداد أيام الحب التلقائي ورسالة صوتية بصوتك</li>
+        <li>أولوية الاستلام خلال ساعتين فقط</li>
+      </ul>
+      <a href="https://wa.me/201012345678?text=مرحباً،%20عايز%20أطلب%20الباقة%20الملكية%20المتكاملة%20(250%20ج)" target="_blank" class="btn-order-plan">اطلب الباقة الملكية 👑</a>
+    </div>
+  </section>
+
+  <!-- ضمان الخصوصية -->
+  <div class="privacy-box">
+    <h4>🛡️ وعد الخصوصية والأمان</h4>
+    <p>«نحن لا نخزن أرقام هواتف ضيوفك، ولا نسجل أسماءهم على خوادمنا نهائياً. كل بياناتك مشفرة وتُعالج داخل جهازك فقط، وتُحذف صفحات المناسبات تلقائياً بعد الفرح بيومين حفاظاً على خصوصيتكم.»</p>
+  </div>
+
+  <!-- الأسئلة الشائعة -->
+  <section class="faq-section">
+    <h2 class="section-title">أسئلة بتسألها لنا 💬</h2>
+    
+    <div class="faq-item">
+      <h4>الدعوة بتوصلني إزاي بعد الدفع؟</h4>
+      <p>بتبعتلنا بيانات الفرح، وفي خلال ساعات بيوصلك رابط صفحتك الخاصة مع كود QR جاهز، وأداة سريعة تبعت منها لكل معازيمك على واتساب بضغطة زرار واحدة.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>إزاي بدفع الحساب؟</h4>
+      <p>الدفع سهل وسريع جداً عبر <b>InstaPay</b> لأي حساب بنكي، أو عبر محفظة <b>فودافون كاش</b> بدون أي مصاريف إضافية.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>هل الدعوة بتشتغل على كل الموبايلات؟</h4>
+      <p>نعم، متوافقة 100% مع جميع أجهزة آيفون وأندرويد وأجهزة الكمبيوتر، وسريعة الفتح حتى مع باقات الإنترنت الضعيفة.</p>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer style="text-align:center; padding:20px 0; font-size:12px; color:var(--text-muted); border-top:1px solid var(--card-border);">
+    صُنعت بكل حب في مصر 🤍 جميع الحقوق محفوظة لـ <strong>فرحنا</strong> © 2026
+  </footer>
+
+</div>
+
+<!-- شريط الطلب الثابت أسفل الشاشة على الموبايل -->
+<div class="sticky-order-bar">
+  <a href="https://wa.me/201012345678?text=مرحباً،%20عايز%20أستفسر%20وأطلب%20دعوة%20خاصة" target="_blank" class="btn-main-cta">
+    <span>💬 تواصل معنا واطلب دعوتك عبر واتساب</span>
+  </a>
+</div>
+
+<script>
+  // نظام المحاكاة السريعة للنماذج داخل صفحة الهبوط
+  const DEMOS = {
+    ticket: `
+      <div style="background:#fff; color:#111; padding:18px; border-radius:14px; width:100%; max-width:290px; text-align:right; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
+        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; color:#d90429; margin-bottom:8px;">
+          <span>★ سهرة خاصة</span><span>FIRST CLASS</span>
+        </div>
+        <h3 style="font-family:'Amiri',serif; font-size:22px; text-align:center; margin-bottom:8px;">أنا & إنتي 🥂</h3>
+        <p style="font-size:11px; color:#666; margin-bottom:4px;">📅 الليلة، 8:30 مساءً</p>
+        <p style="font-size:11px; color:#666; margin-bottom:12px;">📍 مطعمنا المفضل على النيل</p>
+        <div style="border-top:1px dashed #ccc; padding-top:10px; text-align:center;">
+          <span style="font-size:12px; background:#d90429; color:#fff; padding:6px 14px; border-radius:20px; font-weight:bold; display:inline-block;">مقبول للسهرة 🤍</span>
+        </div>
+      </div>
+    `,
+    chat: `
+      <div style="width:100%; max-width:290px; display:flex; flex-direction:column; gap:8px; text-align:right;">
+        <div style="background:#1f2c34; padding:10px 14px; border-radius:14px 14px 2px 14px; font-size:13px; color:#fff;">
+          أهلاً بك يا غالي 🤍
+        </div>
+        <div style="background:#1f2c34; padding:10px 14px; border-radius:14px 14px 2px 14px; font-size:13px; color:#fff;">
+          فرحنا هيكون الخميس 15 يوليو 💍
+        </div>
+        <div style="background:#005c4b; padding:10px 14px; border-radius:14px 14px 2px 14px; font-size:13px; color:#fff;">
+          هتنورنا وتشرفنا بوجودك؟ ✨
+        </div>
+      </div>
+    `,
+    vogue: `
+      <div style="background:#fdfcf9; color:#111; padding:20px; border-radius:12px; width:100%; max-width:290px; text-align:center;">
+        <span style="font-family:'Space Grotesk'; font-size:9px; letter-spacing:2px; color:#777;">THE WEDDING ISSUE</span>
+        <h3 style="font-family:'Amiri',serif; font-size:24px; margin:6px 0;">أحمد & منى</h3>
+        <div style="width:100%; height:110px; background:#ddd; border-radius:6px; margin:8px 0; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80" style="width:100%; height:100%; object-fit:cover; filter:grayscale(100%);">
+        </div>
+        <span style="font-size:11px; font-weight:bold; color:#111;">الخميس، 15 يوليو 2027</span>
+      </div>
+    `,
+    scratch: `
+      <div style="background:#211c2b; border:1px solid #372e47; border-radius:16px; padding:18px; width:100%; max-width:290px; text-align:center;">
+        <span style="font-size:12px; color:#f3c68f; font-weight:bold;">✨ كارت الخدش السري</span>
+        <div style="background:linear-gradient(135deg, #ff758c, #ff7eb3); padding:16px; border-radius:10px; margin:10px 0; color:#fff;">
+          <h4 style="font-size:14px;">عازمك على العشا 🕯️</h4>
+          <p style="font-size:11px;">في نفس المكان اللي اتقابلنا فيه أول مرة</p>
+        </div>
+        <span style="font-size:10px; color:#aaa;">امسح بصباعك لكشف المكان</span>
+      </div>
+    `
+  };
+
+  function showDemo(name, btn) {
+    document.querySelectorAll('.showroom-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('demoDisplay').innerHTML = DEMOS[name];
+  }
+
+  // تشغيل أول ديمو تلقائياً
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('demoDisplay').innerHTML = DEMOS.ticket;
+  });
+</script>
+
+</body>
+</html>
