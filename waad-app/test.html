@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>فرحنا | معرض الدعوات التفاعلية VIP</title>
+
+  <!-- Open Graph لمعاينة واتساب -->
+  <meta property="og:title" content="دعوة خاصة لحضور ليلة العمر 💍" />
+  <meta property="og:description" content="يسعدنا تشريفكم ومشاركتنا أجمل لحظات الفرح." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: #0a0b10; color: #fff; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ================= شاشة التحميل السريعة لكل ثيم ================= */
+    .splash-overlay {
+      position: fixed; inset: 0; background: #0c0d12; z-index: 99999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 30px; text-align: center; opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.25s ease, visibility 0.25s;
+    }
+    .splash-overlay.active { opacity: 1; visibility: visible; pointer-events: all; }
+    .splash-icon-pulse { font-size: 38px; margin-bottom: 15px; animation: pulseGlow 1.2s infinite ease-in-out; }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.4)); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 20px rgba(255, 77, 109, 0.9)); }
+    }
+    .splash-quote { font-family: 'Amiri', serif; font-size: 20px; color: #f5f5f5; min-height: 35px; }
+    .splash-bar-wrap { width: 150px; height: 3px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin-top: 20px; overflow: hidden; }
+    .splash-bar-progress { height: 100%; width: 0%; background: linear-gradient(to right, #ff4d6d, #8338ec); border-radius: 10px; transition: width 0.3s ease; }
+
+    /* شريط التبديل العلوي */
+    .theme-switcher-bar {
+      width: 100%; max-width: 440px; background: #14161f; padding: 10px 8px;
+      display: flex; gap: 6px; overflow-x: auto; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6); border-bottom: 1px solid #252836;
+    }
+    .theme-tab-btn {
+      flex: 1; min-width: 82px; padding: 8px 6px; font-size: 12px; font-weight: 700;
+      border: 1px solid #333; background: #1c1f2b; color: #bbb; border-radius: 20px;
+      cursor: pointer; white-space: nowrap; transition: 0.2s; text-align: center;
+    }
+    .theme-tab-btn.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 2px 12px rgba(255,255,255,0.3); }
+    .btn-memory-highlight { border-color: #ff4d6d; color: #ff758f; }
+    .theme-tab-btn.btn-memory-highlight.active { background: #ff4d6d; color: #fff; border-color: #ff4d6d; }
+
+    .mobile-frame {
+      width: 100%; max-width: 440px; min-height: calc(100dvh - 54px); position: relative;
+      background: #000; overflow-x: hidden; display: flex; flex-direction: column; padding-bottom: 60px;
+    }
+
+    .theme-view { display: none; width: 100%; min-height: 100%; }
+    .theme-view.active { display: block; animation: smoothEnter 0.35s ease; }
+    @keyframes smoothEnter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* الأزرار الأصلية الثابتة بنصوصها */
+    .action-btn-col { display: flex; flex-direction: column; gap: 10px; margin: 18px 0; width: 100%; }
+    .btn-action-full {
+      width: 100%; padding: 14px 16px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px;
+      transition: transform 0.15s; border: none; cursor: pointer; text-align: center;
+    }
+    .btn-action-full:active { transform: scale(0.97); }
+    .btn-cal-style { background: #1f222e; color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+    .btn-wa-style { background: #25d366; color: #fff; }
+
+    .guest-pill {
+      display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 700;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); margin-bottom: 15px; color: #ffccd5;
+    }
+
+    /* سلايدر الصور */
+    .slider-container {
+      width: 100%; height: 260px; position: relative; border-radius: 10px; overflow: hidden;
+      margin: 16px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .slide-item { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s ease-in-out; }
+    .slide-item.active { opacity: 1; }
+    .slide-item img { width: 100%; height: 100%; object-fit: cover; }
+    .slider-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 10; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.45); cursor: pointer; transition: 0.25s; }
+    .dot.active { background: #fff; width: 20px; border-radius: 10px; }
+
+    /* 1. ثيم VOGUE */
+    .vogue-wrap { background: #fdfcf9; color: #111; min-height: 100dvh; padding: 30px 20px; text-align: center; }
+    .vogue-issue { font-family: 'Space Grotesk', sans-serif; font-size: 11px; letter-spacing: 3px; color: #777; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 18px; }
+    .vogue-headline { font-family: 'Amiri', serif; font-size: 38px; font-weight: 400; line-height: 1.1; }
+    .vogue-and { font-family: 'Cinzel', serif; font-size: 16px; font-style: italic; color: #888; margin: 4px 0; }
+    .vogue-photo-frame { filter: grayscale(100%) contrast(105%); }
+
+    .timer-strip-box {
+      display: flex; justify-content: space-around; border-top: 1px solid #111; border-bottom: 1px solid #111;
+      padding: 12px 0; margin: 18px 0;
+    }
+    .timer-strip-box .t-unit strong { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; display: block; }
+    .timer-strip-box .t-unit span { font-size: 11px; letter-spacing: 1px; color: #666; text-transform: uppercase; }
+
+    /* 2. ثيم تذكرة السهرة */
+    .ticket-wrap { background: #0c1017; min-height: 100dvh; padding: 25px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .ticket-card { width: 100%; background: #ffffff; color: #1a1a1a; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
+    .ticket-top { background: #d90429; color: #fff; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .ticket-body { padding: 22px 18px 12px; text-align: right; position: relative; }
+    .ticket-route { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px dashed #ddd; padding-bottom: 12px; }
+    .route-city h2 { font-size: 22px; font-weight: 900; }
+    .ticket-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+    .ticket-info label { display: block; font-size: 11px; color: #888; font-weight: bold; }
+    .ticket-info strong { font-size: 14px; }
+    .ticket-perforated { position: relative; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .ticket-perforated::before, .ticket-perforated::after { content: ''; position: absolute; width: 24px; height: 24px; background: #0c1017; border-radius: 50%; }
+    .ticket-perforated::before { left: -12px; } .ticket-perforated::after { right: -12px; }
+    .dashed-cut-line { width: 90%; border-bottom: 2px dashed #bbb; }
+    
+    .ticket-stub { padding: 16px 18px 20px; background: #fafafa; text-align: center; transition: transform 0.6s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s ease; }
+    .ticket-stub.torn { transform: translateY(70px) rotate(10deg); opacity: 0; pointer-events: none; }
+    
+    .stamp-approved {
+      position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(2.5) rotate(-20deg);
+      border: 4px solid #d90429; color: #d90429; padding: 8px 18px; border-radius: 8px; font-size: 22px; font-weight: 900;
+      opacity: 0; pointer-events: none; z-index: 50;
+    }
+    .stamp-approved.stamped { animation: stampDrop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    @keyframes stampDrop { 100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-15deg); } }
+    
+    .btn-ticket-main { width: 100%; padding: 14px; background: #d90429; color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; }
+    .memories-reveal-box { width: 100%; margin-top: 15px; display: none; text-align: center; animation: smoothEnter 0.4s ease; }
+    .btn-go-memories {
+      width: 100%; padding: 14px; background: linear-gradient(135deg, #ff4d6d 0%, #8338ec 100%);
+      color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 77, 109, 0.5);
+    }
+
+    /* 3. ثيم الزجاج المودرن */
+    .glass-wrap { background: #090b10; min-height: 100dvh; padding: 30px 18px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .glow-orb { position: absolute; width: 180px; height: 180px; border-radius: 50%; filter: blur(75px); opacity: 0.5; }
+    .orb-blue { background: #3b82f6; top: 8%; left: 5%; }
+    .orb-purple { background: #a855f7; bottom: 12%; right: 5%; }
+    .hybrid-card {
+      width: 100%; max-width: 345px; background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 24px; padding: 25px 20px;
+      text-align: center; position: relative; z-index: 5; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+    .glass-issue { font-family: 'Space Grotesk', sans-serif; font-size: 11px; letter-spacing: 2px; color: #bbb; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; margin-bottom: 15px; }
+    .glass-headline { font-family: 'Amiri', serif; font-size: 36px; font-weight: 400; color: #fff; line-height: 1.1; }
+    .glass-and { font-family: 'Cinzel', serif; font-size: 15px; font-style: italic; color: #aaa; margin: 3px 0; }
+
+    /* ================= 4. ثيم محادثة الشات النظيف والراقي ================= */
+    .chat-wrap {
+      background: #10151a; min-height: 100dvh; padding: 40px 18px 50px;
+      display: flex; flex-direction: column; justify-content: flex-start;
+    }
+    .chat-box { display: flex; flex-direction: column; gap: 14px; text-align: right; width: 100%; margin-bottom: 20px; }
+    
+    /* بالونات الشات الأصلية المريحة */
+    .chat-bubble {
+      max-width: 84%; padding: 12px 16px; border-radius: 16px 16px 4px 16px;
+      background: #1b252d; color: #e8eef2; font-size: 15px; line-height: 1.6;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25); animation: smoothEnter 0.35s ease;
+      position: relative; align-self: flex-start;
+    }
+    .chat-bubble.highlight {
+      background: #005c4b; color: #fff; border: 1px solid rgba(37, 211, 102, 0.3);
+    }
+    
+    /* أنيميشن الإيموجي اللي بيطير مع الرسالة */
+    .flying-reaction {
+      position: absolute; left: -10px; bottom: -8px; font-size: 20px;
+      animation: emojiFloatUp 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      pointer-events: none; z-index: 5;
+    }
+    @keyframes emojiFloatUp {
+      0% { opacity: 0; transform: translateY(12px) scale(0.5); }
+      30% { opacity: 1; transform: translateY(-8px) scale(1.3); }
+      70% { opacity: 0.9; transform: translateY(-28px) scale(1.1); }
+      100% { opacity: 0; transform: translateY(-48px) scale(0.9); }
+    }
+
+    /* نقط الكتابة الحية */
+    .chat-typing { display: flex; gap: 5px; width: 58px; padding: 14px 16px; align-items: center; }
+    .chat-typing i { width: 7px; height: 7px; border-radius: 50%; background: #8a9aa6; animation: typingBlink 1s infinite; }
+    .chat-typing i:nth-child(2) { animation-delay: 0.18s; }
+    .chat-typing i:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes typingBlink { 50% { opacity: 0.25; transform: translateY(-2px); } }
+
+    /* 5. كارت الخدش */
+    .scratch-wrap { background: #16131c; color: #fff; min-height: 100dvh; padding: 30px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .scratch-board { width: 100%; max-width: 320px; position: relative; background: #211c2b; border-radius: 20px; padding: 24px 15px 25px; border: 1px solid #372e47; }
+    .sticker-tape { position: absolute; top: -10px; left: 25px; width: 70px; height: 20px; background: rgba(255, 255, 255, 0.45); transform: rotate(-6deg); }
+    .sticker-heart { position: absolute; bottom: -10px; right: -6px; width: 42px; height: 42px; background: #ff4d6d; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; border: 2px solid #fff; }
+    .scratch-box { width: 290px; height: 180px; position: relative; border-radius: 14px; overflow: hidden; margin: 20px auto 10px; touch-action: none; }
+    .scratch-secret { position: absolute; inset: 0; background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; color: #fff; }
+    #scratchCanvas { position: absolute; inset: 0; z-index: 10; cursor: grab; }
+
+    /* 6. صفحة الذكريات */
+    .memories-wrap {
+      background: #0d0a12; background-image: radial-gradient(circle at 50% 10%, #1f1129 0%, #0a080e 100%);
+      color: #fff; min-height: 100dvh; padding: 30px 16px 60px; text-align: center;
+    }
+    .love-counter-box {
+      background: rgba(255, 77, 109, 0.08); border: 1px solid rgba(255, 77, 109, 0.25);
+      border-radius: 16px; padding: 16px; margin: 20px 0;
+    }
+    .love-days-num { font-size: 34px; font-weight: 900; color: #ff758f; font-family: 'Space Grotesk', sans-serif; }
+    .love-days-lbl { font-size: 13px; color: #ddd; }
+
+    .memories-voice-player {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 109, 0.2);
+      border-radius: 18px; padding: 14px 18px; margin: 25px 0 35px; text-align: right;
+    }
+    .voice-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .voice-head span { font-size: 13px; color: #ff758f; font-weight: 700; }
+    .voice-controls { display: flex; align-items: center; gap: 12px; }
+    .voice-btn-circle {
+      width: 40px; height: 40px; background: #ff4d6d; color: #fff; border-radius: 50%;
+      border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 14px;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    }
+    .voice-bar-bg { flex: 1; height: 5px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; }
+    .voice-bar-fill { width: 0%; height: 100%; background: #ff4d6d; border-radius: 3px; transition: width 0.1s linear; }
+
+    .timeline-container { position: relative; margin: 30px 10px 40px 15px; text-align: right; }
+    .timeline-container::before {
+      content: ''; position: absolute; top: 15px; bottom: 20px; right: 12px; width: 2px;
+      background: linear-gradient(to bottom, #ff4d6d 0%, #8338ec 70%, #3a86ff 100%);
+    }
+
+    .timeline-station {
+      position: relative; padding-right: 36px; margin-bottom: 35px;
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .js-enabled .timeline-station { opacity: 0; transform: translateY(30px); }
+    .js-enabled .timeline-station.revealed { opacity: 1; transform: translateY(0); }
+
+    .station-node {
+      position: absolute; right: 5px; top: 0; width: 16px; height: 16px;
+      background: #ff4d6d; border-radius: 50%; border: 3px solid #0d0a12;
+      box-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
+    }
+    .station-date { font-size: 12px; color: #ff758f; font-weight: 700; margin-bottom: 4px; display: block; }
+    .station-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    
+    .station-photo-card {
+      width: 100%; border-radius: 12px; overflow: hidden; margin: 10px 0;
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      position: relative; height: 190px; cursor: pointer;
+    }
+    .station-photo-card img { width: 100%; height: 100%; object-fit: cover; }
+    .station-desc { font-size: 13px; color: #bbb; line-height: 1.6; }
+
+    .timeline-station.text-station { padding: 5px 36px 15px 0; margin-bottom: 30px; }
+    .text-station-quote {
+      font-family: 'Amiri', serif; font-size: 17px; line-height: 1.8; color: #fff;
+      background: rgba(255, 255, 255, 0.04); border-right: 3px solid #ff4d6d;
+      padding: 14px 16px; border-radius: 0 12px 12px 0; font-style: italic;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .lightbox-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999999;
+      display: none; justify-content: center; align-items: center; padding: 20px;
+    }
+    .lightbox-modal.active { display: flex; animation: smoothEnter 0.25s ease; }
+    .lightbox-modal img { max-width: 100%; max-height: 85dvh; border-radius: 10px; border: 1px solid #333; }
+    .lightbox-close { position: absolute; top: 20px; right: 25px; font-size: 32px; color: #fff; cursor: pointer; }
+
+    .sales-floating-cta {
+      position: fixed; bottom: 12px; width: calc(100% - 24px); max-width: 416px;
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #fff; text-decoration: none; padding: 13px 20px; border-radius: 30px;
+      font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4); z-index: 900;
+    }
+    .sales-floating-cta:active { transform: scale(0.98); }
+    .cta-pulse { animation: pulseGlow 2s infinite ease-in-out; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= شاشة التحميل السريعة ================= -->
+  <div class="splash-overlay" id="splashScreen">
+    <div class="splash-icon-pulse" id="splashIcon">💌</div>
+    <div class="splash-quote" id="quoteText">بنجهز تفاصيل دعوتك...</div>
+    <div class="splash-bar-wrap">
+      <div class="splash-bar-progress" id="splashProgress"></div>
+    </div>
+  </div>
+
+  <!-- شريط التبديل العلوي -->
+  <div class="theme-switcher-bar">
+    <button class="theme-tab-btn active" data-theme="ticket" onclick="triggerThemeChange('ticket', this)">🎫 التذكرة والقطع</button>
+    <button class="theme-tab-btn" data-theme="vogue" onclick="triggerThemeChange('vogue', this)">📰 Vogue التحريري</button>
+    <button class="theme-tab-btn" data-theme="glass" onclick="triggerThemeChange('glass', this)">🍸 الزجاج المودرن</button>
+    <button class="theme-tab-btn" data-theme="chat" onclick="triggerThemeChange('chat', this)">💬 محادثة</button>
+    <button class="theme-tab-btn" data-theme="scratch" onclick="triggerThemeChange('scratch', this)">✨ كارت الخدش</button>
+    <button class="theme-tab-btn btn-memory-highlight" data-theme="memories" onclick="triggerThemeChange('memories', this)">💖 صفحة الذكريات</button>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- 1. ثيم تذكرة السهرة -->
+    <div id="view-ticket" class="theme-view active">
+      <div class="ticket-wrap">
+        <div class="ticket-card">
+          <div class="ticket-top">
+            <span style="font-size: 12px; font-weight: 700;">★ SPECIAL DATE NIGHT</span>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px;">FIRST CLASS</span>
+          </div>
+
+          <div class="ticket-body">
+            <div class="stamp-approved" id="stampBadge">مقبول للسهرة 🤍</div>
+            <div class="ticket-route">
+              <div class="route-city"><h2>أنا & إنتي</h2><span style="font-size: 12px; color: #888;">المسافرون</span></div>
+              <div style="font-size: 22px;">🥂</div>
+              <div class="route-city" style="text-align: left;"><h2>عشانا الخاص</h2><span style="font-size: 12px; color: #888;">الوجهة</span></div>
+            </div>
+            <div class="ticket-grid">
+              <div class="ticket-info"><label>التاريخ</label><strong id="ticketDateText">الليلة، 8:30 م</strong></div>
+              <div class="ticket-info"><label>المكان</label><strong id="ticketVenueText">مطعمنا المفضل</strong></div>
+              <div class="ticket-info"><label>الدريس كود</label><strong id="ticketDressText">أشيك فستان عندك</strong></div>
+              <div class="ticket-info"><label>رقم الطاولة</label><strong>VIP لشخصين</strong></div>
+            </div>
+          </div>
+
+          <div class="ticket-perforated"><div class="dashed-cut-line"></div></div>
+
+          <div class="ticket-stub" id="ticketStub">
+            <p style="font-size: 14px; color: #333; margin-bottom: 12px; font-weight: 700;">يشرفني حضورك معايا الليلة 🤍</p>
+            <button class="btn-ticket-main" id="acceptBtn" onclick="acceptTicket()">تأكيد وقبول السهرة 🤍</button>
+          </div>
+        </div>
+
+        <div class="memories-reveal-box" id="memoriesRevealBox">
+          <button class="btn-go-memories" onclick="triggerThemeChange('memories')">
+            ✨ افتحي صفحة حكايتنا والذكريات 💖
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ثيم VOGUE التحريري -->
+    <div id="view-vogue" class="theme-view">
+      <div class="vogue-wrap">
+        <div class="vogue-issue">THE WEDDING ISSUE — SUMMER 2027</div>
+        <div class="guest-pill" id="vogueGuestPill" style="display:none; color:#111; border-color:#ccc; background:#eee;"></div>
+        <h1 class="vogue-headline" id="vogueNames">أحمد & منى</h1>
+        <div class="vogue-and">SAVE OUR DATE</div>
+
+        <div class="slider-container vogue-photo-frame" id="vogueSlider">
+          <div class="slide-item active"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="صورة العروسين 1" loading="lazy"></div>
+          <div class="slide-item"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80" alt="صورة العروسين 2" loading="lazy"></div>
+          <div class="slide-item"><img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=700&q=80" alt="صورة العروسين 3" loading="lazy"></div>
+          <div class="slider-dots" id="vogueDots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+
+        <div class="timer-strip-box">
+          <div class="t-unit"><strong class="t-days">00</strong><span>أيام</span></div>
+          <div class="t-unit"><strong class="t-hours">00</strong><span>ساعات</span></div>
+          <div class="t-unit"><strong class="t-mins">00</strong><span>دقائق</span></div>
+          <div class="t-unit"><strong class="t-secs">00</strong><span>ثواني</span></div>
+        </div>
+
+        <div style="margin: 15px 0; font-size: 14px; color: #333; line-height: 1.8;">
+          <p><strong id="vogueDateHuman">الخميس، 15 يوليو 2027</strong> — <span id="vogueTimeHuman">الساعة 8:00 مساءً</span></p>
+          <p style="color: #666; font-size: 13px;" id="vogueVenueHuman">قاعة فيردي - التجمع الخامس، القاهرة</p>
+        </div>
+
+        <div class="action-btn-col">
+          <a href="#" class="btn-action-full btn-cal-style btn-cal-action" style="background:#111;">
+            🗓️ اضافة موعد الفرح لتقويم هاتفي
+          </a>
+          <a href="#" class="btn-action-full btn-wa-style btn-rsvp-yes">
+            💬 ارسال تهنئة عبر واتساب
+          </a>
+          <a href="#" target="_blank" class="btn-action-full btn-map-action" style="background:#fff; color:#111; border:1px solid #111;">
+            📍 موقع القاعة على الخريطة (Google Maps)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ثيم الزجاج المودرن -->
+    <div id="view-glass" class="theme-view">
+      <div class="glass-wrap">
+        <div class="glow-orb orb-blue"></div>
+        <div class="glow-orb orb-purple"></div>
+
+        <div class="hybrid-card">
+          <div class="glass-issue">THE WEDDING ISSUE — SUMMER 2027</div>
+          <div class="guest-pill" id="glassGuestPill" style="display:none;"></div>
+          <h1 class="glass-headline" id="glassNames">أحمد & منى</h1>
+          <div class="glass-and">SAVE OUR DATE</div>
+
+          <div class="slider-container" id="glassSlider" style="height: 220px; border-radius: 14px;">
+            <div class="slide-item active"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="صورة الزفاف 1" loading="lazy"></div>
+            <div class="slide-item"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="صورة الزفاف 2" loading="lazy"></div>
+            <div class="slider-dots" id="glassDots">
+              <div class="dot active"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+
+          <div class="timer-strip-box" style="border-color: rgba(255,255,255,0.15);">
+            <div class="t-unit"><strong class="t-days" style="color:#fff;">00</strong><span style="color:#aaa;">أيام</span></div>
+            <div class="t-unit"><strong class="t-hours" style="color:#fff;">00</strong><span style="color:#aaa;">ساعات</span></div>
+            <div class="t-unit"><strong class="t-mins" style="color:#fff;">00</strong><span style="color:#aaa;">دقائق</span></div>
+            <div class="t-unit"><strong class="t-secs" style="color:#fff;">00</strong><span style="color:#aaa;">ثواني</span></div>
+          </div>
+
+          <div style="margin: 15px 0; font-size: 13px; color: #ddd; line-height: 1.8;">
+            <p><strong id="glassDateHuman">الخميس، 15 يوليو 2027</strong> — <span id="glassTimeHuman">الساعة 8:00 مساءً</span></p>
+            <p style="color: #aaa; font-size: 12px;" id="glassVenueHuman">قاعة فيردي - التجمع الخامس، القاهرة</p>
+          </div>
+
+          <div class="action-btn-col">
+            <a href="#" class="btn-action-full btn-cal-style btn-cal-action">
+              🗓️ اضافة موعد الفرح لتقويم هاتفي
+            </a>
+            <a href="#" class="btn-action-full btn-wa-style btn-rsvp-yes">
+              💬 ارسال تهنئة عبر واتساب
+            </a>
+            <a href="#" target="_blank" class="btn-action-full btn-map-action" style="background:rgba(255,255,255,0.08); color:#fff;">
+              📍 موقع القاعة على الخريطة (Google Maps)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. ثيم محادثة الشات النظيف والراقي -->
+    <div id="view-chat" class="theme-view">
+      <div class="chat-wrap">
+        <div class="chat-box" id="chatBoxContainer"></div>
+
+        <!-- أزرار الإجراءات الكاملة بعد انتهاء الرسائل -->
+        <div id="chatActionButtons" style="display:none; margin-top:20px;" class="action-btn-col">
+          <a href="#" class="btn-action-full btn-cal-style btn-cal-action">
+            🗓️ اضافة موعد الفرح لتقويم هاتفي
+          </a>
+          <a href="#" class="btn-action-full btn-wa-style btn-rsvp-yes">
+            💬 ارسال تهنئة عبر واتساب
+          </a>
+          <a href="#" target="_blank" class="btn-action-full btn-map-action" style="background:#1b252d; color:#fff;">
+            📍 موقع القاعة على الخريطة (Google Maps)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. كارت الخدش -->
+    <div id="view-scratch" class="theme-view">
+      <div class="scratch-wrap">
+        <h2 style="font-size: 22px; color: #f3c68f; margin-bottom: 4px;">مفاجأة خاصة 🤍</h2>
+        <p style="font-size: 13px; color: #aaa; margin-bottom: 20px;">امسحي بصباعك وشوفي إيه مستنيكي!</p>
+
+        <div class="scratch-board">
+          <div class="sticker-tape"></div>
+          <div class="sticker-heart">💍</div>
+          <div class="scratch-box">
+            <div class="scratch-secret">
+              <h3 style="font-size: 17px; margin-bottom: 4px;">🕯️ عازمك على العشا</h3>
+              <p style="font-size: 13px;">في المكان اللي بنحبه.. جاهزة؟</p>
+              <button onclick="triggerThemeChange('memories')" style="margin-top:10px; padding:8px 16px; background:#fff; color:#ff4d6d; border:none; border-radius:20px; font-weight:bold; cursor:pointer;">افتحي قصة حبنا 💖</button>
+            </div>
+            <canvas id="scratchCanvas" width="290" height="180"></canvas>
+          </div>
+          <p style="font-size: 12px; color: #aaa; margin-top: 6px;">✨ امسح أكثر من 45% لكشف المفاجأة فوراً</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. صفحة الذكريات -->
+    <div id="view-memories" class="theme-view">
+      <div class="memories-wrap">
+        <span style="font-size: 11px; letter-spacing: 2px; color: #ff758f; font-weight: bold;">OUR SPECIAL STORY</span>
+        <h1 style="font-size: 28px; margin: 4px 0 15px;">حكايتنا وأجمل أيامنا 🤍</h1>
+
+        <div class="love-counter-box">
+          <div class="love-days-num" id="liveLoveDays">0</div>
+          <div class="love-days-lbl">يوم مع بعض.. وكل ثانية فيهم حب وذكريات حلوة ✨</div>
+        </div>
+
+        <div class="memories-voice-player">
+          <div class="voice-head">
+            <span>🎙️ رسالة بصوتي في يومنا المميز</span>
+            <span style="font-size: 12px; color: #aaa;">0:14</span>
+          </div>
+          <div class="voice-controls">
+            <button class="voice-btn-circle" id="voiceToggleBtn" onclick="toggleVoiceAudio()">▶</button>
+            <div class="voice-bar-bg"><div class="voice-bar-fill" id="audioProgressBar"></div></div>
+          </div>
+          <audio id="realVoiceAudio" preload="metadata">
+            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=oriental-traditional-ambient.mp3" type="audio/mp3">
+          </audio>
+        </div>
+
+        <h3 style="text-align: right; font-size: 16px; color: #ff758f; margin-bottom: 15px;">محطات رحلتنا خطوة بخطوة:</h3>
+
+        <div class="timeline-container">
+          <div class="timeline-station">
+            <div class="station-node"></div>
+            <span class="station-date">12 يناير 2024</span>
+            <div class="station-title">أول مرة عيني شافت عينك 👀</div>
+            <div class="station-photo-card" onclick="openLightbox(this)">
+              <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=600&q=80" alt="أول لقاء" loading="lazy">
+            </div>
+            <p class="station-desc">اليوم اللي خطفتي فيه قلبي بضحكتك العفوية.. ومن اللحظة دي اتأكدت إنك نصيبي.</p>
+          </div>
+
+          <div class="timeline-station text-station">
+            <div class="station-node" style="background: #ff4d6d; box-shadow: 0 0 12px #ff4d6d;"></div>
+            <span class="station-date">همسة من قلبي 🤍</span>
+            <div class="text-station-quote">
+              «عارفة؟ كل ثانية معاكي بتخليني أحس إني أسعد راجل في الدنيا.. بحبك من هنا لآخر العمر وما بعده.»
+            </div>
+          </div>
+
+          <div class="timeline-station">
+            <div class="station-node"></div>
+            <span class="station-date">05 مايو 2024</span>
+            <div class="station-title">أول خروجة عالبحر 🌊</div>
+            <div class="station-photo-card" onclick="openLightbox(this)">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="خروجة البحر" loading="lazy">
+            </div>
+            <p class="station-desc">ساعات طويلة من الكلام اللي مبيخلصش وأحلام بنيناها مع بعض على رملة إسكندرية.</p>
+          </div>
+
+          <div class="timeline-station text-station">
+            <div class="station-node" style="background: #8338ec; box-shadow: 0 0 12px #8338ec;"></div>
+            <span class="station-date">اعتراف ليكي 💌</span>
+            <div class="text-station-quote" style="border-right-color: #8338ec;">
+              «في نص الطريق وقبل ما نوصل ليوم فرحنا، حابب أقولك إنك أجمل صدفة وأحسن قرار خدته في حياتي كلها.»
+            </div>
+          </div>
+
+          <div class="timeline-station">
+            <div class="station-node" style="background:#8338ec;"></div>
+            <span class="station-date">20 نوفمبر 2024</span>
+            <div class="station-title">يوم ما لبّستك دبلتي 💍</div>
+            <div class="station-photo-card" onclick="openLightbox(this)">
+              <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80" alt="الخطوبة" loading="lazy">
+            </div>
+            <p class="station-desc">إحساس إني ماسك إيدك رسمي والدبلة في صباعك كان أسعد إنجاز.. خطوة قربتنا لبيتنا.</p>
+          </div>
+
+          <div class="timeline-station">
+            <div class="station-node" style="background:#3a86ff;"></div>
+            <span class="station-date">15 يوليو 2027</span>
+            <div class="station-title">ليلة فرحنا وبيتنا الجديد 👰🤵</div>
+            <div class="station-photo-card" onclick="openLightbox(this)">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="يوم الزفاف" loading="lazy">
+            </div>
+            <p class="station-desc">اليوم اللي مستنينه من سنين.. عشان نبدأ حكايتنا في بيتنا للأبد.</p>
+          </div>
+        </div>
+
+        <div class="final-love-promise">
+          <h4>وعدي الدائم ليكي 🤍</h4>
+          <p>«كل صورة وكل محطة عشناها كانت مجرد بداية.. الأيام اللي جاية هتكون أحلى بكتير وإنتي منورة حياتي.»</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImg" src="" alt="صورة مكبرة">
+  </div>
+
+  <a href="https://wa.me/201012345678?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B9%D9%85%D9%84%20%D8%AF%D8%B9%D9%88%D8%A9%20%D8%AE%D8%A7%D8%B5%D8%A9%20%D9%85%D8%AB%D9%84%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D8%B6" target="_blank" class="sales-floating-cta">
+    <span>✨ عجبك القالب؟ اطلب دعوتك الآن</span>
+    <span class="cta-pulse">💬 واتساب ↗</span>
+  </a>
+
+<script>
+  const CONFIG = {
+    groomAndBride: "أحمد & منى",
+    eventDateISO: "2027-07-15T20:00:00",
+    eventDateHuman: "الخميس، 15 يوليو 2027",
+    eventTimeHuman: "الساعة 8:00 مساءً",
+    venueName: "قاعة فيردي - التجمع الخامس، القاهرة",
+    mapsUrl: "https://maps.google.com/?q=New+Cairo",
+    whatsappPhone: "201012345678",
+    relationshipStartDate: "2024-01-12",
+    recipientGender: "female"
+  };
+
+  document.documentElement.classList.add('js-enabled');
+
+  function initGuestAndRSVP() {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const guest = params.get('g') ? params.get('g').trim() : "";
+
+    const guestPills = [document.getElementById('vogueGuestPill'), document.getElementById('glassGuestPill')];
+    if (guest) {
+      guestPills.forEach(p => {
+        if (p) {
+          p.textContent = `أهلاً بك يا ${guest} وننتظر تشريفك 🤍`;
+          p.style.display = 'inline-block';
+        }
+      });
+    }
+
+    const yesText = guest 
+      ? `ألف مبروك يا عرسان! أنا ${guest} ويشرفني الحضور ومشاركتكم فرحة ليلة العمر إن شاء الله 🤍`
+      : `ألف مبروك يا عرسان! يشرفني الحضور ومشاركتكم فرحة ليلة العمر إن شاء الله 🤍`;
+
+    document.querySelectorAll('.btn-rsvp-yes').forEach(btn => {
+      btn.href = `https://wa.me/${CONFIG.whatsappPhone}?text=${encodeURIComponent(yesText)}`;
+    });
+
+    document.querySelectorAll('.btn-map-action').forEach(btn => {
+      btn.href = CONFIG.mapsUrl;
+    });
+  }
+
+  function setupCalendarActions() {
+    const title = `زفاف ${CONFIG.groomAndBride} 💍`;
+    const details = `حضور حفل زفاف ${CONFIG.groomAndBride} في ${CONFIG.venueName}`;
+    const startISO = "20270715T170000Z";
+    const endISO = "20270715T220000Z";
+
+    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startISO}/${endISO}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(CONFIG.venueName)}`;
+
+    const icsData = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Farahna Invite//AR",
+      "BEGIN:VEVENT", `SUMMARY:${title}`, `DESCRIPTION:${details}`,
+      `LOCATION:${CONFIG.venueName}`, `DTSTART:${startISO}`, `DTEND:${endISO}`,
+      "END:VEVENT", "END:VCALENDAR"
+    ].join("\r\n");
+
+    const icsBlob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
+    const icsUrl = URL.createObjectURL(icsBlob);
+    const isApple = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent);
+
+    document.querySelectorAll('.btn-cal-action').forEach(btn => {
+      if (isApple) {
+        btn.href = icsUrl;
+        btn.setAttribute('download', 'wedding-invite.ics');
+      } else {
+        btn.href = gCalUrl;
+        btn.target = "_blank";
+      }
+    });
+  }
+
+  const THEME_SPLASH_DATA = {
+    ticket: { icon: "🎫", quote: "بنجهز تذكرتك لحجز الليلة... ✨" },
+    vogue: { icon: "📰", quote: "بنطبع النسخة الخاصة من مجلة الفرح... 💍" },
+    glass: { icon: "🍸", quote: "بنجهز أجواء السهرة والأنوار... ✨" },
+    chat: { icon: "💬", quote: "في رسالة خاصة بتوصلك حالاً... ✨" },
+    scratch: { icon: "🤫", quote: "مفاجأة خاصة متجهزة في انتظارك... 🤍" },
+    memories: { icon: "💖", quote: "بنسترجع كل ثانية ولحظة عشناها سوا... ✨" }
+  };
+
+  let activeChatTimer = null;
+
+  function triggerThemeChange(themeName, btn) {
+    const splash = document.getElementById('splashScreen');
+    const quoteEl = document.getElementById('quoteText');
+    const iconEl = document.getElementById('splashIcon');
+    const progressEl = document.getElementById('splashProgress');
+    const data = THEME_SPLASH_DATA[themeName] || THEME_SPLASH_DATA.ticket;
+
+    iconEl.textContent = data.icon;
+    quoteEl.textContent = data.quote;
+    progressEl.style.width = '30%';
+    splash.classList.add('active');
+
+    setTimeout(() => { progressEl.style.width = '100%'; }, 180);
+
+    setTimeout(() => {
+      splash.classList.remove('active');
+      applyThemeView(themeName, btn);
+    }, 420);
+  }
+
+  function applyThemeView(name, btn) {
+    document.querySelectorAll('.theme-view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.theme-tab-btn').forEach(b => b.classList.remove('active'));
+
+    const targetView = document.getElementById('view-' + name);
+    if (targetView) targetView.classList.add('active');
+
+    const activeTab = btn || document.querySelector(`.theme-tab-btn[data-theme="${name}"]`);
+    if (activeTab) activeTab.classList.add('active');
+
+    if (name === 'chat') initChatTheme();
+    if (name === 'scratch') initScratch();
+    if (name === 'memories') setupStationScrollObserver();
+  }
+
+  // ثيم الشات النظيف مع الإيموجي الطائر
+  function initChatTheme() {
+    const container = document.getElementById('chatBoxContainer');
+    const actionBtns = document.getElementById('chatActionButtons');
+    if (!container) return;
+
+    container.innerHTML = '';
+    actionBtns.style.display = 'none';
+    if (activeChatTimer) clearTimeout(activeChatTimer);
+
+    const hash = window.location.hash.substring(1);
+    const guest = new URLSearchParams(hash).get('g');
+    const helloLine = guest ? `أهلاً ${guest.trim()} 🤍` : "أهلاً بك وبكل أحبابك 🤍";
+
+    const messages = [
+      { text: helloLine, emoji: "🤍" },
+      { text: "عندنا خبر حلو ومبسوطين نشاركه معاك.. ✨", emoji: "💌" },
+      { text: `فرحنا هيكون يوم ${CONFIG.eventDateHuman} 💍`, emoji: "💍" },
+      { text: `في ${CONFIG.venueName} — ${CONFIG.eventTimeHuman}`, emoji: "📍" },
+      { text: "فرحتنا مش هتكمل غير بوجودك جنبنا 🤍", emoji: "🥂", highlight: true }
+    ];
+
+    let i = 0;
+    function sendNext() {
+      if (i >= messages.length) {
+        actionBtns.style.display = 'flex';
+        return;
+      }
+
+      container.insertAdjacentHTML('beforeend', `
+        <div class="chat-bubble chat-typing" id="activeTypingBubble">
+          <i></i><i></i><i></i>
+        </div>
+      `);
+      container.scrollTop = container.scrollHeight;
+
+      activeChatTimer = setTimeout(() => {
+        const typingEl = document.getElementById('activeTypingBubble');
+        if (typingEl) typingEl.remove();
+
+        const item = messages[i];
+        container.insertAdjacentHTML('beforeend', `
+          <div class="chat-bubble ${item.highlight ? 'highlight' : ''}">
+            ${item.text}
+            <span class="flying-reaction">${item.emoji}</span>
+          </div>
+        `);
+        i++;
+        container.scrollTop = container.scrollHeight;
+
+        activeChatTimer = setTimeout(sendNext, 450);
+      }, 800);
+    }
+
+    sendNext();
+  }
+
+  function acceptTicket() {
+    const stamp = document.getElementById('stampBadge');
+    const stub = document.getElementById('ticketStub');
+    const memoriesBox = document.getElementById('memoriesRevealBox');
+
+    stamp.classList.add('stamped');
+    localStorage.setItem('date_ticket_accepted', 'true');
+
+    setTimeout(() => { stub.classList.add('torn'); }, 350);
+
+    setTimeout(() => {
+      memoriesBox.style.display = 'block';
+      const replyMsg = encodeURIComponent("قبلت السهرة يا حبيبي وجاهزة لأحلى ليلة 🤍🥂");
+      window.open(`https://wa.me/${CONFIG.whatsappPhone}?text=${replyMsg}`, '_blank');
+    }, 700);
+  }
+
+  function runRealCountdowns() {
+    const start = new Date(CONFIG.relationshipStartDate).getTime();
+    const now = new Date().getTime();
+    const diffLoveDays = Math.max(1, Math.floor((now - start) / (1000 * 60 * 60 * 24)));
+    const liveLoveEl = document.getElementById('liveLoveDays');
+    if (liveLoveEl) liveLoveEl.textContent = diffLoveDays.toLocaleString('ar-EG');
+
+    const target = new Date(CONFIG.eventDateISO).getTime();
+
+    function update() {
+      const current = new Date().getTime();
+      const diff = target - current;
+
+      if (diff <= 0) {
+        document.querySelectorAll('.t-days, .t-hours, .t-mins, .t-secs').forEach(el => el.textContent = "00");
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.querySelectorAll('.t-days').forEach(el => el.textContent = String(d).padStart(2, '0'));
+      document.querySelectorAll('.t-hours').forEach(el => el.textContent = String(h).padStart(2, '0'));
+      document.querySelectorAll('.t-mins').forEach(el => el.textContent = String(m).padStart(2, '0'));
+      document.querySelectorAll('.t-secs').forEach(el => el.textContent = String(s).padStart(2, '0'));
+    }
+
+    update();
+    setInterval(update, 1000);
+  }
+
+  function setupSliderWithDots(sliderId, dotsId) {
+    const slider = document.getElementById(sliderId);
+    const dotsWrap = document.getElementById(dotsId);
+    if (!slider || !dotsWrap) return;
+
+    const slides = slider.querySelectorAll('.slide-item');
+    const dots = dotsWrap.querySelectorAll('.dot');
+    let idx = 0;
+
+    function goTo(i) {
+      slides.forEach((s, k) => s.classList.toggle('active', k === i));
+      dots.forEach((d, k) => d.classList.toggle('active', k === i));
+      idx = i;
+    }
+
+    dots.forEach((d, i) => {
+      d.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goTo(i);
+      });
+    });
+
+    setInterval(() => {
+      goTo((idx + 1) % slides.length);
+    }, 3200);
+  }
+
+  let scratchDone = false;
+  function initScratch() {
+    if (scratchDone) return;
+    const canvas = document.getElementById('scratchCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    
+    ctx.fillStyle = '#adb5bd';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#495057';
+    ctx.font = 'bold 15px Tajawal';
+    ctx.textAlign = 'center';
+    ctx.fillText('✨ اخدش هنا لكشف المفاجأة ✨', canvas.width / 2, canvas.height / 2 + 5);
+
+    let isDrawing = false;
+    let scratchedPixels = 0;
+
+    function scratch(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 24, 0, Math.PI * 2);
+      ctx.fill();
+
+      scratchedPixels += 1;
+      if (scratchedPixels % 12 === 0) {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let clearCount = 0;
+        for (let i = 3; i < imgData.data.length; i += 16) {
+          if (imgData.data[i] === 0) clearCount++;
+        }
+        if (clearCount / (imgData.data.length / 16) > 0.42) {
+          canvas.style.transition = 'opacity 0.6s ease';
+          canvas.style.opacity = '0';
+          setTimeout(() => { canvas.style.display = 'none'; }, 600);
+        }
+      }
+    }
+
+    canvas.addEventListener('pointerdown', (e) => { isDrawing = true; scratch(e); });
+    window.addEventListener('pointerup', () => isDrawing = false);
+    canvas.addEventListener('pointermove', scratch);
+    scratchDone = true;
+  }
+
+  const realAudio = document.getElementById('realVoiceAudio');
+  const voiceBtn = document.getElementById('voiceToggleBtn');
+  const progressBar = document.getElementById('audioProgressBar');
+
+  function toggleVoiceAudio() {
+    if (!realAudio) return;
+    if (realAudio.paused) {
+      realAudio.play();
+      voiceBtn.textContent = '❚❚';
+    } else {
+      realAudio.pause();
+      voiceBtn.textContent = '▶';
+    }
+  }
+
+  if (realAudio) {
+    realAudio.addEventListener('timeupdate', () => {
+      if (realAudio.duration) {
+        progressBar.style.width = ((realAudio.currentTime / realAudio.duration) * 100) + '%';
+      }
+    });
+    realAudio.addEventListener('ended', () => {
+      voiceBtn.textContent = '▶';
+      progressBar.style.width = '0%';
+    });
+  }
+
+  function openLightbox(el) {
+    const img = el.querySelector('img');
+    if (!img) return;
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightboxModal').classList.add('active');
+  }
+  function closeLightbox() {
+    document.getElementById('lightboxModal').classList.remove('active');
+  }
+
+  function setupStationScrollObserver() {
+    const stations = document.querySelectorAll('.timeline-station');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    stations.forEach(s => observer.observe(s));
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initGuestAndRSVP();
+    setupCalendarActions();
+    runRealCountdowns();
+    setupSliderWithDots('vogueSlider', 'vogueDots');
+    setupSliderWithDots('glassSlider', 'glassDots');
+    setupStationScrollObserver();
+
+    if (localStorage.getItem('date_ticket_accepted') === 'true') {
+      const mb = document.getElementById('memoriesRevealBox');
+      const sb = document.getElementById('stampBadge');
+      if (mb) mb.style.display = 'block';
+      if (sb) sb.classList.add('stamped');
+    }
+  });
+</script>
+
+</body>
+</html>
