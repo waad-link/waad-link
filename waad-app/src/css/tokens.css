@@ -1,0 +1,31 @@
+/* Waad Design Tokens - Global Variables */
+:root {
+    /* Royal Palette */
+    --color-primary: #25d366;
+    /* WhatsApp Green */
+    --color-gold: #c5a059;
+    /* Metallic Gold */
+    --color-gold-light: #f7e7c4;
+    /* Alabaster Cream */
+    --color-rose: #ff4d6d;
+    /* Romance Rose */
+
+    /* Dark Mode Surfaces */
+    --bg-main: #0a0b10;
+    --bg-surface: #131722;
+    --bg-elevated: #1a1e2c;
+
+    /* Borders & Glass */
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-gold: rgba(197, 160, 89, 0.25);
+
+    /* Typography */
+    --font-main: 'Tajawal', sans-serif;
+    --font-royal: 'Amiri', serif;
+    --font-eng: 'Space Grotesk', sans-serif;
+
+    /* Spacing & Radius */
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-vip: 0 10px 40px rgba(0, 0, 0, 0.6);
+}

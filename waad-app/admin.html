@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة كشف المعازيم | إدارة الفرح</title>
+
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Space+Grotesk:wght@700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="src/css/tokens.css">
+    <link rel="stylesheet" href="src/css/reset.css">
+    <link rel="stylesheet" href="src/css/components.css">
+
+    <style>
+        .admin-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 25px 18px;
+            text-align: right;
+        }
+
+        .stat-box {
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-box strong {
+            font-family: var(--font-mono);
+            font-size: 38px;
+            color: var(--gold);
+            display: block;
+        }
+
+        .guest-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- شاشة الدخول بالرقم السري للعريس لمنع تطفل أي شخص -->
+    <div class="modal-backdrop" id="authGate">
+        <div class="modal-card">
+            <div style="font-size:36px; margin-bottom:10px;">🔒</div>
+            <h3 style="margin-bottom:6px;">لوحة متابعة كشف المعازيم</h3>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">خاص بالعريس فقط لمتابعة الحضور
+                المباشر</p>
+            <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..."
+                style="text-align:center; letter-spacing:4px; font-size:18px; margin-bottom:15px;">
+            <button class="btn-gold" id="loginBtn">دخول اللوحة</button>
+        </div>
+    </div>
+
+    <!-- واجهة اللوحة الرئيسية -->
+    <div class="admin-container" id="adminDashboard" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h2 style="font-size:20px;">كشف الحضور السحابي 💍</h2>
+            <button class="btn-action btn-dark" style="width:auto; padding:6px 14px; font-size:12px;" id="refreshBtn">🔄
+                تحديث</button>
+        </div>
+
+        <!-- عداد الحضور الإجمالي -->
+        <div class="stat-box">
+            <strong id="totalGuestsCount">0</strong>
+            <span style="font-size:13px; color:var(--text-muted);">إجمالي المدعوين المسجلين حتى الآن</span>
+        </div>
+
+        <!-- زر تنزيل الإكسيل للقاعة -->
+        <button class="btn-action btn-gold" id="exportBtn" style="margin-bottom:20px;">📥 تنزيل كشف المعازيم لمسؤول
+            القاعة (Excel/CSV)</button>
+
+        <h4 style="font-size:14px; color:var(--gold); margin-bottom:10px;">قائمة الأسماء المسجلة:</h4>
+        <div id="guestsListContainer"></div>
+    </div>
+
+    <script type="module">
+        import { CONFIG } from './src/js/core/config.js';
+        import { SupabaseService } from './src/js/services/supabase.js';
+        import { RSVPManager } from './src/js/modules/rsvp-manager.js';
+
+        let loadedGuests = [];
+
+        // التحقق من الباسورد
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const pin = document.getElementById('pinInput').value.trim();
+            if (pin === CONFIG.adminPin) {
+                document.getElementById('authGate').classList.add('hidden');
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadData();
+            } else {
+                alert('الرقم السري غير صحيح');
+            }
+        });
+
+        // جلب البيانات لايف من Supabase
+        async function loadData() {
+            const container = document.getElementById('guestsListContainer');
+            container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من السيرفر...</p>';
+            try {
+                loadedGuests = await SupabaseService.getGuestsList();
+                document.getElementById('totalGuestsCount').textContent = loadedGuests.length;
+                container.innerHTML = '';
+
+                if (loadedGuests.length === 0) {
+                    container.innerHTML = '<p style="font-size:13px; color:#888;">لا توجد تسجيلات حتى الآن.</p>';
+                    return;
+                }
+
+                loadedGuests.forEach((g, idx) => {
+                    const row = document.createElement('div');
+                    row.className = 'guest-card-row';
+                    const time = new Date(g.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+                    row.innerHTML = `
+            <div>
+              <strong style="font-size:14px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
+              <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
+            </div>
+            <span style="font-size:11px; background:rgba(37,211,102,0.15); color:var(--primary); padding:3px 8px; border-radius:10px; font-weight:bold;">مؤكد ✓</span>
+          `;
+                    container.appendChild(row);
+                });
+            } catch (err) {
+                container.innerHTML = '<p style="color:#ff4d6d; font-size:13px;">تعذر الاتصال بقاعدة البيانات. تأكد من إعدادات Supabase.</p>';
+            }
+        }
+
+        document.getElementById('refreshBtn').addEventListener('click', loadData);
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            RSVPManager.exportToCSV(loadedGuests, CONFIG.groom, CONFIG.bride);
+        });
+    </script>
+</body>
+
+</html>

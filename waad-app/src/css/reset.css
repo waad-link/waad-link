@@ -1,0 +1,30 @@
+/* Professional Reset for Modern Mobile Browsers */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: #fff;
+    min-height: 100dvh;
+    /* مهم جداً للموبايل */
+    overflow-x: hidden;
+    font-family: var(--font-main);
+    line-height: 1.6;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button,
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
