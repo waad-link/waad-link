@@ -26,7 +26,7 @@
 
     .app-screen { width: 100%; max-width: 440px; min-height: 100dvh; position: relative; background: #0c0e14; overflow-x: hidden; display: flex; flex-direction: column; padding-bottom: 70px; }
 
-    /* نافذة استلام الكارت الشيك للضيف */
+    /* نافذة استلام الكارت الشيك للضيف (خانة واحدة بدون شغل مطاعم) */
     .claim-modal-overlay {
       position: fixed; inset: 0; background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px); z-index: 9999; display: flex; justify-content: center;
@@ -58,7 +58,7 @@
     }
     .btn-claim-submit:active { transform: scale(0.97); }
 
-    /* محتوى الدعوة */
+    /* محتوى كارت الدعوة الرئيسي */
     .invite-content { padding: 30px 20px; text-align: center; }
 
     .vip-guest-badge {
@@ -97,7 +97,7 @@
     .btn-wa-rsvp { background: #25d366; color: #fff; }
     .btn-calendar { background: #1a1c24; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
 
-    /* لوحة العريس */
+    /* لوحة متابعة العريس */
     .groom-admin-toggle {
       position: fixed; top: 15px; left: 15px; z-index: 1000;
       background: rgba(20, 24, 34, 0.95); border: 1px solid var(--border);
@@ -125,6 +125,7 @@
 </head>
 <body>
 
+  <!-- زرار كشف المعازيم للعريس -->
   <button class="groom-admin-toggle" onclick="toggleAdminDrawer()">
     <span>📊 كشف المعازيم</span>
     <span style="background:var(--gold); color:#000; padding:1px 6px; border-radius:10px; font-size:10px;" id="badgeCount">0</span>
@@ -132,6 +133,7 @@
 
   <div class="app-screen">
 
+    <!-- 1. نافذة الاستلام الشيك (خانة واحدة نظيفة) -->
     <div class="claim-modal-overlay" id="claimModal">
       <div class="claim-card">
         <div class="claim-icon">💌</div>
@@ -150,6 +152,7 @@
       </div>
     </div>
 
+    <!-- 2. محتوى الدعوة بعد الفتح -->
     <div class="invite-content">
       <div class="vogue-issue-tag">THE WEDDING ISSUE — SUMMER 2027</div>
 
@@ -160,11 +163,13 @@
       <h1 class="couple-title">أحمد & منى</h1>
       <div class="couple-and">SAVE OUR DATE</div>
 
+      <!-- سلايدر الصور -->
       <div class="slider-box" id="sliderBox">
         <div class="slide-item active"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="1"></div>
         <div class="slide-item"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80" alt="2"></div>
       </div>
 
+      <!-- العداد التنازلي الحقيقي -->
       <div class="timer-strip">
         <div><strong id="d">00</strong><span>أيام</span></div>
         <div><strong id="h">00</strong><span>ساعات</span></div>
@@ -178,6 +183,7 @@
         <p style="color: var(--gold); font-size: 12px; margin-top: 4px;">Dress Code: سواريه ملكي ✨</p>
       </div>
 
+      <!-- الأزرار التفاعلية -->
       <div class="btn-action-col">
         <button class="action-btn btn-save-card" onclick="downloadVIPCardImage()">
           📸 حفظ كارت الدعوة كصورة في تليفوني
@@ -200,6 +206,7 @@
 
   </div>
 
+  <!-- 3. لوحة كشف المعازيم للعريس -->
   <div class="admin-drawer-overlay" id="adminDrawer">
     <div class="admin-sheet">
       <div class="drawer-header">
@@ -228,6 +235,7 @@
 
   let currentGuestName = "";
 
+  // 1. فتح الدعوة باسم الضيف
   function submitGuestClaim() {
     const nameInput = document.getElementById('guestNameInput').value.trim();
     if (!nameInput) {
@@ -250,6 +258,7 @@
     document.getElementById('waRsvpBtn').href = `https://wa.me/${WEDDING.phone}?text=${waMsg}`;
   }
 
+  // 2. تسجيل الاسم في كشف العريس
   function getGuestsDB() {
     try {
       return JSON.parse(localStorage.getItem('wedding_rsvp_guests')) || [];
@@ -296,6 +305,7 @@
     document.getElementById('adminDrawer').classList.toggle('active');
   }
 
+  // 3. حفظ الكارت كصورة عالية الجودة في التليفون (Canvas)
   function downloadVIPCardImage() {
     const name = currentGuestName || "ضيفنا العزيز";
     const canvas = document.createElement('canvas');
@@ -353,6 +363,7 @@
     link.click();
   }
 
+  // 4. تصدير كشف المعازيم لإكسيل
   function exportGuestsToExcel() {
     const list = getGuestsDB();
     if (list.length === 0) {
@@ -371,6 +382,7 @@
     link.click();
   }
 
+  // 5. العد التنازلي وسلايدر الصور
   function initPage() {
     const target = new Date(WEDDING.dateISO).getTime();
     setInterval(() => {
