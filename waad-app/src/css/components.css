@@ -122,4 +122,51 @@
 .btn-action {
   width: 100%;
   padding: 14px 16px;
-  border-radius:
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s;
+  text-align: center;
+}
+.btn-action:active { transform: scale(0.97); }
+.btn-gold-outline { background: linear-gradient(135deg, #1b2130 0%, #10141e 100%); color: var(--gold-light); border: 1px solid var(--surface-border); }
+.btn-gold-outline:hover { background: #22293d; }
+.btn-dark { background: #1a1c24; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+.btn-dark:hover { background: #262935; }
+.btn-map { background: rgba(255,255,255,0.06); color: #fff; }
+.btn-map:hover { background: rgba(255,255,255,0.12); }
+.btn-wa { background: var(--primary); color: #fff; }
+.btn-wa:hover { opacity: 0.92; }
+
+/* ================= العداد التنازلي وسلايدر الصور ================= */
+.countdown-strip {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  padding: 14px 0;
+  margin: 20px 0;
+}
+.countdown-strip div strong { font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--gold-light); display: block; }
+.countdown-strip div span { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+
+.photo-slider {
+  width: 100%;
+  height: 250px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1a1a24;
+  margin: 15px 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+}
+.photo-slider .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; }
+.photo-slider .slide.active { opacity: 1; }
+.photo-slider .slide img { width: 100%; height: 100%; object-fit: cover; }
