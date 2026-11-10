@@ -15,6 +15,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 
+  <!-- نظام التصميم المشترك للمشروع -->
+  <link rel="stylesheet" href="./src/css/tokens.css">
+  <link rel="stylesheet" href="./src/css/reset.css">
+  <link rel="stylesheet" href="./src/css/components.css">
+
+  <!-- تنسيقات الثيمات الخاصة بصفحة الدعوة -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: #0a0b10; color: #fff; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
@@ -200,7 +206,11 @@
     .sticker-heart { position: absolute; bottom: -10px; right: -6px; width: 42px; height: 42px; background: #ff4d6d; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; border: 2px solid #fff; }
     .scratch-box { width: 290px; height: 180px; position: relative; border-radius: 14px; overflow: hidden; margin: 20px auto 10px; touch-action: none; }
     .scratch-secret { position: absolute; inset: 0; background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; color: #fff; }
-    #scratchCanvas { position: absolute; inset: 0; z-index: 10; cursor: grab; }
+    #scratchCanvas { position: absolute; inset: 0; z-index: 10; cursor: grab; width: 100%; height: 100%; }
+    @media (max-width: 340px) {
+      .scratch-box { width: 100%; max-width: 290px; }
+      #scratchCanvas { width: 100%; height: 100%; }
+    }
 
     /* 6. صفحة الذكريات */
     .memories-wrap {
@@ -326,8 +336,8 @@
               <div class="route-city" style="text-align: left;"><h2>عشانا الخاص</h2><span style="font-size: 12px; color: #888;">الوجهة</span></div>
             </div>
             <div class="ticket-grid">
-              <div class="ticket-info"><label>التاريخ</label><strong id="ticketDateText">الليلة، 8:30 م</strong></div>
-              <div class="ticket-info"><label>المكان</label><strong id="ticketVenueText">مطعمنا المفضل</strong></div>
+              <div class="ticket-info"><label>التاريخ</label><strong id="ticketDateText"></strong></div>
+              <div class="ticket-info"><label>المكان</label><strong id="ticketVenueText"></strong></div>
               <div class="ticket-info"><label>الدريس كود</label><strong id="ticketDressText">أشيك فستان عندك</strong></div>
               <div class="ticket-info"><label>رقم الطاولة</label><strong>VIP لشخصين</strong></div>
             </div>
@@ -354,7 +364,7 @@
       <div class="vogue-wrap">
         <div class="vogue-issue">THE WEDDING ISSUE — SUMMER 2027</div>
         <div class="guest-pill" id="vogueGuestPill" style="display:none; color:#111; border-color:#ccc; background:#eee;"></div>
-        <h1 class="vogue-headline" id="vogueNames">أحمد & منى</h1>
+        <h1 class="vogue-headline" id="vogueNames"></h1>
         <div class="vogue-and">SAVE OUR DATE</div>
 
         <div class="slider-container vogue-photo-frame" id="vogueSlider">
@@ -376,8 +386,8 @@
         </div>
 
         <div style="margin: 15px 0; font-size: 14px; color: #333; line-height: 1.8;">
-          <p><strong id="vogueDateHuman">الخميس، 15 يوليو 2027</strong> — <span id="vogueTimeHuman">الساعة 8:00 مساءً</span></p>
-          <p style="color: #666; font-size: 13px;" id="vogueVenueHuman">قاعة فيردي - التجمع الخامس، القاهرة</p>
+          <p><strong id="vogueDateHuman"></strong> — <span id="vogueTimeHuman"></span></p>
+          <p style="color: #666; font-size: 13px;" id="vogueVenueHuman"></p>
         </div>
 
         <div class="action-btn-col">
@@ -403,7 +413,7 @@
         <div class="hybrid-card">
           <div class="glass-issue">THE WEDDING ISSUE — SUMMER 2027</div>
           <div class="guest-pill" id="glassGuestPill" style="display:none;"></div>
-          <h1 class="glass-headline" id="glassNames">أحمد & منى</h1>
+          <h1 class="glass-headline" id="glassNames"></h1>
           <div class="glass-and">SAVE OUR DATE</div>
 
           <div class="slider-container" id="glassSlider" style="height: 220px; border-radius: 14px;">
@@ -423,8 +433,8 @@
           </div>
 
           <div style="margin: 15px 0; font-size: 13px; color: #ddd; line-height: 1.8;">
-            <p><strong id="glassDateHuman">الخميس، 15 يوليو 2027</strong> — <span id="glassTimeHuman">الساعة 8:00 مساءً</span></p>
-            <p style="color: #aaa; font-size: 12px;" id="glassVenueHuman">قاعة فيردي - التجمع الخامس، القاهرة</p>
+            <p><strong id="glassDateHuman"></strong> — <span id="glassTimeHuman"></span></p>
+            <p style="color: #aaa; font-size: 12px;" id="glassVenueHuman"></p>
           </div>
 
           <div class="action-btn-col">
@@ -560,7 +570,7 @@
 
           <div class="timeline-station">
             <div class="station-node" style="background:#3a86ff;"></div>
-            <span class="station-date">15 يوليو 2027</span>
+            <span class="station-date" data-wedding-date></span>
             <div class="station-title">ليلة فرحنا وبيتنا الجديد 👰🤵</div>
             <div class="station-photo-card" onclick="openLightbox(this)">
               <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="يوم الزفاف" loading="lazy">
@@ -583,30 +593,47 @@
     <img id="lightboxImg" src="" alt="صورة مكبرة">
   </div>
 
-  <a href="https://wa.me/201012345678?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B9%D9%85%D9%84%20%D8%AF%D8%B9%D9%88%D8%A9%20%D8%AE%D8%A7%D8%B5%D8%A9%20%D9%85%D8%AB%D9%84%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D8%B6" target="_blank" class="sales-floating-cta">
+  <a href="#" target="_blank" rel="noopener" class="sales-floating-cta" id="salesFloatingCta">
     <span>✨ عجبك القالب؟ اطلب دعوتك الآن</span>
     <span class="cta-pulse">💬 واتساب ↗</span>
   </a>
 
-<script>
-  const CONFIG = {
-    groomAndBride: "أحمد & منى",
-    eventDateISO: "2027-07-15T20:00:00",
-    eventDateHuman: "الخميس، 15 يوليو 2027",
-    eventTimeHuman: "الساعة 8:00 مساءً",
-    venueName: "قاعة فيردي - التجمع الخامس، القاهرة",
-    mapsUrl: "https://maps.google.com/?q=New+Cairo",
-    whatsappPhone: "201012345678",
-    relationshipStartDate: "2024-01-12",
-    recipientGender: "female"
-  };
+<script type="module">
+  import { CONFIG } from './src/js/core/config.js';
+  import { SupabaseService } from './src/js/services/supabase.js';
+
+  // كل بيانات المناسبة تأتي من CONFIG المركزي.
+  const coupleNames = `${CONFIG.groom} & ${CONFIG.bride}`;
+  const relationshipStartDate = CONFIG.relationshipStartDate || null;
+
+  function getGuestName() {
+    const params = new URLSearchParams(window.location.hash.substring(1));
+    return (params.get('g') || '').trim();
+  }
 
   document.documentElement.classList.add('js-enabled');
 
   function initGuestAndRSVP() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const guest = params.get('g') ? params.get('g').trim() : "";
+    const guest = getGuestName();
+
+    // تعبئة كل عناصر البيانات من ملف CONFIG المركزي.
+    document.getElementById('vogueNames').textContent = coupleNames;
+    document.getElementById('glassNames').textContent = coupleNames;
+    document.getElementById('ticketDateText').textContent = `${CONFIG.dateHuman} — ${CONFIG.timeHuman}`;
+    document.getElementById('ticketVenueText').textContent = CONFIG.venue;
+    document.getElementById('vogueDateHuman').textContent = CONFIG.dateHuman;
+    document.getElementById('vogueTimeHuman').textContent = CONFIG.timeHuman;
+    document.getElementById('vogueVenueHuman').textContent = CONFIG.venue;
+    document.getElementById('glassDateHuman').textContent = CONFIG.dateHuman;
+    document.getElementById('glassTimeHuman').textContent = CONFIG.timeHuman;
+    document.getElementById('glassVenueHuman').textContent = CONFIG.venue;
+    document.querySelectorAll('[data-wedding-date]').forEach(el => el.textContent = CONFIG.dateHuman);
+
+    const salesCta = document.getElementById('salesFloatingCta');
+    if (salesCta) {
+      const salesMessage = 'مرحباً، عايز أعمل دعوة خاصة مثل المعرض';
+      salesCta.href = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(salesMessage)}`;
+    }
 
     const guestPills = [document.getElementById('vogueGuestPill'), document.getElementById('glassGuestPill')];
     if (guest) {
@@ -623,26 +650,29 @@
       : `ألف مبروك يا عرسان! يشرفني الحضور ومشاركتكم فرحة ليلة العمر إن شاء الله 🤍`;
 
     document.querySelectorAll('.btn-rsvp-yes').forEach(btn => {
-      btn.href = `https://wa.me/${CONFIG.whatsappPhone}?text=${encodeURIComponent(yesText)}`;
+      btn.href = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(yesText)}`;
     });
 
     document.querySelectorAll('.btn-map-action').forEach(btn => {
-      btn.href = CONFIG.mapsUrl;
+      btn.href = CONFIG.mapUrl;
     });
   }
 
   function setupCalendarActions() {
-    const title = `زفاف ${CONFIG.groomAndBride} 💍`;
-    const details = `حضور حفل زفاف ${CONFIG.groomAndBride} في ${CONFIG.venueName}`;
-    const startISO = "20270715T170000Z";
-    const endISO = "20270715T220000Z";
+    const title = `زفاف ${coupleNames} 💍`;
+    const details = `حضور حفل زفاف ${coupleNames} في ${CONFIG.venue}`;
+    const eventStart = new Date(CONFIG.dateISO);
+    const eventEnd = new Date(eventStart.getTime() + 3 * 60 * 60 * 1000);
+    const toCalendarUTC = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const startISO = toCalendarUTC(eventStart);
+    const endISO = toCalendarUTC(eventEnd);
 
-    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startISO}/${endISO}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(CONFIG.venueName)}`;
+    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startISO}/${endISO}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(CONFIG.venue)}`;
 
     const icsData = [
       "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Farahna Invite//AR",
       "BEGIN:VEVENT", `SUMMARY:${title}`, `DESCRIPTION:${details}`,
-      `LOCATION:${CONFIG.venueName}`, `DTSTART:${startISO}`, `DTEND:${endISO}`,
+      `LOCATION:${CONFIG.venue}`, `DTSTART:${startISO}`, `DTEND:${endISO}`,
       "END:VEVENT", "END:VCALENDAR"
     ].join("\r\n");
 
@@ -724,8 +754,8 @@
     const messages = [
       { text: helloLine, emoji: "🤍" },
       { text: "عندنا خبر حلو ومبسوطين نشاركه معاك.. ✨", emoji: "💌" },
-      { text: `فرحنا هيكون يوم ${CONFIG.eventDateHuman} 💍`, emoji: "💍" },
-      { text: `في ${CONFIG.venueName} — ${CONFIG.eventTimeHuman}`, emoji: "📍" },
+      { text: `فرحنا هيكون يوم ${CONFIG.dateHuman} 💍`, emoji: "💍" },
+      { text: `في ${CONFIG.venue} — ${CONFIG.timeHuman}`, emoji: "📍" },
       { text: "فرحتنا مش هتكمل غير بوجودك جنبنا 🤍", emoji: "🥂", highlight: true }
     ];
 
@@ -764,31 +794,61 @@
     sendNext();
   }
 
-  function acceptTicket() {
+  async function acceptTicket() {
+    const acceptButton = document.getElementById('acceptBtn');
     const stamp = document.getElementById('stampBadge');
     const stub = document.getElementById('ticketStub');
     const memoriesBox = document.getElementById('memoriesRevealBox');
 
-    stamp.classList.add('stamped');
-    localStorage.setItem('date_ticket_accepted', 'true');
+    let guestName = getGuestName();
+    if (!guestName) {
+      guestName = (window.prompt('اكتب اسمك لتأكيد حضورك:') || '').trim();
+    }
+    if (!guestName) return;
 
-    setTimeout(() => { stub.classList.add('torn'); }, 350);
+    // فتح نافذة واتساب أثناء ضغطة المستخدم لتجنب منع النوافذ المنبثقة بعد طلب الشبكة.
+    const whatsappWindow = window.open('about:blank', '_blank');
 
-    setTimeout(() => {
-      memoriesBox.style.display = 'block';
-      const replyMsg = encodeURIComponent("قبلت السهرة يا حبيبي وجاهزة لأحلى ليلة 🤍🥂");
-      window.open(`https://wa.me/${CONFIG.whatsappPhone}?text=${replyMsg}`, '_blank');
-    }, 700);
+    if (acceptButton) {
+      acceptButton.disabled = true;
+      acceptButton.textContent = 'جارٍ تسجيل تأكيد الحضور...';
+    }
+
+    try {
+      await SupabaseService.registerRSVP(guestName);
+
+      stamp.classList.add('stamped');
+      localStorage.setItem('date_ticket_accepted', 'true');
+
+      setTimeout(() => { stub.classList.add('torn'); }, 350);
+
+      setTimeout(() => {
+        memoriesBox.style.display = 'block';
+        const replyMsg = encodeURIComponent(`تم تأكيد حضوري لفرح ${coupleNames} 🤍`);
+        if (whatsappWindow) {
+          whatsappWindow.location.href = `https://wa.me/${CONFIG.phone}?text=${replyMsg}`;
+        }
+      }, 700);
+    } catch (error) {
+      console.error(error);
+      if (whatsappWindow) whatsappWindow.close();
+      alert('حصلت مشكلة أثناء تسجيل تأكيد الحضور. حاول مرة تانية.');
+      if (acceptButton) {
+        acceptButton.disabled = false;
+        acceptButton.textContent = 'تأكيد وقبول السهرة 🤍';
+      }
+    }
   }
 
   function runRealCountdowns() {
-    const start = new Date(CONFIG.relationshipStartDate).getTime();
-    const now = new Date().getTime();
-    const diffLoveDays = Math.max(1, Math.floor((now - start) / (1000 * 60 * 60 * 24)));
     const liveLoveEl = document.getElementById('liveLoveDays');
-    if (liveLoveEl) liveLoveEl.textContent = diffLoveDays.toLocaleString('ar-EG');
+    if (liveLoveEl && relationshipStartDate) {
+      const start = new Date(relationshipStartDate).getTime();
+      const diffLoveDays = Math.max(1, Math.floor((Date.now() - start) / (1000 * 60 * 60 * 24)));
+      liveLoveEl.textContent = diffLoveDays.toLocaleString('ar-EG');
+    }
 
-    const target = new Date(CONFIG.eventDateISO).getTime();
+    const target = new Date(CONFIG.dateISO).getTime();
 
     function update() {
       const current = new Date().getTime();
@@ -907,13 +967,13 @@
 
   if (realAudio) {
     realAudio.addEventListener('timeupdate', () => {
-      if (realAudio.duration) {
+      if (realAudio.duration && progressBar) {
         progressBar.style.width = ((realAudio.currentTime / realAudio.duration) * 100) + '%';
       }
     });
     realAudio.addEventListener('ended', () => {
       voiceBtn.textContent = '▶';
-      progressBar.style.width = '0%';
+      if (progressBar) progressBar.style.width = '0%';
     });
   }
 
@@ -940,6 +1000,16 @@
 
     stations.forEach(s => observer.observe(s));
   }
+
+
+  // الدوال التالية مستخدمة في onclick داخل HTML؛ نربطها صراحةً بـ window لأن السكربت Module.
+  Object.assign(window, {
+    triggerThemeChange,
+    acceptTicket,
+    toggleVoiceAudio,
+    openLightbox,
+    closeLightbox
+  });
 
   window.addEventListener('DOMContentLoaded', () => {
     initGuestAndRSVP();
