@@ -1,0 +1,125 @@
+/* ========================================================
+   WAAD PLATFORM - RESPONSIVE COMPONENTS SYSTEM
+   متوافق مع الموبايل، التابلت، وشاشات الكمبيوتر العريضة
+   ======================================================== */
+
+/* الحاوية الأساسية للشاشة */
+.screen-frame {
+  width: 100%;
+  max-width: 440px; /* المقاس الافتراضي للموبايل */
+  min-height: 100dvh;
+  background: #0c0e15;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 70px;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+  transition: max-width 0.3s ease, margin 0.3s ease;
+}
+
+/* ================= التجاوب مع شاشات الكمبيوتر والتابلت ================= */
+@media (min-width: 768px) {
+  body {
+    padding: 30px 15px;
+    background: radial-gradient(circle at center, #141724 0%, #06070a 100%);
+  }
+
+  .screen-frame {
+    max-width: 780px; /* يتحول لكارت ملكي عريض وواسع */
+    min-height: auto;
+    margin: 0 auto;
+    border-radius: 24px;
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 30px rgba(197, 160, 89, 0.15);
+    padding-bottom: 40px;
+  }
+
+  .card-content {
+    padding: 45px 35px !important;
+  }
+
+  /* تكبير سلايدر الصور ليكون سينمائي على اللابتوب */
+  .photo-slider {
+    height: 380px !important;
+    border-radius: 18px !important;
+    margin: 25px 0 !important;
+  }
+
+  /* تحويل الأزرار لشبكة 2x2 أنيقة */
+  .btn-action-col {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 25px 0 !important;
+  }
+
+  .names-title {
+    font-size: 50px !important;
+  }
+
+  .countdown-strip div strong {
+    font-size: 28px !important;
+  }
+}
+
+/* ================= نافذة الاستلام الشيك (Modal) ================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 10, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+.modal-backdrop.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.modal-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 24px;
+  padding: 35px 25px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+}
+
+.text-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: #08090d;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.text-input:focus { border-color: var(--gold); }
+
+/* ================= الأزرار ================= */
+.btn-gold {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--gold) 0%, #9a7332 100%);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.btn-gold:active { transform: scale(0.97); }
+
+.btn-action-col { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+.btn-action {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius:
