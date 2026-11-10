@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محرر الدعوات السريع | اصنع دعوتك بنفسك</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #25d366;
+      --accent: #ff4d6d;
+      --gold: #c5a059;
+      --bg: #0c0e14;
+      --card-bg: #151822;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f0f2f5;
+      --text-muted: #9aa0a6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding-bottom: 50px; }
+
+    .header-bar {
+      width: 100%; max-width: 480px; padding: 15px 18px; display: flex; justify-content: space-between; align-items: center;
+      background: #11141d; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
+    }
+    .header-bar h1 { font-size: 16px; font-weight: 700; color: #fff; }
+    .badge-theme { font-size: 11px; background: rgba(197, 160, 89, 0.15); color: var(--gold); border: 1px solid rgba(197, 160, 89, 0.3); padding: 4px 10px; border-radius: 20px; font-weight: 700; }
+
+    .app-container { width: 100%; max-width: 480px; padding: 16px; display: flex; flex-direction: column; gap: 20px; }
+
+    .form-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .form-card h2 { font-size: 16px; color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    
+    .field-group { margin-bottom: 14px; text-align: right; }
+    label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+    input[type="text"], input[type="date"], input[type="time"], textarea {
+      width: 100%; padding: 12px 14px; background: #0e1017; border: 1px solid var(--border);
+      border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: 0.2s;
+    }
+    input:focus, textarea:focus { border-color: var(--primary); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* شريط معاينة الصور المرفوعة المصغرة */
+    .thumbs-strip { display: flex; gap: 8px; overflow-x: auto; margin-top: 10px; padding-bottom: 5px; }
+    .thumb-item { width: 55px; height: 55px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); flex-shrink: 0; position: relative; }
+    .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* زر اختيار جهات الاتصال للأندرويد */
+    .btn-contacts {
+      width: 100%; padding: 13px; background: #1c2230; color: #fff; border: 1px solid #333d52;
+      border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex;
+      justify-content: center; align-items: center; gap: 8px; margin-bottom: 10px; transition: 0.2s;
+    }
+    .btn-contacts:active { transform: scale(0.98); background: #262e42; }
+
+    /* شاشة الموبايل في المعاينة الحية */
+    .preview-wrapper { width: 100%; text-align: center; }
+    .preview-header { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    
+    .phone-mockup {
+      width: 100%; background: #000; border: 2px solid #2a2e3d; border-radius: 24px;
+      overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.6); position: relative; min-height: 460px;
+    }
+
+    .live-demo-card { padding: 25px 18px; text-align: center; }
+    .demo-names { font-family: 'Amiri', serif; font-size: 32px; font-weight: 700; color: #fff; line-height: 1.2; margin: 10px 0; }
+    
+    /* سلايدر الصور في المعاينة */
+    .slider-box {
+      width: 100%; height: 210px; border-radius: 12px; overflow: hidden; background: #1a1a24;
+      margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); position: relative;
+    }
+    .slide-img-item {
+      position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out;
+    }
+    .slide-img-item.active { opacity: 1; }
+    .slide-img-item img { width: 100%; height: 100%; object-fit: cover; }
+    .slider-dots-strip {
+      position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 10;
+    }
+    .dot-pill { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+    .dot-pill.active { background: #fff; width: 18px; border-radius: 10px; }
+
+    .demo-timer {
+      display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0; margin: 15px 0;
+    }
+    .demo-timer span { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; display: block; color: var(--gold); }
+    .demo-timer label { font-size: 10px; color: #888; }
+
+    .btn-submit-order {
+      width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary) 0%, #128c7e 100%);
+      color: #fff; border: none; border-radius: 12px; font-weight: 900; font-size: 16px;
+      cursor: pointer; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); transition: 0.2s;
+    }
+    .btn-submit-order:active { transform: scale(0.98); }
+
+    .dispatch-screen { display: none; }
+    .guest-row {
+      display: flex; justify-content: space-between; align-items: center; padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .btn-send-wa {
+      padding: 8px 14px; background: #25d366; color: #fff; border-radius: 8px;
+      text-decoration: none; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الهيدر -->
+  <div class="header-bar">
+    <h1>محرر الدعوة الذكي 💍</h1>
+    <span class="badge-theme" id="currentThemeBadge">قالب: Vogue التحريري</span>
+  </div>
+
+  <div class="app-container">
+
+    <!-- شاشة إدخال البيانات (Step 1) -->
+    <div id="builderStep">
+      
+      <!-- 1. بيانات العروسين -->
+      <div class="form-card">
+        <h2>👰 بيانات العروسين والمناسبة</h2>
+        <div class="grid-2">
+          <div class="field-group">
+            <label>اسم العريس</label>
+            <input type="text" id="groomInput" value="أحمد" oninput="updateLivePreview()">
+          </div>
+          <div class="field-group">
+            <label>اسم العروسة</label>
+            <input type="text" id="brideInput" value="منى" oninput="updateLivePreview()">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field-group">
+            <label>تاريخ الفرح</label>
+            <input type="date" id="dateInput" value="2027-07-15" onchange="updateLivePreview()">
+          </div>
+          <div class="field-group">
+            <label>ساعة الحفل</label>
+            <input type="time" id="timeInput" value="20:00" onchange="updateLivePreview()">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>اسم القاعة والعنوان</label>
+          <input type="text" id="venueInput" value="قاعة فيردي - التجمع الخامس" oninput="updateLivePreview()">
+        </div>
+
+        <div class="field-group">
+          <label>رابط موقع القاعة (Google Maps)</label>
+          <input type="text" id="mapInput" value="https://maps.google.com/?q=New+Cairo" oninput="updateLivePreview()">
+        </div>
+
+        <!-- رفع أكثر من صورة -->
+        <div class="field-group">
+          <label>صور السيشن والألبوم (يمكنك اختيار أكثر من صورة) 📸</label>
+          <input type="file" id="photoUpload" multiple accept="image/*" onchange="handleMultiplePhotos(event)">
+          <div class="thumbs-strip" id="thumbsContainer"></div>
+          <span style="font-size: 11px; color: var(--primary);" id="photosCountLabel">تم اختيار صورة الغلاف الافتراضية</span>
+        </div>
+      </div>
+
+      <!-- 2. إضافة المعازيم -->
+      <div class="form-card">
+        <h2>👥 إضافة قائمة المعازيم</h2>
+        
+        <button class="btn-contacts" type="button" onclick="pickFromContacts()">
+          📱 اختيار المعازيم مباشرة من جهات الاتصال (أندرويد)
+        </button>
+
+        <div class="field-group">
+          <label>أو الصق الأسماء والأرقام هنا (كل سطر: الاسم ، الرقم):</label>
+          <textarea id="rawGuestsInput" rows="4" placeholder="محمد أحمد, 01012345678&#10;عمو إبراهيم, 01123456789" oninput="parseGuests()"></textarea>
+        </div>
+
+        <p style="font-size: 12px; color: var(--primary);" id="guestCountNote">تم تجهيز: 0 معازيم حتى الآن</p>
+      </div>
+
+      <!-- 3. المعاينة الحية الفورية (Live Preview) -->
+      <div class="preview-wrapper">
+        <div class="preview-header">
+          <span>👀 معاينة حية لشاشة الموبايل:</span>
+          <span style="font-size: 11px; color: var(--primary);">تتحدث تلقائياً ⚡</span>
+        </div>
+
+        <div class="phone-mockup" id="mockupContainer">
+          <div class="live-demo-card">
+            <div style="font-size: 11px; letter-spacing: 2px; color: #aaa;" id="previewTopTag">THE WEDDING ISSUE</div>
+            <div class="demo-names" id="previewNames">أحمد & منى</div>
+            
+            <!-- سلايدر الصور في المعاينة -->
+            <div class="slider-box" id="previewSliderBox">
+              <div class="slide-img-item active"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="1"></div>
+              <div class="slider-dots-strip" id="sliderDots">
+                <div class="dot-pill active"></div>
+              </div>
+            </div>
+
+            <div class="demo-timer">
+              <div><span>142</span><label>أيام</label></div>
+              <div><span>18</span><label>ساعات</label></div>
+              <div><span>00</span><label>دقائق</label></div>
+            </div>
+
+            <p style="font-size: 13px; color: #ddd; margin-bottom: 4px;" id="prevDateHuman">الخميس، 15 يوليو 2027</p>
+            <p style="font-size: 12px; color: #888;" id="prevVenueHuman">قاعة فيردي - التجمع الخامس</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- زر الاعتماد -->
+      <button class="btn-submit-order" style="margin-top: 20px;" onclick="goToCheckout()">
+        🚀 اعتماد الدعوة واستلام الروابط (150 ج)
+      </button>
+
+    </div>
+
+    <!-- شاشة الدفع والتسليم (Step 2) -->
+    <div id="checkoutStep" class="dispatch-screen">
+      <div class="form-card" style="text-align: center;">
+        <span style="font-size: 40px;">🎉</span>
+        <h2 style="justify-content: center; margin: 10px 0;">دعوتك جاهزة للإرسال فوراً!</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+          تم تجهيز الروابط المخصصة لكل ضيف باسمه. حوّل المبلغ لتفعيل لوحة الإرسال:
+        </p>
+
+        <div style="background: #0e1017; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 20px; text-align: right;">
+          <p style="font-size: 13px; margin-bottom: 6px;">💰 المبلغ المطلوب: <strong>150 جنيه</strong></p>
+          <p style="font-size: 13px; margin-bottom: 6px;">⚡ كود إنستاباي: <strong>farahna@instapay</strong></p>
+          <p style="font-size: 13px;">📱 فودافون كاش: <strong>01012345678</strong></p>
+        </div>
+
+        <button class="btn-submit-order" onclick="unlockDispatchDashboard()">
+          ✅ تم التحويل.. افتح لوحة إرسال المعازيم
+        </button>
+      </div>
+
+      <div class="form-card" id="dispatchDashboard" style="display:none; margin-top: 15px;">
+        <h2>📋 قائمة إرسال المعازيم عبر واتساب</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">اضغط على الزرار جنب كل اسم لفتح واتساب بالدعوة المخصصة باسمه:</p>
+        <div id="guestsDispatchList"></div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  let parsedGuestsList = [];
+  let uploadedPhotosList = [
+    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80"
+  ];
+  let sliderInterval = null;
+
+  // 1. قراءة الثيم المختار من الرابط الخارجي (مثال: builder.html?theme=glass)
+  function initThemeFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const theme = params.get('theme') || 'vogue';
+    const names = {
+      vogue: "قالب: Vogue التحريري 📰",
+      glass: "قالب: الزجاج المودرن 🍸",
+      chat: "قالب: شات الواتساب 💬"
+    };
+    document.getElementById('currentThemeBadge').textContent = names[theme] || names.vogue;
+  }
+
+  // 2. تحديث شاشة المعاينة لحظياً أثناء الكتابة
+  function updateLivePreview() {
+    const groom = document.getElementById('groomInput').value.trim() || "العريس";
+    const bride = document.getElementById('brideInput').value.trim() || "العروسة";
+    const venue = document.getElementById('venueInput').value.trim() || "القاعة المحددة";
+    const date = document.getElementById('dateInput').value;
+
+    document.getElementById('previewNames').textContent = `${groom} & ${bride}`;
+    document.getElementById('prevVenueHuman').textContent = venue;
+
+    if (date) {
+      const d = new Date(date);
+      document.getElementById('prevDateHuman').textContent = d.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+  }
+
+  // 3. رفع أكثر من صورة وتشغيل السلايدر
+  function handleMultiplePhotos(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    uploadedPhotosList = [];
+    const thumbsContainer = document.getElementById('thumbsContainer');
+    thumbsContainer.innerHTML = '';
+
+    let loadedCount = 0;
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        uploadedPhotosList.push(evt.target.result);
+
+        // إضافة صورة مصغرة في شريط المراجعة
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb-item';
+        thumb.innerHTML = `<img src="${evt.target.result}" alt="thumb">`;
+        thumbsContainer.appendChild(thumb);
+
+        loadedCount++;
+        if (loadedCount === files.length) {
+          document.getElementById('photosCountLabel').textContent = `تم رفع ${files.length} صور بنجاح 📸`;
+          renderPreviewSlider();
+        }
+      };
+      reader.readAsDataURL(files[i]);
+    }
+  }
+
+  // عرض الصور في سلايدر المعاينة وتشغيل الحركة التلقائية
+  function renderPreviewSlider() {
+    const sliderBox = document.getElementById('previewSliderBox');
+    sliderBox.innerHTML = '';
+
+    uploadedPhotosList.forEach((src, idx) => {
+      const item = document.createElement('div');
+      item.className = `slide-img-item ${idx === 0 ? 'active' : ''}`;
+      item.innerHTML = `<img src="${src}" alt="photo">`;
+      sliderBox.appendChild(item);
+    });
+
+    const dotsStrip = document.createElement('div');
+    dotsStrip.className = 'slider-dots-strip';
+    uploadedPhotosList.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.className = `dot-pill ${idx === 0 ? 'active' : ''}`;
+      dotsStrip.appendChild(dot);
+    });
+    sliderBox.appendChild(dotsStrip);
+
+    if (sliderInterval) clearInterval(sliderInterval);
+    if (uploadedPhotosList.length > 1) {
+      let currentIdx = 0;
+      sliderInterval = setInterval(() => {
+        const slides = sliderBox.querySelectorAll('.slide-img-item');
+        const dots = dotsStrip.querySelectorAll('.dot-pill');
+        slides[currentIdx].classList.remove('active');
+        dots[currentIdx].classList.remove('active');
+
+        currentIdx = (currentIdx + 1) % slides.length;
+
+        slides[currentIdx].classList.add('active');
+        dots[currentIdx].classList.add('active');
+      }, 3000);
+    }
+  }
+
+  // 4. سحب الأسماء من سجل الموبايل (أندرويد)
+  async function pickFromContacts() {
+    if ('contacts' in navigator && 'ContactsManager' in window) {
+      try {
+        const contacts = await navigator.contacts.select(['name', 'tel'], { multiple: true });
+        let textToAdd = "";
+        contacts.forEach(c => {
+          if (c.name && c.tel) {
+            textToAdd += `${c.name[0]}, ${c.tel[0]}\n`;
+          }
+        });
+        const currentText = document.getElementById('rawGuestsInput').value;
+        document.getElementById('rawGuestsInput').value = currentText + textToAdd;
+        parseGuests();
+        alert(`تمت إضافة ${contacts.length} ضيف من تليفونك بنجاح! 🎉`);
+      } catch (err) {
+        console.log("تم إلغاء اختيار جهات الاتصال");
+      }
+    } else {
+      alert("ميزة فتح سجل التليفون مدعومة على متصفح Chrome للأندرويد. لأجهزة الآيفون، برجاء لصق الأسماء والأرقام في المربع بالأسفل.");
+    }
+  }
+
+  // 5. فرز قائمة المعازيم
+  function parseGuests() {
+    const raw = document.getElementById('rawGuestsInput').value.trim();
+    if (!raw) {
+      parsedGuestsList = [];
+      document.getElementById('guestCountNote').textContent = "تم تجهيز: 0 معازيم حتى الآن";
+      return;
+    }
+
+    const lines = raw.split('\n');
+    parsedGuestsList = [];
+
+    lines.forEach((line, idx) => {
+      const parts = line.split(/[,،\t]/);
+      if (parts.length >= 2) {
+        const name = parts[0].trim();
+        let phone = parts[1].replace(/[^\d]/g, '').trim();
+        if (phone.startsWith('01')) phone = '2' + phone;
+        if (phone.startsWith('1')) phone = '20' + phone;
+
+        parsedGuestsList.push({ id: idx + 1, name, phone });
+      }
+    });
+
+    document.getElementById('guestCountNote').textContent = `تم تجهيز: ${parsedGuestsList.length} ضيف بنجاح جاهزين للإرسال! 🤍`;
+  }
+
+  function goToCheckout() {
+    if (parsedGuestsList.length === 0) {
+      if (!confirm("لم تضف أي معازيم حتى الآن، هل تريد المتابعة برابط عام واحد للكل؟")) {
+        return;
+      }
+    }
+    document.getElementById('builderStep').style.display = 'none';
+    document.getElementById('checkoutStep').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function unlockDispatchDashboard() {
+    const dashboard = document.getElementById('dispatchDashboard');
+    const listContainer = document.getElementById('guestsDispatchList');
+    dashboard.style.display = 'block';
+    listContainer.innerHTML = '';
+
+    const groom = document.getElementById('groomInput').value.trim();
+    const bride = document.getElementById('brideInput').value.trim();
+
+    parsedGuestsList.forEach(g => {
+      const personalUrl = `https://farahna.netlify.app/#g=${encodeURIComponent(g.name)}&id=${g.id}`;
+      const msg = encodeURIComponent(`أهلاً بك يا ${g.name} 🤍\nيسعدنا دعوتك لمشاركتنا فرحة زفاف (${groom} & ${bride}) 💍\nتفاصيل الدعوة ومكان القاعة في الرابط الخاص بك:\n${personalUrl}`);
+      const waLink = `https://wa.me/${g.phone}?text=${msg}`;
+
+      const row = document.createElement('div');
+      row.className = 'guest-row';
+      row.innerHTML = `
+        <div>
+          <strong style="font-size:14px; color:#fff;">${g.name}</strong>
+          <span style="display:block; font-size:11px; color:#888;">${g.phone}</span>
+        </div>
+        <a href="${waLink}" target="_blank" class="btn-send-wa">
+          💬 إرسال الدعوة
+        </a>
+      `;
+      listContainer.appendChild(row);
+    });
+
+    dashboard.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initThemeFromURL();
+    updateLivePreview();
+  });
+</script>
+
+</body>
+</html>
