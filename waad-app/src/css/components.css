@@ -104,17 +104,30 @@
 .text-input:focus { border-color: var(--gold); }
 
 /* ================= الأزرار ================= */
+/* الزرار الذهبي الملكي المضيء (عالي التباين والوضوح) */
 .btn-gold {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, var(--gold) 0%, #9a7332 100%);
-  color: #000;
-  border: none;
-  border-radius: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%) !important;
+  color: #111111 !important;
+  border: 2px solid #ffe680 !important;
+  border-radius: 14px;
   font-weight: 900;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
-  transition: transform 0.15s;
+  box-shadow: 0 4px 25px rgba(255, 215, 0, 0.5) !important;
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.btn-gold:hover {
+  box-shadow: 0 6px 35px rgba(255, 215, 0, 0.75) !important;
+}
+.btn-gold:active {
+  transform: scale(0.97);
+
 }
 .btn-gold:active { transform: scale(0.97); }
 
