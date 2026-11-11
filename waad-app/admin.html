@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة كشف المعازيم | إدارة الفرح</title>
+  <title>لوحة كشف المعازيم المشفرة | إدارة الفرح 🔒</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,95 +14,162 @@
   <link rel="stylesheet" href="src/css/components.css">
 
   <style>
-    .admin-container { width: 100%; max-width: 500px; padding: 25px 18px; text-align: right; }
-    .stat-box { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 14px; padding: 18px; text-align: center; margin-bottom: 20px; }
-    .stat-box strong { font-family: var(--font-mono); font-size: 38px; color: var(--gold); display: block; }
-    .guest-card-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); }
+    .admin-container { width: 100%; max-width: 520px; padding: 30px 18px; text-align: right; }
+    .stat-box { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .stat-box strong { font-family: var(--font-mono); font-size: 42px; color: var(--gold); display: block; }
+    .guest-card-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.06); }
+    .security-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--primary); background: rgba(37,211,102,0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(37,211,102,0.25); margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
-  <!-- شاشة الدخول بالرقم السري -->
+  <!-- شاشة الدخول بالرقم السري (مشفرة عبر السيرفر) -->
   <div class="modal-backdrop" id="authGate">
     <div class="modal-card">
-      <div style="font-size:36px; margin-bottom:10px;">🔒</div>
-      <h3 style="margin-bottom:6px;">لوحة متابعة كشف المعازيم</h3>
-      <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">خاص بالعريس فقط لمتابعة الحضور المباشر</p>
-      <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..." style="text-align:center; letter-spacing:4px; font-size:18px; margin-bottom:15px;">
-      <button class="btn-gold" id="loginBtn" type="button">دخول اللوحة</button>
+      <div style="font-size:42px; margin-bottom:12px;">🔒</div>
+      <div class="security-badge">🛡️ اتصال مشفر ومحمي بالسيرفر</div>
+      <h3 style="font-size:20px; margin-bottom:6px; color:#fff;">لوحة متابعة كشف المعازيم</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">خاص بالعريس فقط لمتابعة الحضور المباشر</p>
+      
+      <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..." style="text-align:center; letter-spacing:5px; font-size:20px; margin-bottom:16px;">
+      
+      <button class="btn-gold" id="loginBtn" type="button" onclick="handleSecureLogin()">دخول اللوحة بأمان</button>
+      <p id="authErrorMsg" style="color:var(--rose); font-size:12px; margin-top:12px; display:none;"></p>
     </div>
   </div>
 
+  <!-- واجهة لوحة تحكم العريس -->
   <div class="admin-container" id="adminDashboard" style="display:none;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-      <h2 style="font-size:20px;">كشف الحضور السحابي 💍</h2>
-      <button class="btn-action btn-dark" style="width:auto; padding:6px 14px; font-size:12px;" id="refreshBtn">🔄 تحديث</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <div>
+        <h2 style="font-size:22px; color:#fff;">كشف الحضور السحابي 💍</h2>
+        <span style="font-size:12px; color:var(--gold);" id="eventHeaderSubtitle">فرح أحمد & منى</span>
+      </div>
+      <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadDataSecurely()">🔄 تحديث</button>
     </div>
 
+    <!-- عداد الحضور الإجمالي -->
     <div class="stat-box">
       <strong id="totalGuestsCount">0</strong>
       <span style="font-size:13px; color:var(--text-muted);">إجمالي المدعوين المسجلين حتى الآن</span>
     </div>
 
-    <button class="btn-action btn-gold" id="exportBtn" style="margin-bottom:20px;">📥 تنزيل كشف المعازيم لمسؤول القاعة (Excel/CSV)</button>
+    <!-- زر تنزيل الإكسيل للقاعة -->
+    <button class="btn-action btn-gold" onclick="exportExcel()" style="margin-bottom:24px;">📥 تنزيل كشف المعازيم لمسؤول القاعة (Excel/CSV)</button>
 
-    <h4 style="font-size:14px; color:var(--gold); margin-bottom:10px;">قائمة الأسماء المسجلة:</h4>
+    <h4 style="font-size:15px; color:var(--gold); margin-bottom:12px;">قائمة الأسماء المسجلة لايف:</h4>
     <div id="guestsListContainer"></div>
   </div>
 
-  <script type="module">
-    import { CONFIG } from './src/js/core/config.js';
-    import { SupabaseService } from './src/js/services/supabase.js';
-    import { RSVPManager } from './src/js/modules/rsvp-manager.js';
-
+  <script>
+    const EVENT_SLUG = "ahmed-mona";
     let loadedGuests = [];
+    let savedPin = "";
 
-    document.getElementById('loginBtn').addEventListener('click', () => {
+    // 1. الدخول الآمن عبر دالة السيرفر الخلفية المشفرة
+    async function handleSecureLogin() {
       const pin = document.getElementById('pinInput').value.trim();
-      if (pin === CONFIG.adminPin) {
-        document.getElementById('authGate').classList.add('hidden');
-        document.getElementById('adminDashboard').style.display = 'block';
-        loadData();
-      } else {
-        alert('الرقم السري غير صحيح (جرب 1234)');
+      const errorMsg = document.getElementById('authErrorMsg');
+      errorMsg.style.display = 'none';
+
+      if (!pin) {
+        alert('من فضلك أدخل الرقم السري');
+        return;
       }
-    });
 
-    async function loadData() {
-      const container = document.getElementById('guestsListContainer');
-      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من السيرفر...</p>';
+      const loginBtn = document.getElementById('loginBtn');
+      loginBtn.textContent = 'جاري التحقق المشفر...';
+      loginBtn.disabled = true;
+
       try {
-        loadedGuests = await SupabaseService.getGuestsList();
-        document.getElementById('totalGuestsCount').textContent = loadedGuests.length;
-        container.innerHTML = '';
-
-        if (loadedGuests.length === 0) {
-          container.innerHTML = '<p style="font-size:13px; color:#888;">لا توجد تسجيلات حتى الآن.</p>';
-          return;
-        }
-
-        loadedGuests.forEach((g, idx) => {
-          const row = document.createElement('div');
-          row.className = 'guest-card-row';
-          const time = new Date(g.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-          row.innerHTML = `
-            <div>
-              <strong style="font-size:14px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
-              <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
-            </div>
-            <span style="font-size:11px; background:rgba(37,211,102,0.15); color:var(--primary); padding:3px 8px; border-radius:10px; font-weight:bold;">مؤكد ✓</span>
-          `;
-          container.appendChild(row);
+        const response = await fetch('/api/admin-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: EVENT_SLUG, pin: pin })
         });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          savedPin = pin;
+          document.getElementById('authGate').classList.add('hidden');
+          document.getElementById('adminDashboard').style.display = 'block';
+          renderGuests(data.guests);
+        } else {
+          errorMsg.textContent = data.error || 'الرقم السري غير صحيح. تم رفض الوصول.';
+          errorMsg.style.display = 'block';
+        }
       } catch (err) {
-        container.innerHTML = '<p style="color:#ff4d6d; font-size:13px;">تعذر الاتصال بقاعدة البيانات. تأكد من إعدادات Supabase.</p>';
+        errorMsg.textContent = 'تعذر الاتصال بسيرفر الأمان. تأكد من اتصال الإنترنت.';
+        errorMsg.style.display = 'block';
+      } finally {
+        loginBtn.textContent = 'دخول اللوحة بأمان';
+        loginBtn.disabled = false;
       }
     }
 
-    document.getElementById('refreshBtn').addEventListener('click', loadData);
-    document.getElementById('exportBtn').addEventListener('click', () => {
-      RSVPManager.exportToCSV(loadedGuests, CONFIG.groom, CONFIG.bride);
-    });
+    // 2. تحديث البيانات لايف
+    async function loadDataSecurely() {
+      const container = document.getElementById('guestsListContainer');
+      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري التحديث من السيرفر...</p>';
+
+      try {
+        const response = await fetch('/api/admin-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: EVENT_SLUG, pin: savedPin })
+        });
+        const data = await response.json();
+        if (response.ok && data.success) {
+          renderGuests(data.guests);
+        }
+      } catch (err) {
+        container.innerHTML = '<p style="color:var(--rose); font-size:12px;">فشل التحديث</p>';
+      }
+    }
+
+    function renderGuests(list) {
+      loadedGuests = list || [];
+      document.getElementById('totalGuestsCount').textContent = loadedGuests.length;
+      const container = document.getElementById('guestsListContainer');
+      container.innerHTML = '';
+
+      if (loadedGuests.length === 0) {
+        container.innerHTML = '<p style="font-size:13px; color:#888; text-align:center; padding:20px;">لا توجد تسجيلات حتى الآن.</p>';
+        return;
+      }
+
+      loadedGuests.forEach((g, idx) => {
+        const row = document.createElement('div');
+        row.className = 'guest-card-row';
+        const time = new Date(g.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        row.innerHTML = `
+          <div>
+            <strong style="font-size:15px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
+            <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
+          </div>
+          <span style="font-size:11px; background:rgba(37,211,102,0.15); color:var(--primary); padding:4px 10px; border-radius:12px; font-weight:bold;">مؤكد ✓</span>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // 3. تصدير ملف الإكسيل للقاعة
+    function exportExcel() {
+      if (!loadedGuests || loadedGuests.length === 0) {
+        alert('لا يوجد معازيم مسجلين حتى الآن');
+        return;
+      }
+      let csv = "data:text/csv;charset=utf-8,\uFEFFم,اسم المعزوم,توقيت التسجيل\n";
+      loadedGuests.forEach((g, idx) => {
+        const time = new Date(g.created_at).toLocaleString('ar-EG');
+        csv += `${idx + 1},"${g.guest_name}","${time}"\n`;
+      });
+      const link = document.createElement('a');
+      link.href = encodeURI(csv);
+      link.download = `كشف_معازيم_${EVENT_SLUG}.csv`;
+      link.click();
+    }
   </script>
 </body>
 </html>
