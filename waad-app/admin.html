@@ -23,11 +23,11 @@
 </head>
 <body>
 
-  <!-- شاشة الدخول بالرقم السري (مشفرة عبر السيرفر) -->
+  <!-- شاشة الدخول بالرقم السري المشفرة عبر السيرفر -->
   <div class="modal-backdrop" id="authGate">
     <div class="modal-card">
       <div style="font-size:42px; margin-bottom:12px;">🔒</div>
-      <div class="security-badge">🛡️ اتصال مشفر ومحمي بالسيرفر</div>
+      <div class="security-badge">🛡️ فحص سحابي مشفر (Cloudflare Edge)</div>
       <h3 style="font-size:20px; margin-bottom:6px; color:#fff;">لوحة متابعة كشف المعازيم</h3>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">خاص بالعريس فقط لمتابعة الحضور المباشر</p>
       
@@ -38,23 +38,20 @@
     </div>
   </div>
 
-  <!-- واجهة لوحة تحكم العريس -->
   <div class="admin-container" id="adminDashboard" style="display:none;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
       <div>
         <h2 style="font-size:22px; color:#fff;">كشف الحضور السحابي 💍</h2>
-        <span style="font-size:12px; color:var(--gold);" id="eventHeaderSubtitle">فرح أحمد & منى</span>
+        <span style="font-size:12px; color:var(--gold);">فرح أحمد & منى</span>
       </div>
       <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadDataSecurely()">🔄 تحديث</button>
     </div>
 
-    <!-- عداد الحضور الإجمالي -->
     <div class="stat-box">
       <strong id="totalGuestsCount">0</strong>
       <span style="font-size:13px; color:var(--text-muted);">إجمالي المدعوين المسجلين حتى الآن</span>
     </div>
 
-    <!-- زر تنزيل الإكسيل للقاعة -->
     <button class="btn-action btn-gold" onclick="exportExcel()" style="margin-bottom:24px;">📥 تنزيل كشف المعازيم لمسؤول القاعة (Excel/CSV)</button>
 
     <h4 style="font-size:15px; color:var(--gold); margin-bottom:12px;">قائمة الأسماء المسجلة لايف:</h4>
@@ -66,7 +63,7 @@
     let loadedGuests = [];
     let savedPin = "";
 
-    // 1. الدخول الآمن عبر دالة السيرفر الخلفية المشفرة
+    // الدخول والتحقق الآمن من خلال دالة الحراسة /api/admin-auth في سيرفر كلاود فلير
     async function handleSecureLogin() {
       const pin = document.getElementById('pinInput').value.trim();
       const errorMsg = document.getElementById('authErrorMsg');
@@ -108,7 +105,6 @@
       }
     }
 
-    // 2. تحديث البيانات لايف
     async function loadDataSecurely() {
       const container = document.getElementById('guestsListContainer');
       container.innerHTML = '<p style="font-size:12px; color:#888;">جاري التحديث من السيرفر...</p>';
@@ -154,7 +150,6 @@
       });
     }
 
-    // 3. تصدير ملف الإكسيل للقاعة
     function exportExcel() {
       if (!loadedGuests || loadedGuests.length === 0) {
         alert('لا يوجد معازيم مسجلين حتى الآن');
