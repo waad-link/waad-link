@@ -1,490 +1,886 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>دعوة زفاف  Ranon & Shandwely  | كارت التشريف الخاص 💍</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دعوة زفاف Ranon & Shandwely | كارت التشريف الخاص 💍</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
 
-  <style>
-    :root {
-      --primary: #25d366;
-      --gold: #c5a059;
-      --gold-light: #f7e7c4;
-      --bg: #090b10;
-      --card-bg: #141722;
-      --border: rgba(197, 160, 89, 0.25);
-      --text: #f0f2f5;
-      --text-muted: #9aa0a6;
-    }
+    <style>
+        :root {
+            --primary: #25d366;
+            --gold: #c5a059;
+            --gold-light: #f7e7c4;
+            --bg: #090b10;
+            --card-bg: #141722;
+            --border: rgba(197, 160, 89, 0.25);
+            --text: #f0f2f5;
+            --text-muted: #9aa0a6;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); min-height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .app-screen { width: 100%; max-width: 440px; min-height: 100dvh; position: relative; background: #0c0e14; overflow-x: hidden; display: flex; flex-direction: column; padding-bottom: 70px; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
-    /* نافذة استلام الكارت الشيك للضيف (خانة واحدة بدون شغل مطاعم) */
-    .claim-modal-overlay {
-      position: fixed; inset: 0; background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px); z-index: 9999; display: flex; justify-content: center;
-      align-items: center; padding: 20px; transition: opacity 0.4s ease, visibility 0.4s;
-    }
-    .claim-modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .app-screen {
+            width: 100%;
+            max-width: 440px;
+            min-height: 100dvh;
+            position: relative;
+            background: #0c0e14;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 70px;
+        }
 
-    .claim-card {
-      width: 100%; max-width: 360px; background: #131722; border: 1px solid var(--border);
-      border-radius: 20px; padding: 32px 22px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    }
-    .claim-icon { font-size: 42px; margin-bottom: 12px; }
-    .claim-card h2 { font-family: 'Amiri', serif; font-size: 26px; color: var(--gold-light); margin-bottom: 8px; }
-    .claim-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 22px; }
+        /* نافذة استلام الكارت الشيك للضيف (خانة واحدة بدون شغل مطاعم) */
+        .claim-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
 
-    .input-field-wrap { text-align: right; margin-bottom: 20px; }
-    .input-field-wrap label { display: block; font-size: 12px; font-weight: 700; color: #ddd; margin-bottom: 6px; }
-    .claim-input {
-      width: 100%; padding: 13px 14px; background: #090a0f; border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: 0.2s;
-    }
-    .claim-input:focus { border-color: var(--gold); }
-    .input-hint { display: block; font-size: 11px; color: var(--gold); margin-top: 6px; opacity: 0.85; }
+        .claim-modal-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
 
-    .btn-claim-submit {
-      width: 100%; padding: 14px; background: linear-gradient(135deg, var(--gold) 0%, #9a7332 100%);
-      color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer;
-      box-shadow: 0 4px 20px rgba(197, 160, 89, 0.35); transition: transform 0.2s;
-    }
-    .btn-claim-submit:active { transform: scale(0.97); }
+        .claim-card {
+            width: 100%;
+            max-width: 360px;
+            background: #131722;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 22px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
 
-    /* محتوى كارت الدعوة الرئيسي */
-    .invite-content { padding: 30px 20px; text-align: center; }
+        .claim-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
 
-    .vip-guest-badge {
-      display: inline-block; background: rgba(197, 160, 89, 0.12); color: var(--gold-light);
-      border: 1px solid var(--border); padding: 8px 18px; border-radius: 25px; font-size: 14px;
-      font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
+        .claim-card h2 {
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            color: var(--gold-light);
+            margin-bottom: 8px;
+        }
 
-    .vogue-issue-tag { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 3px; color: #777; margin-bottom: 15px; }
-    .couple-title { font-family: 'Amiri', serif; font-size: 38px; color: #fff; line-height: 1.1; margin-bottom: 6px; }
-    .couple-and { font-family: 'Cinzel', serif; font-size: 16px; font-style: italic; color: var(--gold); margin-bottom: 15px; }
+        .claim-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
 
-    .slider-box {
-      width: 100%; height: 240px; border-radius: 14px; overflow: hidden; background: #1a1a24;
-      margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); position: relative;
-    }
-    .slide-item { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; }
-    .slide-item.active { opacity: 1; }
-    .slide-item img { width: 100%; height: 100%; object-fit: cover; }
+        .input-field-wrap {
+            text-align: right;
+            margin-bottom: 20px;
+        }
 
-    .timer-strip {
-      display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.12);
-      border-bottom: 1px solid rgba(255,255,255,0.12); padding: 12px 0; margin: 20px 0;
-    }
-    .timer-strip div strong { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold-light); display: block; }
-    .timer-strip div span { font-size: 10px; color: #888; text-transform: uppercase; }
+        .input-field-wrap label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #ddd;
+            margin-bottom: 6px;
+        }
 
-    .btn-action-col { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
-    .action-btn {
-      width: 100%; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 700;
-      text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px;
-      border: none; cursor: pointer; transition: transform 0.15s; text-align: center;
-    }
-    .action-btn:active { transform: scale(0.97); }
-    .btn-save-card { background: linear-gradient(135deg, #1b2130 0%, #10141e 100%); color: var(--gold-light); border: 1px solid var(--border); }
-    .btn-wa-rsvp { background: #25d366; color: #fff; }
-    .btn-calendar { background: #1a1c24; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+        .claim-input {
+            width: 100%;
+            padding: 13px 14px;
+            background: #090a0f;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
 
-    /* لوحة متابعة العريس */
-    .groom-admin-toggle {
-      position: fixed; top: 15px; left: 15px; z-index: 1000;
-      background: rgba(20, 24, 34, 0.95); border: 1px solid var(--border);
-      padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
-      color: var(--gold-light); cursor: pointer; backdrop-filter: blur(8px);
-      display: flex; align-items: center; gap: 6px;
-    }
+        .claim-input:focus {
+            border-color: var(--gold);
+        }
 
-    .admin-drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-      z-index: 10000; display: none; justify-content: center; align-items: flex-end;
-    }
-    .admin-drawer-overlay.active { display: flex; }
-    .admin-sheet {
-      width: 100%; max-width: 480px; max-height: 85dvh; background: #11141d;
-      border-radius: 20px 20px 0 0; border: 1px solid var(--border); padding: 22px 18px;
-      overflow-y: auto; text-align: right; box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
-    }
-    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-    .drawer-header h3 { font-size: 16px; color: #fff; }
-    .btn-close-drawer { font-size: 22px; color: #aaa; cursor: pointer; background: none; border: none; }
-    .guest-item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
-    .btn-export-excel { width: 100%; padding: 13px; background: #128c7e; color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 15px; }
+        .input-hint {
+            display: block;
+            font-size: 11px;
+            color: var(--gold);
+            margin-top: 6px;
+            opacity: 0.85;
+        }
+
+        .btn-claim-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--gold) 0%, #9a7332 100%);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.35);
+            transition: transform 0.2s;
+        }
+
+        .btn-claim-submit:active {
+            transform: scale(0.97);
+        }
+
+        /* محتوى كارت الدعوة الرئيسي */
+        .invite-content {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .vip-guest-badge {
+            display: inline-block;
+            background: rgba(197, 160, 89, 0.12);
+            color: var(--gold-light);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .vogue-issue-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .couple-title {
+            font-family: 'Amiri', serif;
+            font-size: 38px;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .couple-and {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .slider-box {
+            width: 100%;
+            height: 240px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #1a1a24;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .slide-item {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .slide-item.active {
+            opacity: 1;
+        }
+
+        .slide-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .timer-strip {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 0;
+            margin: 20px 0;
+        }
+
+        .timer-strip div strong {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold-light);
+            display: block;
+        }
+
+        .timer-strip div span {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .btn-action-col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s;
+            text-align: center;
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-save-card {
+            background: linear-gradient(135deg, #1b2130 0%, #10141e 100%);
+            color: var(--gold-light);
+            border: 1px solid var(--border);
+        }
+
+        .btn-wa-rsvp {
+            background: #25d366;
+            color: #fff;
+        }
+
+        .btn-calendar {
+            background: #1a1c24;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* لوحة متابعة العريس */
+        .groom-admin-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: rgba(20, 24, 34, 0.95);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gold-light);
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .admin-drawer-overlay.active {
+            display: flex;
+        }
+
+        .admin-sheet {
+            width: 100%;
+            max-width: 480px;
+            max-height: 85dvh;
+            background: #11141d;
+            border-radius: 20px 20px 0 0;
+            border: 1px solid var(--border);
+            padding: 22px 18px;
+            overflow-y: auto;
+            text-align: right;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .drawer-header h3 {
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .btn-close-drawer {
+            font-size: 22px;
+            color: #aaa;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .guest-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 13px;
+        }
+
+        .btn-export-excel {
+            width: 100%;
+            padding: 13px;
+            background: #128c7e;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
 
 
-    /* ================= Responsive layout: mobile / tablet / desktop ================= */
-    html { width: 100%; min-width: 0; overflow-x: clip; }
-    body { width: 100%; min-width: 0; }
-    img, canvas, video { max-width: 100%; }
-    .app-screen {
-      width: 100%;
-      max-width: 760px;
-      min-height: 100dvh;
-      padding-bottom: max(70px, env(safe-area-inset-bottom));
-      box-shadow: 0 0 55px rgba(0,0,0,.3);
-    }
-    .invite-content {
-      width: 100%;
-      max-width: 720px;
-      margin-inline: auto;
-      padding: clamp(22px, 4vw, 42px) clamp(14px, 4vw, 42px);
-    }
-    .claim-card { max-height: calc(100dvh - 40px); overflow-y: auto; }
-    .slider-box { height: clamp(190px, 34vw, 360px); }
-    .admin-sheet {
-      width: min(100%, 620px);
-      max-width: 620px;
-      max-height: 88dvh;
-      padding: clamp(18px, 3vw, 28px);
-    }
-    .groom-admin-toggle {
-      top: max(15px, env(safe-area-inset-top));
-      left: max(15px, env(safe-area-inset-left));
-      max-width: calc(100vw - 30px);
-    }
-    .couple-title { font-size: clamp(30px, 6vw, 44px); }
-    .timer-strip div strong { font-size: clamp(18px, 3vw, 26px); }
-    .guest-item-row { gap: 12px; }
-    .guest-item-row > * { min-width: 0; overflow-wrap: anywhere; }
+        /* ================= Responsive layout: mobile / tablet / desktop ================= */
+        html {
+            width: 100%;
+            min-width: 0;
+            overflow-x: clip;
+        }
 
-    @media (max-width: 600px) {
-      .app-screen { max-width: 100%; }
-      .invite-content { padding: 24px 16px; }
-      .claim-modal-overlay { padding: 14px; }
-      .claim-card { padding: 26px 18px; }
-      .claim-card h2 { font-size: clamp(22px, 6vw, 26px); }
-      .couple-title { font-size: clamp(30px, 9vw, 38px); }
-      .slider-box { height: clamp(180px, 58vw, 260px); }
-      .timer-strip { gap: 4px; }
-      .timer-strip div strong { font-size: clamp(17px, 5vw, 22px); }
-      .timer-strip div span { font-size: 9px; }
-      .action-btn { padding: 13px 10px; font-size: 13px; }
-      .admin-sheet { width: 100%; border-radius: 18px 18px 0 0; }
-    }
-    @media (max-width: 360px) {
-      .invite-content { padding-inline: 12px; }
-      .vogue-issue-tag { letter-spacing: 1.5px; font-size: 9px; }
-      .vip-guest-badge { padding: 7px 11px; font-size: 12px; max-width: 100%; overflow-wrap: anywhere; }
-      .timer-strip div span { font-size: 8px; }
-      .action-btn { font-size: 12px; }
-      .groom-admin-toggle { font-size: 10px; padding: 6px 9px; }
-    }
-    @media (min-width: 768px) {
-      body { padding: 24px 16px; }
-      .app-screen { min-height: calc(100dvh - 48px); border: 1px solid rgba(197,160,89,.14); border-radius: 22px; overflow: hidden; }
-      .invite-content { padding-top: 42px; padding-bottom: 42px; }
-      .admin-sheet { border-radius: 20px; margin-bottom: 5vh; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; }
-    }
+        body {
+            width: 100%;
+            min-width: 0;
+        }
 
-  </style>
+        img,
+        canvas,
+        video {
+            max-width: 100%;
+        }
+
+        .app-screen {
+            width: 100%;
+            max-width: 760px;
+            min-height: 100dvh;
+            padding-bottom: max(70px, env(safe-area-inset-bottom));
+            box-shadow: 0 0 55px rgba(0, 0, 0, .3);
+        }
+
+        .invite-content {
+            width: 100%;
+            max-width: 720px;
+            margin-inline: auto;
+            padding: clamp(22px, 4vw, 42px) clamp(14px, 4vw, 42px);
+        }
+
+        .claim-card {
+            max-height: calc(100dvh - 40px);
+            overflow-y: auto;
+        }
+
+        .slider-box {
+            height: clamp(190px, 34vw, 360px);
+        }
+
+        .admin-sheet {
+            width: min(100%, 620px);
+            max-width: 620px;
+            max-height: 88dvh;
+            padding: clamp(18px, 3vw, 28px);
+        }
+
+        .groom-admin-toggle {
+            top: max(15px, env(safe-area-inset-top));
+            left: max(15px, env(safe-area-inset-left));
+            max-width: calc(100vw - 30px);
+        }
+
+        .couple-title {
+            font-size: clamp(30px, 6vw, 44px);
+        }
+
+        .timer-strip div strong {
+            font-size: clamp(18px, 3vw, 26px);
+        }
+
+        .guest-item-row {
+            gap: 12px;
+        }
+
+        .guest-item-row>* {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 600px) {
+            .app-screen {
+                max-width: 100%;
+            }
+
+            .invite-content {
+                padding: 24px 16px;
+            }
+
+            .claim-modal-overlay {
+                padding: 14px;
+            }
+
+            .claim-card {
+                padding: 26px 18px;
+            }
+
+            .claim-card h2 {
+                font-size: clamp(22px, 6vw, 26px);
+            }
+
+            .couple-title {
+                font-size: clamp(30px, 9vw, 38px);
+            }
+
+            .slider-box {
+                height: clamp(180px, 58vw, 260px);
+            }
+
+            .timer-strip {
+                gap: 4px;
+            }
+
+            .timer-strip div strong {
+                font-size: clamp(17px, 5vw, 22px);
+            }
+
+            .timer-strip div span {
+                font-size: 9px;
+            }
+
+            .action-btn {
+                padding: 13px 10px;
+                font-size: 13px;
+            }
+
+            .admin-sheet {
+                width: 100%;
+                border-radius: 18px 18px 0 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .invite-content {
+                padding-inline: 12px;
+            }
+
+            .vogue-issue-tag {
+                letter-spacing: 1.5px;
+                font-size: 9px;
+            }
+
+            .vip-guest-badge {
+                padding: 7px 11px;
+                font-size: 12px;
+                max-width: 100%;
+                overflow-wrap: anywhere;
+            }
+
+            .timer-strip div span {
+                font-size: 8px;
+            }
+
+            .action-btn {
+                font-size: 12px;
+            }
+
+            .groom-admin-toggle {
+                font-size: 10px;
+                padding: 6px 9px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 24px 16px;
+            }
+
+            .app-screen {
+                min-height: calc(100dvh - 48px);
+                border: 1px solid rgba(197, 160, 89, .14);
+                border-radius: 22px;
+                overflow: hidden;
+            }
+
+            .invite-content {
+                padding-top: 42px;
+                padding-bottom: 42px;
+            }
+
+            .admin-sheet {
+                border-radius: 20px;
+                margin-bottom: 5vh;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <!-- زرار كشف المعازيم للعريس -->
-  <button class="groom-admin-toggle" onclick="toggleAdminDrawer()">
-    <span>📊 كشف المعازيم</span>
-    <span style="background:var(--gold); color:#000; padding:1px 6px; border-radius:10px; font-size:10px;" id="badgeCount">0</span>
-  </button>
+    <!-- زرار كشف المعازيم للعريس -->
+    <button class="groom-admin-toggle" onclick="toggleAdminDrawer()">
+        <span>📊 كشف المعازيم</span>
+        <span style="background:var(--gold); color:#000; padding:1px 6px; border-radius:10px; font-size:10px;"
+            id="badgeCount">0</span>
+    </button>
 
-  <div class="app-screen">
+    <div class="app-screen">
 
-    <!-- 1. نافذة الاستلام الشيك (خانة واحدة نظيفة) -->
-    <div class="claim-modal-overlay" id="claimModal">
-      <div class="claim-card">
-        <div class="claim-icon">💌</div>
-        <h2>أهلاً بك وبكل أحبابك 🤍</h2>
-        <p>فرحتنا مش هتكمل غير بوجودكم.. اكتب اسمك الكريم لاستلام كارت دعوتك المخصص:</p>
+        <!-- 1. نافذة الاستلام الشيك (خانة واحدة نظيفة) -->
+        <div class="claim-modal-overlay" id="claimModal">
+            <div class="claim-card">
+                <div class="claim-icon">💌</div>
+                <h2>أهلاً بك وبكل أحبابك 🤍</h2>
+                <p>فرحتنا مش هتكمل غير بوجودكم.. اكتب اسمك الكريم لاستلام كارت دعوتك المخصص:</p>
 
-        <div class="input-field-wrap">
-          <label>اسمك الكريم كما تحب أن نرحب بك:</label>
-          <input type="text" class="claim-input" id="guestNameInput" placeholder="اكتب اسمك هنا...">
-          <span class="input-hint">مثال: م. أحمد وحرمه / د. محمود وعائلته / كريم مصطفى</span>
+                <div class="input-field-wrap">
+                    <label>اسمك الكريم كما تحب أن نرحب بك:</label>
+                    <input type="text" class="claim-input" id="guestNameInput" placeholder="اكتب اسمك هنا...">
+                    <span class="input-hint">مثال: م. أحمد وحرمه / د. محمود وعائلته / كريم مصطفى</span>
+                </div>
+
+                <button class="btn-claim-submit" onclick="submitGuestClaim()">
+                    ✨ افتح دعوتك الخاصة
+                </button>
+            </div>
         </div>
 
-        <button class="btn-claim-submit" onclick="submitGuestClaim()">
-          ✨ افتح دعوتك الخاصة
-        </button>
-      </div>
+        <!-- 2. محتوى الدعوة بعد الفتح -->
+        <div class="invite-content">
+            <div class="vogue-issue-tag">THE WEDDING ISSUE — SUMMER 2027</div>
+
+            <div class="vip-guest-badge" id="displayGuestBadge">
+                نتشرف بحضوركم الكريم 🤍
+            </div>
+
+            <h1 class="couple-title"> Ranon & Shandwely </h1>
+            <div class="couple-and"> SAVE OUR DATE </div>
+
+            <!-- سلايدر الصور -->
+            <div class="slider-box" id="sliderBox">
+                <div class="slide-item active"><img
+                        src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80"
+                        alt="1"></div>
+                <div class="slide-item"><img
+                        src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80"
+                        alt="2"></div>
+            </div>
+
+            <!-- العداد التنازلي الحقيقي -->
+            <div class="timer-strip">
+                <div><strong id="d">00</strong><span>أيام</span></div>
+                <div><strong id="h">00</strong><span>ساعات</span></div>
+                <div><strong id="m">00</strong><span>دقائق</span></div>
+                <div><strong id="s">00</strong><span>ثواني</span></div>
+            </div>
+
+            <div style="font-size: 14px; line-height: 1.8; margin-bottom: 20px;">
+                <p><strong>الخميس، 15 يوليو 2027</strong> — الساعة 8:00 مساءً</p>
+                <p style="color: #aaa; font-size: 13px;">قاعة فيردي الملكية - التجمع الخامس، القاهرة</p>
+                <p style="color: var(--gold); font-size: 12px; margin-top: 4px;">Dress Code: سواريه ملكي ✨</p>
+            </div>
+
+            <!-- الأزرار التفاعلية -->
+            <div class="btn-action-col">
+                <button class="action-btn btn-save-card" onclick="downloadVIPCardImage()">
+                    📸 حفظ كارت الدعوة كصورة في تليفوني
+                </button>
+
+                <a href="#" id="waRsvpBtn" target="_blank" class="action-btn btn-wa-rsvp">
+                    💬 تأكيد ومباركة على واتساب العروسين
+                </a>
+
+                <a href="#" id="calBtn" target="_blank" class="action-btn btn-calendar">
+                    🗓️ إضافة لتقويم هاتفي
+                </a>
+
+                <a href="https://maps.google.com/?q=New+Cairo" target="_blank" class="action-btn"
+                    style="background:rgba(255,255,255,0.06); color:#fff;">
+                    📍 موقع القاعة عبر Google Maps
+                </a>
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- 2. محتوى الدعوة بعد الفتح -->
-    <div class="invite-content">
-      <div class="vogue-issue-tag">THE WEDDING ISSUE — SUMMER 2027</div>
+    <!-- 3. لوحة كشف المعازيم للعريس -->
+    <div class="admin-drawer-overlay" id="adminDrawer">
+        <div class="admin-sheet">
+            <div class="drawer-header">
+                <h3>📊 كشف حضور المعازيم المسجلين</h3>
+                <button class="btn-close-drawer" onclick="toggleAdminDrawer()">&times;</button>
+            </div>
 
-      <div class="vip-guest-badge" id="displayGuestBadge">
-        نتشرف بحضوركم الكريم 🤍
-      </div>
+            <p style="font-size: 12px; color: #888; margin-bottom: 10px;">إجمالي الأسماء المسجلة حتى الآن:</p>
+            <div id="adminGuestsList"></div>
 
-      <h1 class="couple-title"> Ranon & Shandwely </h1>
-      <div class="couple-and"> SAVE OUR DATE </div>
-
-      <!-- سلايدر الصور -->
-      <div class="slider-box" id="sliderBox">
-        <div class="slide-item active"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="1"></div>
-        <div class="slide-item"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80" alt="2"></div>
-      </div>
-
-      <!-- العداد التنازلي الحقيقي -->
-      <div class="timer-strip">
-        <div><strong id="d">00</strong><span>أيام</span></div>
-        <div><strong id="h">00</strong><span>ساعات</span></div>
-        <div><strong id="m">00</strong><span>دقائق</span></div>
-        <div><strong id="s">00</strong><span>ثواني</span></div>
-      </div>
-
-      <div style="font-size: 14px; line-height: 1.8; margin-bottom: 20px;">
-        <p><strong>الخميس، 15 يوليو 2027</strong> — الساعة 8:00 مساءً</p>
-        <p style="color: #aaa; font-size: 13px;">قاعة فيردي الملكية - التجمع الخامس، القاهرة</p>
-        <p style="color: var(--gold); font-size: 12px; margin-top: 4px;">Dress Code: سواريه ملكي ✨</p>
-      </div>
-
-      <!-- الأزرار التفاعلية -->
-      <div class="btn-action-col">
-        <button class="action-btn btn-save-card" onclick="downloadVIPCardImage()">
-          📸 حفظ كارت الدعوة كصورة في تليفوني
-        </button>
-
-        <a href="#" id="waRsvpBtn" target="_blank" class="action-btn btn-wa-rsvp">
-          💬 تأكيد ومباركة على واتساب العروسين
-        </a>
-
-        <a href="#" id="calBtn" target="_blank" class="action-btn btn-calendar">
-          🗓️ إضافة لتقويم هاتفي
-        </a>
-
-        <a href="https://maps.google.com/?q=New+Cairo" target="_blank" class="action-btn" style="background:rgba(255,255,255,0.06); color:#fff;">
-          📍 موقع القاعة عبر Google Maps
-        </a>
-      </div>
-
+            <button class="btn-export-excel" onclick="exportGuestsToExcel()">
+                📥 تنزيل كشف المعازيم Excel/CSV
+            </button>
+        </div>
     </div>
 
-  </div>
+    <script>
+        const WEDDING = {
+            groom: "أحمد",
+            bride: "منى",
+            phone: "201012345678",
+            dateISO: "2027-07-15T20:00:00",
+            venue: "قاعة فيردي الملكية - التجمع الخامس",
+            dateHuman: "الخميس، 15 يوليو 2027"
+        };
 
-  <!-- 3. لوحة كشف المعازيم للعريس -->
-  <div class="admin-drawer-overlay" id="adminDrawer">
-    <div class="admin-sheet">
-      <div class="drawer-header">
-        <h3>📊 كشف حضور المعازيم المسجلين</h3>
-        <button class="btn-close-drawer" onclick="toggleAdminDrawer()">&times;</button>
-      </div>
+        let currentGuestName = "";
 
-      <p style="font-size: 12px; color: #888; margin-bottom: 10px;">إجمالي الأسماء المسجلة حتى الآن:</p>
-      <div id="adminGuestsList"></div>
+        // 1. فتح الدعوة باسم الضيف
+        function submitGuestClaim() {
+            const nameInput = document.getElementById('guestNameInput').value.trim();
+            if (!nameInput) {
+                alert("من فضلك اكتب اسمك الكريم للمتابعة 🤍");
+                return;
+            }
 
-      <button class="btn-export-excel" onclick="exportGuestsToExcel()">
-        📥 تنزيل كشف المعازيم Excel/CSV
-      </button>
-    </div>
-  </div>
+            currentGuestName = nameInput;
+            localStorage.setItem('my_guest_name', currentGuestName);
 
-<script>
-  const WEDDING = {
-    groom: "أحمد",
-    bride: "منى",
-    phone: "201012345678",
-    dateISO: "2027-07-15T20:00:00",
-    venue: "قاعة فيردي الملكية - التجمع الخامس",
-    dateHuman: "الخميس، 15 يوليو 2027"
-  };
+            recordGuestInAdmin(currentGuestName);
+            document.getElementById('claimModal').classList.add('hidden');
+            applyPersonalizedGuest(currentGuestName);
+        }
 
-  let currentGuestName = "";
+        function applyPersonalizedGuest(name) {
+            document.getElementById('displayGuestBadge').textContent = `نتشرف بحضوركم الكريم: ${name} 🤍`;
 
-  // 1. فتح الدعوة باسم الضيف
-  function submitGuestClaim() {
-    const nameInput = document.getElementById('guestNameInput').value.trim();
-    if (!nameInput) {
-      alert("من فضلك اكتب اسمك الكريم للمتابعة 🤍");
-      return;
-    }
+            const waMsg = encodeURIComponent(`ألف مبروك لأجمل عرسان (${WEDDING.groom} & ${WEDDING.bride})! يشرفنا الحضور ومشاركتكم فرحة ليلة العمر.. ${name} 💍`);
+            document.getElementById('waRsvpBtn').href = `https://wa.me/${WEDDING.phone}?text=${waMsg}`;
+        }
 
-    currentGuestName = nameInput;
-    localStorage.setItem('my_guest_name', currentGuestName);
+        // 2. تسجيل الاسم في كشف العريس
+        function getGuestsDB() {
+            try {
+                return JSON.parse(localStorage.getItem('wedding_rsvp_guests')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
 
-    recordGuestInAdmin(currentGuestName);
-    document.getElementById('claimModal').classList.add('hidden');
-    applyPersonalizedGuest(currentGuestName);
-  }
+        function recordGuestInAdmin(name) {
+            let list = getGuestsDB();
+            if (!list.find(g => g.name === name)) {
+                list.push({
+                    name: name,
+                    time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+                });
+                localStorage.setItem('wedding_rsvp_guests', JSON.stringify(list));
+            }
+            updateAdminStats();
+        }
 
-  function applyPersonalizedGuest(name) {
-    document.getElementById('displayGuestBadge').textContent = `نتشرف بحضوركم الكريم: ${name} 🤍`;
+        function updateAdminStats() {
+            const list = getGuestsDB();
+            document.getElementById('badgeCount').textContent = list.length;
 
-    const waMsg = encodeURIComponent(`ألف مبروك لأجمل عرسان (${WEDDING.groom} & ${WEDDING.bride})! يشرفنا الحضور ومشاركتكم فرحة ليلة العمر.. ${name} 💍`);
-    document.getElementById('waRsvpBtn').href = `https://wa.me/${WEDDING.phone}?text=${waMsg}`;
-  }
+            const container = document.getElementById('adminGuestsList');
+            container.innerHTML = '';
 
-  // 2. تسجيل الاسم في كشف العريس
-  function getGuestsDB() {
-    try {
-      return JSON.parse(localStorage.getItem('wedding_rsvp_guests')) || [];
-    } catch(e) {
-      return [];
-    }
-  }
-
-  function recordGuestInAdmin(name) {
-    let list = getGuestsDB();
-    if (!list.find(g => g.name === name)) {
-      list.push({
-        name: name,
-        time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
-      });
-      localStorage.setItem('wedding_rsvp_guests', JSON.stringify(list));
-    }
-    updateAdminStats();
-  }
-
-  function updateAdminStats() {
-    const list = getGuestsDB();
-    document.getElementById('badgeCount').textContent = list.length;
-
-    const container = document.getElementById('adminGuestsList');
-    container.innerHTML = '';
-
-    list.forEach((g, idx) => {
-      const row = document.createElement('div');
-      row.className = 'guest-item-row';
-      row.innerHTML = `
+            list.forEach((g, idx) => {
+                const row = document.createElement('div');
+                row.className = 'guest-item-row';
+                row.innerHTML = `
         <div>
           <strong>${idx + 1}. ${g.name}</strong>
           <span style="display:block; font-size:11px; color:#888;">سجل: ${g.time}</span>
         </div>
         <span style="color:var(--primary); font-weight:bold;">تم التأكيد ✓</span>
       `;
-      container.appendChild(row);
-    });
-  }
+                container.appendChild(row);
+            });
+        }
 
-  function toggleAdminDrawer() {
-    updateAdminStats();
-    document.getElementById('adminDrawer').classList.toggle('active');
-  }
+        function toggleAdminDrawer() {
+            updateAdminStats();
+            document.getElementById('adminDrawer').classList.toggle('active');
+        }
 
-  // 3. حفظ الكارت كصورة عالية الجودة في التليفون (Canvas)
-  function downloadVIPCardImage() {
-    const name = currentGuestName || "ضيفنا العزيز";
-    const canvas = document.createElement('canvas');
-    canvas.width = 600;
-    canvas.height = 800;
-    const ctx = canvas.getContext('2d');
+        // 3. حفظ الكارت كصورة عالية الجودة في التليفون (Canvas)
+        function downloadVIPCardImage() {
+            const name = currentGuestName || "ضيفنا العزيز";
+            const canvas = document.createElement('canvas');
+            canvas.width = 600;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#0a0d14';
-    ctx.fillRect(0, 0, 600, 800);
+            ctx.fillStyle = '#0a0d14';
+            ctx.fillRect(0, 0, 600, 800);
 
-    ctx.strokeStyle = '#c5a059';
-    ctx.lineWidth = 3;
-    ctx.strokeRect(30, 30, 540, 740);
-    ctx.lineWidth = 1;
-    ctx.strokeRect(40, 40, 520, 720);
+            ctx.strokeStyle = '#c5a059';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(30, 30, 540, 740);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(40, 40, 520, 720);
 
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#c5a059';
-    ctx.font = '24px Tajawal';
-    ctx.fillText('دعوة زفاف خاصة 💍', 300, 110);
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#c5a059';
+            ctx.font = '24px Tajawal';
+            ctx.fillText('دعوة زفاف خاصة 💍', 300, 110);
 
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 44px Amiri';
-    ctx.fillText(`${WEDDING.groom} & ${WEDDING.bride}`, 300, 180);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 44px Amiri';
+            ctx.fillText(`${WEDDING.groom} & ${WEDDING.bride}`, 300, 180);
 
-    ctx.fillStyle = '#888888';
-    ctx.font = '18px Tajawal';
-    ctx.fillText('يتشرف العروسان بدعوة كريم تشريفكم:', 300, 260);
+            ctx.fillStyle = '#888888';
+            ctx.font = '18px Tajawal';
+            ctx.fillText('يتشرف العروسان بدعوة كريم تشريفكم:', 300, 260);
 
-    ctx.fillStyle = '#141824';
-    ctx.fillRect(60, 290, 480, 85);
-    ctx.strokeStyle = '#c5a059';
-    ctx.strokeRect(60, 290, 480, 85);
+            ctx.fillStyle = '#141824';
+            ctx.fillRect(60, 290, 480, 85);
+            ctx.strokeStyle = '#c5a059';
+            ctx.strokeRect(60, 290, 480, 85);
 
-    ctx.fillStyle = '#f7e7c4';
-    ctx.font = 'bold 24px Tajawal';
-    ctx.fillText(name, 300, 345);
+            ctx.fillStyle = '#f7e7c4';
+            ctx.font = 'bold 24px Tajawal';
+            ctx.fillText(name, 300, 345);
 
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '20px Tajawal';
-    ctx.fillText(`📅 ${WEDDING.dateHuman}`, 300, 440);
-    ctx.fillText(`📍 ${WEDDING.venue}`, 300, 490);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '20px Tajawal';
+            ctx.fillText(`📅 ${WEDDING.dateHuman}`, 300, 440);
+            ctx.fillText(`📍 ${WEDDING.venue}`, 300, 490);
 
-    ctx.fillStyle = '#c5a059';
-    ctx.font = '16px Tajawal';
-    ctx.fillText('Dress Code: سواريه ملكي ✨', 300, 560);
+            ctx.fillStyle = '#c5a059';
+            ctx.font = '16px Tajawal';
+            ctx.fillText('Dress Code: سواريه ملكي ✨', 300, 560);
 
-    ctx.fillStyle = '#666666';
-    ctx.font = '14px Tajawal';
-    ctx.fillText('صُنعت بكل حب بواسطة فرحنا', 300, 720);
+            ctx.fillStyle = '#666666';
+            ctx.font = '14px Tajawal';
+            ctx.fillText('صُنعت بكل حب بواسطة فرحنا', 300, 720);
 
-    const link = document.createElement('a');
-    link.download = `دعوة_${name.replace(/\s+/g, '_')}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }
+            const link = document.createElement('a');
+            link.download = `دعوة_${name.replace(/\s+/g, '_')}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
 
-  // 4. تصدير كشف المعازيم لإكسيل
-  function exportGuestsToExcel() {
-    const list = getGuestsDB();
-    if (list.length === 0) {
-      alert("لا يوجد معازيم مسجلين حتى الآن.");
-      return;
-    }
+        // 4. تصدير كشف المعازيم لإكسيل
+        function exportGuestsToExcel() {
+            const list = getGuestsDB();
+            if (list.length === 0) {
+                alert("لا يوجد معازيم مسجلين حتى الآن.");
+                return;
+            }
 
-    let csv = "data:text/csv;charset=utf-8,\uFEFFم,اسم المعزوم,وقت التسجيل\n";
-    list.forEach((g, idx) => {
-      csv += `${idx + 1},"${g.name}","${g.time}"\n`;
-    });
+            let csv = "data:text/csv;charset=utf-8,\uFEFFم,اسم المعزوم,وقت التسجيل\n";
+            list.forEach((g, idx) => {
+                csv += `${idx + 1},"${g.name}","${g.time}"\n`;
+            });
 
-    const link = document.createElement("a");
-    link.href = encodeURI(csv);
-    link.download = `كشف_معازيم_فرح_${WEDDING.groom}_و_${WEDDING.bride}.csv`;
-    link.click();
-  }
+            const link = document.createElement("a");
+            link.href = encodeURI(csv);
+            link.download = `كشف_معازيم_فرح_${WEDDING.groom}_و_${WEDDING.bride}.csv`;
+            link.click();
+        }
 
-  // 5. العد التنازلي وسلايدر الصور
-  function initPage() {
-    const target = new Date(WEDDING.dateISO).getTime();
-    setInterval(() => {
-      const diff = target - new Date().getTime();
-      if (diff <= 0) return;
-      document.getElementById('d').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-      document.getElementById('h').textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-      document.getElementById('m').textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-      document.getElementById('s').textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-    }, 1000);
+        // 5. العد التنازلي وسلايدر الصور
+        function initPage() {
+            const target = new Date(WEDDING.dateISO).getTime();
+            setInterval(() => {
+                const diff = target - new Date().getTime();
+                if (diff <= 0) return;
+                document.getElementById('d').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById('h').textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById('m').textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById('s').textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+            }, 1000);
 
-    let idx = 0;
-    const slides = document.querySelectorAll('.slide-item');
-    if (slides.length > 1) {
-      setInterval(() => {
-        slides[idx].classList.remove('active');
-        idx = (idx + 1) % slides.length;
-        slides[idx].classList.add('active');
-      }, 3000);
-    }
-  }
+            let idx = 0;
+            const slides = document.querySelectorAll('.slide-item');
+            if (slides.length > 1) {
+                setInterval(() => {
+                    slides[idx].classList.remove('active');
+                    idx = (idx + 1) % slides.length;
+                    slides[idx].classList.add('active');
+                }, 3000);
+            }
+        }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    initPage();
-    updateAdminStats();
+        window.addEventListener('DOMContentLoaded', () => {
+            initPage();
+            updateAdminStats();
 
-    const savedName = localStorage.getItem('my_guest_name');
-    if (savedName) {
-      document.getElementById('claimModal').classList.add('hidden');
-      applyPersonalizedGuest(savedName);
-    }
-  });
-</script>
+            const savedName = localStorage.getItem('my_guest_name');
+            if (savedName) {
+                document.getElementById('claimModal').classList.add('hidden');
+                applyPersonalizedGuest(savedName);
+            }
+        });
+    </script>
 
 </body>
+
 </html>

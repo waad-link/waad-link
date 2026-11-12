@@ -1,159 +1,183 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>وعد 💍 | دعوة زفاف خاصة</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>وعد 💍 | دعوة زفاف خاصة</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
 
-  <link rel="stylesheet" href="src/css/tokens.css">
-  <link rel="stylesheet" href="src/css/reset.css">
-  <link rel="stylesheet" href="src/css/components.css">
+    <link rel="stylesheet" href="src/css/tokens.css">
+    <link rel="stylesheet" href="src/css/reset.css">
+    <link rel="stylesheet" href="src/css/components.css">
 </head>
+
 <body>
 
-  <div class="screen-frame">
+    <div class="screen-frame">
 
-    <!-- نافذة الاستلام الشيك (اسم الضيف فقط بدون مطاعم) -->
-    <div class="modal-backdrop" id="claimModal">
-      <div class="modal-card">
-        <div style="font-size:42px; margin-bottom:12px;">💌</div>
-        <h2 style="font-family:var(--font-serif); font-size:26px; color:var(--gold-light); margin-bottom:8px;">أهلاً بك وبكل أحبابك 🤍</h2>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:20px;">فرحتنا مش هتكمل غير بوجودكم.. اكتب اسمك الكريم لاستلام كارت دعوتك المخصص:</p>
+        <!-- نافذة الاستلام الشيك (اسم الضيف فقط بدون مطاعم) -->
+        <div class="modal-backdrop" id="claimModal">
+            <div class="modal-card">
+                <div style="font-size:42px; margin-bottom:12px;">💌</div>
+                <h2 style="font-family:var(--font-serif); font-size:26px; color:var(--gold-light); margin-bottom:8px;">
+                    أهلاً بك وبكل أحبابك 🤍</h2>
+                <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:20px;">فرحتنا مش هتكمل
+                    غير بوجودكم.. اكتب اسمك الكريم لاستلام كارت دعوتك المخصص:</p>
 
-        <div style="text-align:right; margin-bottom:18px;">
-          <label style="display:block; font-size:12px; font-weight:700; color:#ddd; margin-bottom:6px;">اسمك الكريم كما تحب أن نرحب بك:</label>
-          <input type="text" class="text-input" id="guestNameInput" placeholder="اكتب اسمك هنا...">
-          <span style="display:block; font-size:11px; color:var(--gold); margin-top:5px; opacity:0.85;">مثال: م. أحمد وحرمه / د. محمود وعائلته / كريم مصطفى</span>
+                <div style="text-align:right; margin-bottom:18px;">
+                    <label style="display:block; font-size:12px; font-weight:700; color:#ddd; margin-bottom:6px;">اسمك
+                        الكريم كما تحب أن نرحب بك:</label>
+                    <input type="text" class="text-input" id="guestNameInput" placeholder="اكتب اسمك هنا...">
+                    <span style="display:block; font-size:11px; color:var(--gold); margin-top:5px; opacity:0.85;">مثال:
+                        م. أحمد وحرمه / د. محمود وعائلته / كريم مصطفى</span>
+                </div>
+
+                <!-- الزرار الذهبي المنور -->
+                <button class="btn-gold" id="claimSubmitBtn" type="button">✨ افتح دعوتك الخاصة</button>
+            </div>
         </div>
 
-        <!-- الزرار الذهبي المنور -->
-        <button class="btn-gold" id="claimSubmitBtn" type="button">✨ افتح دعوتك الخاصة</button>
-      </div>
+        <!-- كارت الدعوة الملكي -->
+        <div class="card-content" style="padding:30px 20px; text-align:center;">
+            <div
+                style="font-family:var(--font-mono); font-size:10px; letter-spacing:3px; color:#777; margin-bottom:15px;">
+                THE WEDDING ISSUE — SUMMER 2027</div>
+
+            <div style="display:inline-block; background:rgba(197,160,89,0.12); color:var(--gold-light); border:1px solid var(--surface-border); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700; margin-bottom:20px;"
+                id="guestBadge">
+                نتشرف بحضوركم الكريم 🤍
+            </div>
+
+            <h1 class="names-title"
+                style="font-family:var(--font-serif); font-size:38px; color:#fff; line-height:1.1; margin-bottom:6px;"
+                id="namesTitle">أحمد & منى</h1>
+            <div
+                style="font-family:'Cinzel',serif; font-size:16px; font-style:italic; color:var(--gold); margin-bottom:15px;">
+                SAVE OUR DATE</div>
+
+            <!-- سلايدر الصور -->
+            <div class="photo-slider" id="mainSlider">
+                <div class="slide active"><img
+                        src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80"
+                        alt="صورة 1"></div>
+                <div class="slide"><img
+                        src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80"
+                        alt="صورة 2"></div>
+            </div>
+
+            <!-- العداد التنازلي -->
+            <div class="countdown-strip">
+                <div><strong id="cdD">00</strong><span>أيام</span></div>
+                <div><strong id="cdH">00</strong><span>ساعات</span></div>
+                <div><strong id="cdM">00</strong><span>دقائق</span></div>
+                <div><strong id="cdS">00</strong><span>ثواني</span></div>
+            </div>
+
+            <!-- تفاصيل الموعد والقاعة -->
+            <div style="font-size:14px; line-height:1.8; margin-bottom:20px;">
+                <p><strong id="eventDateText">الخميس، 15 يوليو 2027</strong> — <span id="eventTimeText">الساعة 8:00
+                        مساءً</span></p>
+                <p style="color:#aaa; font-size:13px;" id="eventVenueText">قاعة فيردي الملكية - التجمع الخامس، القاهرة
+                </p>
+                <p style="color:var(--gold); font-size:12px; margin-top:4px;">Dress Code: سواريه ملكي ✨</p>
+            </div>
+
+            <!-- الأزرار التفاعلية -->
+            <div class="btn-action-col">
+                <button class="btn-action btn-gold-outline" id="downloadCardBtn" type="button">📸 حفظ كارت الدعوة كصورة
+                    في تليفوني</button>
+                <a href="#" id="waRsvpBtn" target="_blank" class="btn-action btn-wa">💬 مباركة وتأكيد الحضور عبر
+                    واتساب</a>
+                <a href="#" id="calendarBtn" class="btn-action btn-dark">🗓️ إضافة لتقويم هاتفي</a>
+                <a href="#" id="mapBtn" target="_blank" class="btn-action btn-map">📍 موقع القاعة عبر Google Maps</a>
+            </div>
+        </div>
+
     </div>
 
-    <!-- كارت الدعوة الملكي -->
-    <div class="card-content" style="padding:30px 20px; text-align:center;">
-      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:3px; color:#777; margin-bottom:15px;">THE WEDDING ISSUE — SUMMER 2027</div>
+    <script type="module">
+        import { CONFIG } from './src/js/core/config.js';
+        import { Security } from './src/js/core/security.js';
+        import { SupabaseService } from './src/js/services/supabase.js';
+        import { SafeStorage } from './src/js/services/storage.js';
+        import { initCountdown } from './src/js/modules/countdown.js';
+        import { initSlider } from './src/js/modules/slider.js';
+        import { generateVIPCardPNG } from './src/js/modules/card-canvas.js';
 
-      <div style="display:inline-block; background:rgba(197,160,89,0.12); color:var(--gold-light); border:1px solid var(--surface-border); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700; margin-bottom:20px;" id="guestBadge">
-        نتشرف بحضوركم الكريم 🤍
-      </div>
+        let currentGuest = SafeStorage.get('saved_guest_name') || '';
 
-      <h1 class="names-title" style="font-family:var(--font-serif); font-size:38px; color:#fff; line-height:1.1; margin-bottom:6px;" id="namesTitle">أحمد & منى</h1>
-      <div style="font-family:'Cinzel',serif; font-size:16px; font-style:italic; color:var(--gold); margin-bottom:15px;">SAVE OUR DATE</div>
+        // تطبيق البيانات الأساسية
+        document.getElementById('namesTitle').textContent = `${CONFIG.groom} & ${CONFIG.bride}`;
+        document.getElementById('eventDateText').textContent = CONFIG.dateHuman;
+        document.getElementById('eventTimeText').textContent = CONFIG.timeHuman;
+        document.getElementById('eventVenueText').textContent = CONFIG.venue;
+        document.getElementById('mapBtn').href = CONFIG.mapUrl;
 
-      <!-- سلايدر الصور -->
-      <div class="photo-slider" id="mainSlider">
-        <div class="slide active"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="صورة 1"></div>
-        <div class="slide"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80" alt="صورة 2"></div>
-      </div>
+        // إعداد التقويم
+        const isApple = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent);
+        const calBtn = document.getElementById('calendarBtn');
+        if (isApple) {
+            const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:زفاف ${CONFIG.groom} و ${CONFIG.bride}\r\nLOCATION:${CONFIG.venue}\r\nDTSTART:20270715T170000Z\r\nDTEND:20270715T220000Z\r\nEND:VEVENT\r\nEND:VCALENDAR`;
+            calBtn.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+            calBtn.setAttribute('download', 'wedding.ics');
+        } else {
+            calBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('زفاف ' + CONFIG.groom + ' و ' + CONFIG.bride)}&dates=20270715T170000Z/20270715T220000Z&location=${encodeURIComponent(CONFIG.venue)}`;
+            calBtn.target = "_blank";
+        }
 
-      <!-- العداد التنازلي -->
-      <div class="countdown-strip">
-        <div><strong id="cdD">00</strong><span>أيام</span></div>
-        <div><strong id="cdH">00</strong><span>ساعات</span></div>
-        <div><strong id="cdM">00</strong><span>دقائق</span></div>
-        <div><strong id="cdS">00</strong><span>ثواني</span></div>
-      </div>
+        // تشغيل العداد والسلايدر
+        initSlider('#mainSlider', 3000);
+        initCountdown(CONFIG.dateISO, (time) => {
+            document.getElementById('cdD').textContent = time.days;
+            document.getElementById('cdH').textContent = time.hours;
+            document.getElementById('cdM').textContent = time.mins;
+            document.getElementById('cdS').textContent = time.secs;
+        });
 
-      <!-- تفاصيل الموعد والقاعة -->
-      <div style="font-size:14px; line-height:1.8; margin-bottom:20px;">
-        <p><strong id="eventDateText">الخميس، 15 يوليو 2027</strong> — <span id="eventTimeText">الساعة 8:00 مساءً</span></p>
-        <p style="color:#aaa; font-size:13px;" id="eventVenueText">قاعة فيردي الملكية - التجمع الخامس، القاهرة</p>
-        <p style="color:var(--gold); font-size:12px; margin-top:4px;">Dress Code: سواريه ملكي ✨</p>
-      </div>
+        function setGuestUI(name) {
+            document.getElementById('claimModal').classList.add('hidden');
+            document.getElementById('guestBadge').textContent = `نتشرف بحضوركم الكريم: ${name} 🤍`;
+            const waMsg = encodeURIComponent(`ألف مبروك لأجمل عرسان (${CONFIG.groom} & ${CONFIG.bride})! يشرفنا الحضور ومشاركتكم فرحة ليلة العمر.. ${name} 💍`);
+            document.getElementById('waRsvpBtn').href = `https://wa.me/${CONFIG.phone}?text=${waMsg}`;
+        }
 
-      <!-- الأزرار التفاعلية -->
-      <div class="btn-action-col">
-        <button class="btn-action btn-gold-outline" id="downloadCardBtn" type="button">📸 حفظ كارت الدعوة كصورة في تليفوني</button>
-        <a href="#" id="waRsvpBtn" target="_blank" class="btn-action btn-wa">💬 مباركة وتأكيد الحضور عبر واتساب</a>
-        <a href="#" id="calendarBtn" class="btn-action btn-dark">🗓️ إضافة لتقويم هاتفي</a>
-        <a href="#" id="mapBtn" target="_blank" class="btn-action btn-map">📍 موقع القاعة عبر Google Maps</a>
-      </div>
-    </div>
+        if (currentGuest) {
+            setGuestUI(currentGuest);
+        } else {
+            document.getElementById('waRsvpBtn').href = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent('ألف مبروك يا عرسان! 💍')}`;
+        }
 
-  </div>
+        // ربط زر فتح الدعوة
+        document.getElementById('claimSubmitBtn').addEventListener('click', async () => {
+            const input = document.getElementById('guestNameInput').value.trim();
+            if (!input) {
+                alert('من فضلك اكتب اسمك الكريم أولاً 🤍');
+                return;
+            }
+            currentGuest = Security.sanitizeText(input);
+            SafeStorage.set('saved_guest_name', currentGuest);
+            setGuestUI(currentGuest);
 
-  <script type="module">
-    import { CONFIG } from './src/js/core/config.js';
-    import { Security } from './src/js/core/security.js';
-    import { SupabaseService } from './src/js/services/supabase.js';
-    import { SafeStorage } from './src/js/services/storage.js';
-    import { initCountdown } from './src/js/modules/countdown.js';
-    import { initSlider } from './src/js/modules/slider.js';
-    import { generateVIPCardPNG } from './src/js/modules/card-canvas.js';
+            // تسجيل صامت في Supabase
+            try {
+                await SupabaseService.registerRSVP(currentGuest);
+                console.log('✅ تم تسجيل الضيف بنجاح في قاعدة البيانات');
+            } catch (err) {
+                console.warn('تنبيه في الاتصال بـ Supabase:', err);
+            }
+        });
 
-    let currentGuest = SafeStorage.get('saved_guest_name') || '';
-
-    // تطبيق البيانات الأساسية
-    document.getElementById('namesTitle').textContent = `${CONFIG.groom} & ${CONFIG.bride}`;
-    document.getElementById('eventDateText').textContent = CONFIG.dateHuman;
-    document.getElementById('eventTimeText').textContent = CONFIG.timeHuman;
-    document.getElementById('eventVenueText').textContent = CONFIG.venue;
-    document.getElementById('mapBtn').href = CONFIG.mapUrl;
-
-    // إعداد التقويم
-    const isApple = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent);
-    const calBtn = document.getElementById('calendarBtn');
-    if (isApple) {
-      const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:زفاف ${CONFIG.groom} و ${CONFIG.bride}\r\nLOCATION:${CONFIG.venue}\r\nDTSTART:20270715T170000Z\r\nDTEND:20270715T220000Z\r\nEND:VEVENT\r\nEND:VCALENDAR`;
-      calBtn.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
-      calBtn.setAttribute('download', 'wedding.ics');
-    } else {
-      calBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('زفاف ' + CONFIG.groom + ' و ' + CONFIG.bride)}&dates=20270715T170000Z/20270715T220000Z&location=${encodeURIComponent(CONFIG.venue)}`;
-      calBtn.target = "_blank";
-    }
-
-    // تشغيل العداد والسلايدر
-    initSlider('#mainSlider', 3000);
-    initCountdown(CONFIG.dateISO, (time) => {
-      document.getElementById('cdD').textContent = time.days;
-      document.getElementById('cdH').textContent = time.hours;
-      document.getElementById('cdM').textContent = time.mins;
-      document.getElementById('cdS').textContent = time.secs;
-    });
-
-    function setGuestUI(name) {
-      document.getElementById('claimModal').classList.add('hidden');
-      document.getElementById('guestBadge').textContent = `نتشرف بحضوركم الكريم: ${name} 🤍`;
-      const waMsg = encodeURIComponent(`ألف مبروك لأجمل عرسان (${CONFIG.groom} & ${CONFIG.bride})! يشرفنا الحضور ومشاركتكم فرحة ليلة العمر.. ${name} 💍`);
-      document.getElementById('waRsvpBtn').href = `https://wa.me/${CONFIG.phone}?text=${waMsg}`;
-    }
-
-    if (currentGuest) {
-      setGuestUI(currentGuest);
-    } else {
-      document.getElementById('waRsvpBtn').href = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent('ألف مبروك يا عرسان! 💍')}`;
-    }
-
-    // ربط زر فتح الدعوة
-    document.getElementById('claimSubmitBtn').addEventListener('click', async () => {
-      const input = document.getElementById('guestNameInput').value.trim();
-      if (!input) {
-        alert('من فضلك اكتب اسمك الكريم أولاً 🤍');
-        return;
-      }
-      currentGuest = Security.sanitizeText(input);
-      SafeStorage.set('saved_guest_name', currentGuest);
-      setGuestUI(currentGuest);
-
-      // تسجيل صامت في Supabase
-      try {
-        await SupabaseService.registerRSVP(currentGuest);
-        console.log('✅ تم تسجيل الضيف بنجاح في قاعدة البيانات');
-      } catch (err) {
-        console.warn('تنبيه في الاتصال بـ Supabase:', err);
-      }
-    });
-
-    // ربط زر تحميل الكارت
-    document.getElementById('downloadCardBtn').addEventListener('click', () => {
-      generateVIPCardPNG(currentGuest || 'ضيفنا العزيز');
-    });
-  </script>
+        // ربط زر تحميل الكارت
+        document.getElementById('downloadCardBtn').addEventListener('click', () => {
+            generateVIPCardPNG(currentGuest || 'ضيفنا العزيز');
+        });
+    </script>
 </body>
+
 </html>
