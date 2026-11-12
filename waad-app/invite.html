@@ -3,170 +3,268 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة كشف المعازيم | إدارة الفرح 🔒</title>
+  <title>وعد 💍 | دعوة زفاف خاصة</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@700&family=Space+Grotesk:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="src/css/tokens.css">
   <link rel="stylesheet" href="src/css/reset.css">
   <link rel="stylesheet" href="src/css/components.css">
-
-  <style>
-    body { background: #0a0c12; color: #f0f2f5; font-family: 'Tajawal', sans-serif; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
-    .admin-container { width: 100%; max-width: 520px; padding: 30px 18px; text-align: right; }
-    .stat-box { background: #131722; border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .stat-box strong { font-family: 'Space Grotesk', sans-serif; font-size: 42px; color: #c5a059; display: block; }
-    .guest-card-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.06); }
-    .btn-gold { width: 100%; padding: 16px; background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; }
-  </style>
 </head>
 <body>
 
-  <!-- شاشة الدخول بالرقم السري -->
-  <div class="modal-backdrop" id="authGate">
-    <div class="modal-card">
-      <div style="font-size:42px; margin-bottom:12px;">🔒</div>
-      <h3 style="font-size:20px; margin-bottom:6px; color:#fff;">لوحة متابعة كشف المعازيم</h3>
-      <p style="font-size:13px; color:#888; margin-bottom:20px;">خاص بالعريس فقط (مطابقة مباشرة مع الداتابيز)</p>
-      
-      <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..." style="text-align:center; letter-spacing:5px; font-size:20px; margin-bottom:16px;">
-      
-      <button class="btn-gold" id="loginBtn" type="button" onclick="handleDatabaseLogin()">دخول اللوحة بأمان</button>
-      <p id="authErrorMsg" style="color:#ff4d6d; font-size:12px; margin-top:12px; display:none;"></p>
-    </div>
-  </div>
+  <div class="screen-frame">
 
-  <!-- لوحة كشف المعازيم -->
-  <div class="admin-container" id="adminDashboard" style="display:none;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-      <div>
-        <h2 style="font-size:22px; color:#fff;">كشف الحضور السحابي 💍</h2>
-        <span style="font-size:12px; color:#c5a059;">فرح أحمد & منى</span>
+    <!-- نافذة الاستلام الشيك (اسم الضيف فقط) -->
+    <div class="modal-backdrop" id="claimModal">
+      <div class="modal-card">
+        <div style="font-size:42px; margin-bottom:12px;">💌</div>
+        <h2 style="font-family:var(--font-serif); font-size:26px; color:var(--gold-light); margin-bottom:8px;">أهلاً بك وبكل أحبابك 🤍</h2>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:20px;">فرحتنا مش هتكمل غير بوجودكم.. اكتب اسمك الكريم لاستلام كارت دعوتك المخصص:</p>
+
+        <div style="text-align:right; margin-bottom:18px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#ddd; margin-bottom:6px;">اسمك الكريم كما تحب أن نرحب بك:</label>
+          <input type="text" class="text-input" id="guestNameInput" placeholder="اكتب اسمك هنا...">
+          <span style="display:block; font-size:11px; color:var(--gold); margin-top:5px; opacity:0.85;">مثال: م. أحمد وحرمه / د. محمود وعائلته / كريم مصطفى</span>
+        </div>
+
+        <button class="btn-gold" id="claimSubmitBtn" type="button" onclick="handleGuestClaim()">✨ افتح دعوتك الخاصة</button>
       </div>
-      <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadGuests()">🔄 تحديث</button>
     </div>
 
-    <div class="stat-box">
-      <strong id="totalGuestsCount">0</strong>
-      <span style="font-size:13px; color:#888;">إجمالي المدعوين المسجلين حتى الآن</span>
+    <!-- كارت الدعوة الملكي -->
+    <div class="card-content" style="padding:30px 20px; text-align:center;">
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:3px; color:#777; margin-bottom:15px;">THE WEDDING ISSUE — SUMMER 2027</div>
+
+      <div style="display:inline-block; background:rgba(197,160,89,0.12); color:var(--gold-light); border:1px solid var(--surface-border); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700; margin-bottom:20px;" id="guestBadge">
+        نتشرف بحضوركم الكريم 🤍
+      </div>
+
+      <h1 class="names-title" style="font-family:var(--font-serif); font-size:38px; color:#fff; line-height:1.1; margin-bottom:6px;" id="namesTitle">أحمد & منى</h1>
+      <div style="font-family:'Cinzel',serif; font-size:16px; font-style:italic; color:var(--gold); margin-bottom:15px;">SAVE OUR DATE</div>
+
+      <!-- سلايدر الصور -->
+      <div class="photo-slider" id="mainSlider">
+        <div class="slide active"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="صورة 1"></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80" alt="صورة 2"></div>
+      </div>
+
+      <!-- العداد التنازلي -->
+      <div class="countdown-strip">
+        <div><strong id="cdD">00</strong><span>أيام</span></div>
+        <div><strong id="cdH">00</strong><span>ساعات</span></div>
+        <div><strong id="cdM">00</strong><span>دقائق</span></div>
+        <div><strong id="cdS">00</strong><span>ثواني</span></div>
+      </div>
+
+      <!-- تفاصيل الموعد والقاعة -->
+      <div style="font-size:14px; line-height:1.8; margin-bottom:20px;">
+        <p><strong id="eventDateText">الخميس، 15 يوليو 2027</strong> — <span id="eventTimeText">الساعة 8:00 مساءً</span></p>
+        <p style="color:#aaa; font-size:13px;" id="eventVenueText">قاعة فيردي الملكية - التجمع الخامس، القاهرة</p>
+        <p style="color:var(--gold); font-size:12px; margin-top:4px;">Dress Code: سواريه ملكي ✨</p>
+      </div>
+
+      <!-- الأزرار التفاعلية -->
+      <div class="btn-action-col">
+        <button class="btn-action btn-gold-outline" id="downloadCardBtn" type="button" onclick="handleCardDownload()">📸 حفظ كارت الدعوة كصورة في تليفوني</button>
+        <a href="#" id="waRsvpBtn" target="_blank" class="btn-action btn-wa">💬 مباركة وتأكيد الحضور عبر واتساب</a>
+        <a href="#" id="calendarBtn" class="btn-action btn-dark">🗓️ إضافة لتقويم هاتفي</a>
+        <a href="#" id="mapBtn" target="_blank" class="btn-action btn-map">📍 موقع القاعة عبر Google Maps</a>
+      </div>
     </div>
 
-    <button class="btn-action btn-gold" onclick="exportExcel()" style="margin-bottom:24px;">📥 تنزيل كشف المعازيم لمسؤول القاعة (Excel/CSV)</button>
-
-    <h4 style="font-size:15px; color:#c5a059; margin-bottom:12px;">قائمة الأسماء المسجلة لايف:</h4>
-    <div id="guestsListContainer"></div>
   </div>
 
   <script>
     const CONFIG = {
       supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
       supabaseKey: "eyJhbGciOi...", // حط المفتاح العام anon key بتاعك هنا
-      slug: "ahmed-mona"
+      slug: "ahmed-mona",
+      groom: "أحمد",
+      bride: "منى",
+      dateISO: "2027-07-15T20:00:00+02:00",
+      dateHuman: "الخميس، 15 يوليو 2027",
+      timeHuman: "الساعة 8:00 مساءً",
+      venue: "قاعة فيردي الملكية - التجمع الخامس",
+      mapUrl: "https://maps.google.com/?q=New+Cairo",
+      phone: "201012345678"
     };
 
-    let loadedGuests = [];
+    let currentGuest = localStorage.getItem('saved_guest_name') || '';
 
-    // المطابقة اللحظية مع الباسورد المسجل في قاعدة البيانات (1111)
-    async function handleDatabaseLogin() {
-      const pin = document.getElementById('pinInput').value.trim();
-      const errorMsg = document.getElementById('authErrorMsg');
-      errorMsg.style.display = 'none';
-
-      if (!pin) {
-        alert('من فضلك أدخل الرقم السري');
-        return;
+    function getDeviceToken() {
+      let token = localStorage.getItem('waad_device_token');
+      if (!token) {
+        token = 'tok_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+        localStorage.setItem('waad_device_token', token);
       }
+      return token;
+    }
 
-      const loginBtn = document.getElementById('loginBtn');
-      loginBtn.textContent = 'جاري مطابقة الباسورد مع Supabase...';
-      loginBtn.disabled = true;
+    function sanitize(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' }[m];
+      }).trim();
+    }
 
-      try {
-        const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/invitations?slug=eq.${CONFIG.slug}&select=admin_pin`, {
-          headers: {
-            'apikey': CONFIG.supabaseKey,
-            'Authorization': 'Bearer ' + CONFIG.supabaseKey
-          }
-        });
+    function setupPageData() {
+      document.getElementById('namesTitle').textContent = CONFIG.groom + ' & ' + CONFIG.bride;
+      document.getElementById('eventDateText').textContent = CONFIG.dateHuman;
+      document.getElementById('eventTimeText').textContent = CONFIG.timeHuman;
+      document.getElementById('eventVenueText').textContent = CONFIG.venue;
+      document.getElementById('mapBtn').href = CONFIG.mapUrl;
 
-        const data = await res.json();
-
-        // فحص الباسورد القادم من الداتابيز مباشرة
-        if (data && data.length > 0 && String(data[0].admin_pin) === String(pin)) {
-          document.getElementById('authGate').style.display = 'none';
-          document.getElementById('adminDashboard').style.display = 'block';
-          loadGuests();
-        } else {
-          errorMsg.textContent = 'الرقم السري غير مطابق للرقم المسجل في قاعدة البيانات (جرب 1111)!';
-          errorMsg.style.display = 'block';
-        }
-      } catch (err) {
-        errorMsg.textContent = 'تعذر الاتصال بقاعدة البيانات. تأكد من المفاتيح.';
-        errorMsg.style.display = 'block';
-      } finally {
-        loginBtn.textContent = 'دخول اللوحة بأمان';
-        loginBtn.disabled = false;
+      const isApple = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent);
+      const calBtn = document.getElementById('calendarBtn');
+      if (isApple) {
+        const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:زفاف ${CONFIG.groom} و ${CONFIG.bride}\r\nLOCATION:${CONFIG.venue}\r\nDTSTART:20270715T170000Z\r\nDTEND:20270715T220000Z\r\nEND:VEVENT\r\nEND:VCALENDAR`;
+        calBtn.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+        calBtn.setAttribute('download', 'wedding.ics');
+      } else {
+        calBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('زفاف ' + CONFIG.groom + ' و ' + CONFIG.bride)}&dates=20270715T170000Z/20270715T220000Z&location=${encodeURIComponent(CONFIG.venue)}`;
+        calBtn.target = "_blank";
       }
     }
 
-    async function loadGuests() {
-      const container = document.getElementById('guestsListContainer');
-      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من السيرفر...</p>';
+    function updateGuestView(name) {
+      // إخفاء فوري للنافذة
+      const modal = document.getElementById('claimModal');
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
 
+      document.getElementById('guestBadge').textContent = 'نتشرف بحضوركم الكريم: ' + name + ' 🤍';
+      const msg = encodeURIComponent(`ألف مبروك لأجمل عرسان (${CONFIG.groom} & ${CONFIG.bride})! يشرفنا الحضور ومشاركتكم فرحة ليلة العمر.. ${name} 💍`);
+      document.getElementById('waRsvpBtn').href = 'https://wa.me/' + CONFIG.phone + '?text=' + msg;
+    }
+
+    async function handleGuestClaim() {
+      const input = document.getElementById('guestNameInput').value.trim();
+      if (!input) {
+        alert('من فضلك اكتب اسمك الكريم أولاً 🤍');
+        return;
+      }
+      currentGuest = sanitize(input);
+      localStorage.setItem('saved_guest_name', currentGuest);
+      updateGuestView(currentGuest);
+
+      // تسجيل صامت في قاعدة بيانات Supabase
       try {
-        const response = await fetch(`${CONFIG.supabaseUrl}/rest/v1/rsvps?invitation_slug=eq.${CONFIG.slug}&order=created_at.desc`, {
+        const payload = {
+          invitation_slug: CONFIG.slug,
+          guest_name: currentGuest,
+          guest_token: getDeviceToken(),
+          status: 'confirmed'
+        };
+
+        const res = await fetch(CONFIG.supabaseUrl + '/rest/v1/rsvps', {
+          method: 'POST',
           headers: {
             'apikey': CONFIG.supabaseKey,
-            'Authorization': 'Bearer ' + CONFIG.supabaseKey
-          }
+            'Authorization': 'Bearer ' + CONFIG.supabaseKey,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(payload)
         });
 
-        if (response.ok) {
-          loadedGuests = await response.json();
-          document.getElementById('totalGuestsCount').textContent = loadedGuests.length;
-          container.innerHTML = '';
-
-          if (loadedGuests.length === 0) {
-            container.innerHTML = '<p style="font-size:13px; color:#888; text-align:center; padding:20px;">لا توجد تسجيلات حتى الآن.</p>';
-            return;
-          }
-
-          loadedGuests.forEach((g, idx) => {
-            const row = document.createElement('div');
-            row.className = 'guest-card-row';
-            const time = new Date(g.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-            row.innerHTML = `
-              <div>
-                <strong style="font-size:15px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
-                <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
-              </div>
-              <span style="font-size:11px; background:rgba(37,211,102,0.15); color:#25d366; padding:4px 10px; border-radius:12px; font-weight:bold;">مؤكد ✓</span>
-            `;
-            container.appendChild(row);
-          });
+        if (res.ok || res.status === 409) {
+          console.log('✅ تم تسجيل الضيف في قاعدة البيانات بنجاح!');
         }
       } catch (err) {
-        container.innerHTML = '<p style="color:#ff4d6d; font-size:12px;">فشل تحديث البيانات.</p>';
+        console.warn('تم الحفظ محلياً على الجهاز:', err);
       }
     }
 
-    function exportExcel() {
-      if (!loadedGuests || loadedGuests.length === 0) {
-        alert('لا يوجد معازيم مسجلين حتى الآن');
-        return;
-      }
-      let csv = "data:text/csv;charset=utf-8,\uFEFFم,اسم المعزوم,توقيت التسجيل\n";
-      loadedGuests.forEach((g, idx) => {
-        const time = new Date(g.created_at).toLocaleString('ar-EG');
-        csv += `${idx + 1},"${g.guest_name}","${time}"\n`;
-      });
+    function handleCardDownload() {
+      const name = currentGuest || 'ضيفنا العزيز';
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 800;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#0a0d14';
+      ctx.fillRect(0, 0, 600, 800);
+      ctx.strokeStyle = '#c5a059';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(30, 30, 540, 740);
+      ctx.lineWidth = 1;
+      ctx.strokeRect(40, 40, 520, 720);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#c5a059';
+      ctx.font = '24px Tajawal, sans-serif';
+      ctx.fillText('دعوة زفاف خاصة 💍', 300, 110);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 44px Amiri, serif';
+      ctx.fillText(CONFIG.groom + ' & ' + CONFIG.bride, 300, 180);
+
+      ctx.fillStyle = '#888888';
+      ctx.font = '18px Tajawal, sans-serif';
+      ctx.fillText('يتشرف العروسان بدعوة كريم تشريفكم:', 300, 260);
+
+      ctx.fillStyle = '#141824';
+      ctx.fillRect(60, 290, 480, 85);
+      ctx.strokeStyle = '#c5a059';
+      ctx.strokeRect(60, 290, 480, 85);
+
+      ctx.fillStyle = '#f7e7c4';
+      ctx.font = 'bold 24px Tajawal, sans-serif';
+      ctx.fillText(name, 300, 345);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '20px Tajawal, sans-serif';
+      ctx.fillText('📅 ' + CONFIG.dateHuman, 300, 440);
+      ctx.fillText('📍 ' + CONFIG.venue, 300, 490);
+
+      ctx.fillStyle = '#c5a059';
+      ctx.font = '16px Tajawal, sans-serif';
+      ctx.fillText('Dress Code: سواريه ملكي ✨', 300, 560);
+
+      ctx.fillStyle = '#666666';
+      ctx.font = '14px Tajawal, sans-serif';
+      ctx.fillText('صُنعت بكل حب بواسطة وعد', 300, 720);
+
       const link = document.createElement('a');
-      link.href = encodeURI(csv);
-      link.download = `كشف_معازيم_${CONFIG.slug}.csv`;
+      link.download = `دعوة_${name.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
       link.click();
     }
+
+    function runTimer() {
+      const target = new Date(CONFIG.dateISO).getTime();
+      setInterval(() => {
+        const diff = target - Date.now();
+        if (diff <= 0) return;
+        document.getElementById('cdD').textContent = String(Math.floor(diff / 864e5)).padStart(2, '0');
+        document.getElementById('cdH').textContent = String(Math.floor((diff % 864e5) / 36e5)).padStart(2, '0');
+        document.getElementById('cdM').textContent = String(Math.floor((diff % 36e5) / 6e4)).padStart(2, '0');
+        document.getElementById('cdS').textContent = String(Math.floor((diff % 6e4) / 1e3)).padStart(2, '0');
+      }, 1000);
+
+      let idx = 0;
+      const slides = document.querySelectorAll('.photo-slider .slide');
+      if (slides.length > 1) {
+        setInterval(() => {
+          slides[idx].classList.remove('active');
+          idx = (idx + 1) % slides.length;
+          slides[idx].classList.add('active');
+        }, 3000);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupPageData();
+      runTimer();
+      if (currentGuest) {
+        updateGuestView(currentGuest);
+      } else {
+        document.getElementById('waRsvpBtn').href = 'https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent('ألف مبروك يا عرسان! 💍');
+      }
+    });
   </script>
 </body>
 </html>
