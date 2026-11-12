@@ -14,10 +14,12 @@
   <link rel="stylesheet" href="src/css/components.css">
 
   <style>
+    body { background: #0a0c12; color: #f0f2f5; font-family: 'Tajawal', sans-serif; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
     .admin-container { width: 100%; max-width: 520px; padding: 30px 18px; text-align: right; }
-    .stat-box { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .stat-box strong { font-family: var(--font-mono); font-size: 42px; color: var(--gold); display: block; }
+    .stat-box { background: #131722; border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .stat-box strong { font-family: 'Space Grotesk', sans-serif; font-size: 42px; color: #c5a059; display: block; }
     .guest-card-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.06); }
+    .btn-gold { width: 100%; padding: 16px; background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -27,12 +29,12 @@
     <div class="modal-card">
       <div style="font-size:42px; margin-bottom:12px;">🔒</div>
       <h3 style="font-size:20px; margin-bottom:6px; color:#fff;">لوحة متابعة كشف المعازيم</h3>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">خاص بالعريس فقط لمتابعة الحضور المباشر</p>
+      <p style="font-size:13px; color:#888; margin-bottom:20px;">خاص بالعريس فقط (مطابقة مباشرة مع الداتابيز)</p>
       
       <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..." style="text-align:center; letter-spacing:5px; font-size:20px; margin-bottom:16px;">
       
-      <button class="btn-gold" id="loginBtn" type="button" onclick="handleDirectLogin()">دخول اللوحة بأمان</button>
-      <p id="authErrorMsg" style="color:var(--rose); font-size:12px; margin-top:12px; display:none;"></p>
+      <button class="btn-gold" id="loginBtn" type="button" onclick="handleDatabaseLogin()">دخول اللوحة بأمان</button>
+      <p id="authErrorMsg" style="color:#ff4d6d; font-size:12px; margin-top:12px; display:none;"></p>
     </div>
   </div>
 
@@ -40,51 +42,78 @@
   <div class="admin-container" id="adminDashboard" style="display:none;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
       <div>
-        <h2 style="font-size:22px; color:#fff;">كشف الحضور المباشر 💍</h2>
-        <span style="font-size:12px; color:var(--gold);">فرح أحمد & منى</span>
+        <h2 style="font-size:22px; color:#fff;">كشف الحضور السحابي 💍</h2>
+        <span style="font-size:12px; color:#c5a059;">فرح أحمد & منى</span>
       </div>
-      <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadGuestsDirectly()">🔄 تحديث</button>
+      <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadGuests()">🔄 تحديث</button>
     </div>
 
     <div class="stat-box">
       <strong id="totalGuestsCount">0</strong>
-      <span style="font-size:13px; color:var(--text-muted);">إجمالي المدعوين المسجلين حتى الآن</span>
+      <span style="font-size:13px; color:#888;">إجمالي المدعوين المسجلين حتى الآن</span>
     </div>
 
     <button class="btn-action btn-gold" onclick="exportExcel()" style="margin-bottom:24px;">📥 تنزيل كشف المعازيم لمسؤول القاعة (Excel/CSV)</button>
 
-    <h4 style="font-size:15px; color:var(--gold); margin-bottom:12px;">قائمة الأسماء المسجلة لايف:</h4>
+    <h4 style="font-size:15px; color:#c5a059; margin-bottom:12px;">قائمة الأسماء المسجلة لايف:</h4>
     <div id="guestsListContainer"></div>
   </div>
 
   <script>
     const CONFIG = {
       supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
-      supabaseKey: "sb_publishable_a_MBKX2GL97-0iqmhKy7uw_X8unWb93", 
-      slug: "ahmed-mona",
-      adminPin: "1234"
+      supabaseKey: "eyJhbGciOi...", // حط المفتاح العام anon key بتاعك هنا
+      slug: "ahmed-mona"
     };
 
     let loadedGuests = [];
 
-    function handleDirectLogin() {
+    // المطابقة اللحظية مع الباسورد المسجل في قاعدة البيانات (1111)
+    async function handleDatabaseLogin() {
       const pin = document.getElementById('pinInput').value.trim();
       const errorMsg = document.getElementById('authErrorMsg');
       errorMsg.style.display = 'none';
 
-      if (pin === CONFIG.adminPin) {
-        document.getElementById('authGate').classList.add('hidden');
-        document.getElementById('adminDashboard').style.display = 'block';
-        loadGuestsDirectly();
-      } else {
-        errorMsg.textContent = 'الرقم السري غير صحيح (تأكد من كتابة 1234)';
+      if (!pin) {
+        alert('من فضلك أدخل الرقم السري');
+        return;
+      }
+
+      const loginBtn = document.getElementById('loginBtn');
+      loginBtn.textContent = 'جاري مطابقة الباسورد مع Supabase...';
+      loginBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/invitations?slug=eq.${CONFIG.slug}&select=admin_pin`, {
+          headers: {
+            'apikey': CONFIG.supabaseKey,
+            'Authorization': 'Bearer ' + CONFIG.supabaseKey
+          }
+        });
+
+        const data = await res.json();
+
+        // فحص الباسورد القادم من الداتابيز مباشرة
+        if (data && data.length > 0 && String(data[0].admin_pin) === String(pin)) {
+          document.getElementById('authGate').style.display = 'none';
+          document.getElementById('adminDashboard').style.display = 'block';
+          loadGuests();
+        } else {
+          errorMsg.textContent = 'الرقم السري غير مطابق للرقم المسجل في قاعدة البيانات (جرب 1111)!';
+          errorMsg.style.display = 'block';
+        }
+      } catch (err) {
+        errorMsg.textContent = 'تعذر الاتصال بقاعدة البيانات. تأكد من المفاتيح.';
         errorMsg.style.display = 'block';
+      } finally {
+        loginBtn.textContent = 'دخول اللوحة بأمان';
+        loginBtn.disabled = false;
       }
     }
 
-    async function loadGuestsDirectly() {
+    async function loadGuests() {
       const container = document.getElementById('guestsListContainer');
-      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من قاعدة البيانات السحابية...</p>';
+      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من السيرفر...</p>';
 
       try {
         const response = await fetch(`${CONFIG.supabaseUrl}/rest/v1/rsvps?invitation_slug=eq.${CONFIG.slug}&order=created_at.desc`, {
@@ -113,15 +142,13 @@
                 <strong style="font-size:15px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
                 <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
               </div>
-              <span style="font-size:11px; background:rgba(37,211,102,0.15); color:var(--primary); padding:4px 10px; border-radius:12px; font-weight:bold;">مؤكد ✓</span>
+              <span style="font-size:11px; background:rgba(37,211,102,0.15); color:#25d366; padding:4px 10px; border-radius:12px; font-weight:bold;">مؤكد ✓</span>
             `;
             container.appendChild(row);
           });
-        } else {
-          container.innerHTML = '<p style="color:var(--rose); font-size:12px;">تعذر جلب البيانات. تأكد من إعدادات Supabase.</p>';
         }
       } catch (err) {
-        container.innerHTML = '<p style="color:var(--rose); font-size:12px;">خطأ في الاتصال بالسيرفر.</p>';
+        container.innerHTML = '<p style="color:#ff4d6d; font-size:12px;">فشل تحديث البيانات.</p>';
       }
     }
 
