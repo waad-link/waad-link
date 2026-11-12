@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة كشف المعازيم المشفرة | إدارة الفرح 🔒</title>
+  <title>لوحة كشف المعازيم | إدارة الفرح 🔒</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,33 +18,32 @@
     .stat-box { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .stat-box strong { font-family: var(--font-mono); font-size: 42px; color: var(--gold); display: block; }
     .guest-card-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.06); }
-    .security-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--primary); background: rgba(37,211,102,0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(37,211,102,0.25); margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
-  <!-- شاشة الدخول بالرقم السري المشفرة عبر السيرفر -->
+  <!-- شاشة الدخول بالرقم السري -->
   <div class="modal-backdrop" id="authGate">
     <div class="modal-card">
       <div style="font-size:42px; margin-bottom:12px;">🔒</div>
-      <div class="security-badge">🛡️ فحص سحابي مشفر (Cloudflare Edge)</div>
       <h3 style="font-size:20px; margin-bottom:6px; color:#fff;">لوحة متابعة كشف المعازيم</h3>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">خاص بالعريس فقط لمتابعة الحضور المباشر</p>
       
       <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..." style="text-align:center; letter-spacing:5px; font-size:20px; margin-bottom:16px;">
       
-      <button class="btn-gold" id="loginBtn" type="button" onclick="handleSecureLogin()">دخول اللوحة بأمان</button>
+      <button class="btn-gold" id="loginBtn" type="button" onclick="handleDirectLogin()">دخول اللوحة بأمان</button>
       <p id="authErrorMsg" style="color:var(--rose); font-size:12px; margin-top:12px; display:none;"></p>
     </div>
   </div>
 
+  <!-- لوحة كشف المعازيم -->
   <div class="admin-container" id="adminDashboard" style="display:none;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
       <div>
-        <h2 style="font-size:22px; color:#fff;">كشف الحضور السحابي 💍</h2>
+        <h2 style="font-size:22px; color:#fff;">كشف الحضور المباشر 💍</h2>
         <span style="font-size:12px; color:var(--gold);">فرح أحمد & منى</span>
       </div>
-      <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadDataSecurely()">🔄 تحديث</button>
+      <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadGuestsDirectly()">🔄 تحديث</button>
     </div>
 
     <div class="stat-box">
@@ -59,95 +58,71 @@
   </div>
 
   <script>
-    const EVENT_SLUG = "ahmed-mona";
-    let loadedGuests = [];
-    let savedPin = "";
+    const CONFIG = {
+      supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
+      supabaseKey: "eyJhbGciOi...", // حط المفتاح العام anon key بتاعك هنا
+      slug: "ahmed-mona",
+      adminPin: "1234"
+    };
 
-    // الدخول والتحقق الآمن من خلال دالة الحراسة /api/admin-auth في سيرفر كلاود فلير
-    async function handleSecureLogin() {
+    let loadedGuests = [];
+
+    function handleDirectLogin() {
       const pin = document.getElementById('pinInput').value.trim();
       const errorMsg = document.getElementById('authErrorMsg');
       errorMsg.style.display = 'none';
 
-      if (!pin) {
-        alert('من فضلك أدخل الرقم السري');
-        return;
-      }
-
-      const loginBtn = document.getElementById('loginBtn');
-      loginBtn.textContent = 'جاري التحقق المشفر...';
-      loginBtn.disabled = true;
-
-      try {
-        const response = await fetch('functions/api/admin-auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: EVENT_SLUG, pin: pin })
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          savedPin = pin;
-          document.getElementById('authGate').classList.add('hidden');
-          document.getElementById('adminDashboard').style.display = 'block';
-          renderGuests(data.guests);
-        } else {
-          errorMsg.textContent = data.error || 'الرقم السري غير صحيح. تم رفض الوصول.';
-          errorMsg.style.display = 'block';
-        }
-      } catch (err) {
-        errorMsg.textContent = 'تعذر الاتصال بسيرفر الأمان. تأكد من اتصال الإنترنت.';
+      if (pin === CONFIG.adminPin) {
+        document.getElementById('authGate').classList.add('hidden');
+        document.getElementById('adminDashboard').style.display = 'block';
+        loadGuestsDirectly();
+      } else {
+        errorMsg.textContent = 'الرقم السري غير صحيح (تأكد من كتابة 1234)';
         errorMsg.style.display = 'block';
-      } finally {
-        loginBtn.textContent = 'دخول اللوحة بأمان';
-        loginBtn.disabled = false;
       }
     }
 
-    async function loadDataSecurely() {
+    async function loadGuestsDirectly() {
       const container = document.getElementById('guestsListContainer');
-      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري التحديث من السيرفر...</p>';
+      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من قاعدة البيانات السحابية...</p>';
 
       try {
-        const response = await fetch('functions/api/admin-auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: EVENT_SLUG, pin: savedPin })
+        const response = await fetch(`${CONFIG.supabaseUrl}/rest/v1/rsvps?invitation_slug=eq.${CONFIG.slug}&order=created_at.desc`, {
+          headers: {
+            'apikey': CONFIG.supabaseKey,
+            'Authorization': 'Bearer ' + CONFIG.supabaseKey
+          }
         });
-        const data = await response.json();
-        if (response.ok && data.success) {
-          renderGuests(data.guests);
+
+        if (response.ok) {
+          loadedGuests = await response.json();
+          document.getElementById('totalGuestsCount').textContent = loadedGuests.length;
+          container.innerHTML = '';
+
+          if (loadedGuests.length === 0) {
+            container.innerHTML = '<p style="font-size:13px; color:#888; text-align:center; padding:20px;">لا توجد تسجيلات حتى الآن.</p>';
+            return;
+          }
+
+          loadedGuests.forEach((g, idx) => {
+            const row = document.createElement('div');
+            row.className = 'guest-card-row';
+            const time = new Date(g.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+            row.innerHTML = `
+              <div>
+                <strong style="font-size:15px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
+                <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
+              </div>
+              <span style="font-size:11px; background:rgba(37,211,102,0.15); color:var(--primary); padding:4px 10px; border-radius:12px; font-weight:bold;">مؤكد ✓</span>
+            `;
+            container.appendChild(row);
+          });
+        } else {
+          container.innerHTML = '<p style="color:var(--rose); font-size:12px;">تعذر جلب البيانات. تأكد من إعدادات Supabase.</p>';
         }
       } catch (err) {
-        container.innerHTML = '<p style="color:var(--rose); font-size:12px;">فشل التحديث</p>';
+        container.innerHTML = '<p style="color:var(--rose); font-size:12px;">خطأ في الاتصال بالسيرفر.</p>';
       }
-    }
-
-    function renderGuests(list) {
-      loadedGuests = list || [];
-      document.getElementById('totalGuestsCount').textContent = loadedGuests.length;
-      const container = document.getElementById('guestsListContainer');
-      container.innerHTML = '';
-
-      if (loadedGuests.length === 0) {
-        container.innerHTML = '<p style="font-size:13px; color:#888; text-align:center; padding:20px;">لا توجد تسجيلات حتى الآن.</p>';
-        return;
-      }
-
-      loadedGuests.forEach((g, idx) => {
-        const row = document.createElement('div');
-        row.className = 'guest-card-row';
-        const time = new Date(g.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        row.innerHTML = `
-          <div>
-            <strong style="font-size:15px; color:#fff;">${idx + 1}. ${g.guest_name}</strong>
-            <span style="display:block; font-size:11px; color:#888;">سجل: ${time}</span>
-          </div>
-          <span style="font-size:11px; background:rgba(37,211,102,0.15); color:var(--primary); padding:4px 10px; border-radius:12px; font-weight:bold;">مؤكد ✓</span>
-        `;
-        container.appendChild(row);
-      });
     }
 
     function exportExcel() {
@@ -162,7 +137,7 @@
       });
       const link = document.createElement('a');
       link.href = encodeURI(csv);
-      link.download = `كشف_معازيم_${EVENT_SLUG}.csv`;
+      link.download = `كشف_معازيم_${CONFIG.slug}.csv`;
       link.click();
     }
   </script>
