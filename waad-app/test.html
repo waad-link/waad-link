@@ -200,7 +200,7 @@
     .sticker-heart { position: absolute; bottom: -10px; right: -6px; width: 42px; height: 42px; background: #ff4d6d; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; border: 2px solid #fff; }
     .scratch-box { width: 360px; height: 180px; position: relative; border-radius: 14px; overflow: hidden; margin: 20px auto 10px; touch-action: none; }
     .scratch-secret { position: absolute; inset: 0; background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; color: #fff; }
-    #scratchCanvas { position: absolute; inset: 0; z-index: 10; cursor: grab; }
+    .scratchCanvas { position: absolute; inset: 0; z-index: 10; cursor: grab; }
 
     /* 6. صفحة الذكريات */
     .memories-wrap {
@@ -629,7 +629,7 @@
               <p style="font-size: 13px;">في المكان اللي بنحبه.. جاهزة؟</p>
               <button onclick="triggerThemeChange('memories')" style="margin-top:10px; padding:8px 16px; background:#fff; color:#ff4d6d; border:none; border-radius:20px; font-weight:bold; cursor:pointer;">افتحي قصة حبنا 💖</button>
             </div>
-            <canvas id="scratchCanvas" width="290" height="180"></canvas>
+            <canvas id="scratchCanvas" width="360" height="180"></canvas>
           </div>
           <p style="font-size: 12px; color: #aaa; margin-top: 6px;">✨ خربش لكشف المفاجأة ✨</p>
         </div>
