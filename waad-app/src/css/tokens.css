@@ -1,31 +1,56 @@
-/* Waad Design Tokens - Global Variables */
+/* ========================================================
+   1. نظام المتغيرات والألوان المركزية (DESIGN TOKENS)
+   ======================================================== */
 :root {
-    /* Royal Palette */
-    --color-primary: #25d366;
-    /* WhatsApp Green */
-    --color-gold: #c5a059;
-    /* Metallic Gold */
-    --color-gold-light: #f7e7c4;
-    /* Alabaster Cream */
-    --color-rose: #ff4d6d;
-    /* Romance Rose */
+  /* ألوان الهوية */
+  --primary: #25d366;
+  --primary-dark: #128c7e;
+  --gold: #c5a059;
+  --gold-light: #f7e7c4;
+  --gold-glow: #ffd700;
+  --rose: #ff4d6d;
 
-    /* Dark Mode Surfaces */
-    --bg-main: #0a0b10;
-    --bg-surface: #131722;
-    --bg-elevated: #1a1e2c;
+  /* خلفيات الواجهة المظلمة الفاخرة */
+  --bg-dark: #0a0c12;
+  --surface: #131722;
+  --surface-border: rgba(197, 160, 89, 0.25);
 
-    /* Borders & Glass */
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-gold: rgba(197, 160, 89, 0.25);
+  /* ألوان النصوص */
+  --text-main: #f0f2f5;
+  --text-muted: #9aa0a6;
 
-    /* Typography */
-    --font-main: 'Tajawal', sans-serif;
-    --font-royal: 'Amiri', serif;
-    --font-eng: 'Space Grotesk', sans-serif;
+  /* الخطوط */
+  --font-sans: 'Tajawal', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Amiri', serif;
+  --font-mono: 'Space Grotesk', monospace;
+}
 
-    /* Spacing & Radius */
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --shadow-vip: 0 10px 40px rgba(0, 0, 0, 0.6);
+/* ========================================================
+   2. تصفير المتصفحات وضبط أبعاد الشاشة (RESET & BASE)
+   ======================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* تحسين الأداء على الأجهزة الضعيفة */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
