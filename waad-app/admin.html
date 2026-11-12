@@ -62,7 +62,7 @@
   <script>
     const CONFIG = {
       supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
-      supabaseKey: "sb_publishable_a_MBKX2GL97-0iqmhKy7uw_X8unWb93", // حط المفتاح العام anon key بتاعك هنا
+      supabaseKey: "sb_publishable_a_MBKX2GL97-0iqmhKy7uw_X8unWb93",  
       slug: "ahmed-mona"
     };
 
@@ -99,11 +99,11 @@
           document.getElementById('adminDashboard').style.display = 'block';
           loadGuests();
         } else {
-          errorMsg.textContent = 'الرقم السري غير مطابق للرقم المسجل في قاعدة البيانات (جرب 1111)!';
+          errorMsg.textContent = 'الرقم السري غير مطابق!';
           errorMsg.style.display = 'block';
         }
       } catch (err) {
-        errorMsg.textContent = 'تعذر الاتصال بقاعدة البيانات. تأكد من المفاتيح.';
+        errorMsg.textContent = 'تعذر الاتصال بقاعدة البيانات.';
         errorMsg.style.display = 'block';
       } finally {
         loginBtn.textContent = 'دخول اللوحة بأمان';
