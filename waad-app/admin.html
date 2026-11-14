@@ -29,21 +29,21 @@
     <div class="modal-card">
       <div style="font-size:42px; margin-bottom:12px;">🔒</div>
       <h3 style="font-size:20px; margin-bottom:6px; color:#fff;">لوحة متابعة كشف المعازيم</h3>
-      <p style="font-size:13px; color:#888; margin-bottom:20px;">خاص بالعريس فقط (مطابقة مباشرة مع الداتابيز)</p>
+      <p style="font-size:13px; color:#888; margin-bottom:20px;" id="eventSlugNotice">جاري تحديد الفعالية...</p>
       
-      <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري..." style="text-align:center; letter-spacing:5px; font-size:20px; margin-bottom:16px;">
+      <input type="password" class="text-input" id="pinInput" placeholder="أدخل الرقم السري للوحة..." style="text-align:center; letter-spacing:5px; font-size:20px; margin-bottom:16px;">
       
       <button class="btn-gold" id="loginBtn" type="button" onclick="handleDatabaseLogin()">دخول اللوحة بأمان</button>
       <p id="authErrorMsg" style="color:#ff4d6d; font-size:12px; margin-top:12px; display:none;"></p>
     </div>
   </div>
 
-  <!-- لوحة كشف المعازيم -->
+  <!-- لوحة كشف المعازيم بعد الدخول -->
   <div class="admin-container" id="adminDashboard" style="display:none;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
       <div>
-        <h2 style="font-size:22px; color:#fff;">كشف الحضور السحابي 💍</h2>
-        <span style="font-size:12px; color:#c5a059;">فرح أحمد & منى</span>
+        <h2 style="font-size:22px; color:#fff;" id="adminTitleHeader">كشف الحضور السحابي 💍</h2>
+        <span style="font-size:12px; color:#c5a059;" id="adminEventSubtitle">جاري التحميل...</span>
       </div>
       <button class="btn-action btn-dark" style="width:auto; padding:8px 16px; font-size:13px;" onclick="loadGuests()">🔄 تحديث</button>
     </div>
@@ -60,15 +60,21 @@
   </div>
 
   <script>
+    // 1. قراءة معرف الفرح الجديد ديناميكياً من الرابط (?event=wedding-xxxx)
+    const urlParams = new URLSearchParams(window.location.search);
+    const CURRENT_EVENT_SLUG = urlParams.get('event') || urlParams.get('slug') || "ahmed-mona";
+
     const CONFIG = {
       supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
-      supabaseKey: "sb_publishable_a_MBKX2GL97-0iqmhKy7uw_X8unWb93",  
-      slug: "ahmed-mona"
+      supabaseKey: "sb_publishable_a_MBKX2GL97-0iqmhKy7uw_X8unWb93", // حط مفتاح الـ anon key هنا
+      slug: CURRENT_EVENT_SLUG       // يربط مع الفرح الجديد تلقائياً!
     };
 
     let loadedGuests = [];
 
-    // المطابقة اللحظية مع الباسورد المسجل في قاعدة البيانات (1111)
+    document.getElementById('eventSlugNotice').textContent = `خاص بإدارة مناسبة (${CONFIG.slug})`;
+
+    // 2. التحقق من الباسورد الخاص بهذا الفرح بالذات من الداتابيز
     async function handleDatabaseLogin() {
       const pin = document.getElementById('pinInput').value.trim();
       const errorMsg = document.getElementById('authErrorMsg');
@@ -80,11 +86,12 @@
       }
 
       const loginBtn = document.getElementById('loginBtn');
-      loginBtn.textContent = 'جاري مطابقة الباسورد مع Supabase...';
+      loginBtn.textContent = 'جاري مطابقة الباسورد من السيرفر...';
       loginBtn.disabled = true;
 
       try {
-        const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/invitations?slug=eq.${CONFIG.slug}&select=admin_pin`, {
+        // استعلام بالـ slug الخاص بالفرح الجديد
+        const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/invitations?slug=eq.${encodeURIComponent(CONFIG.slug)}&select=admin_pin,groom_name,bride_name`, {
           headers: {
             'apikey': CONFIG.supabaseKey,
             'Authorization': 'Bearer ' + CONFIG.supabaseKey
@@ -93,17 +100,26 @@
 
         const data = await res.json();
 
-        // فحص الباسورد القادم من الداتابيز مباشرة
-        if (data && data.length > 0 && String(data[0].admin_pin) === String(pin)) {
+        if (!data || data.length === 0) {
+          errorMsg.textContent = 'لم يتم العثور على هذا الفرح في قاعدة البيانات! تأكد من صحة الرابط.';
+          errorMsg.style.display = 'block';
+          return;
+        }
+
+        const wedding = data[0];
+
+        // مطابقة الباسورد اللي العريس كتبه وقت إنشاء الفرح
+        if (String(wedding.admin_pin) === String(pin)) {
           document.getElementById('authGate').style.display = 'none';
           document.getElementById('adminDashboard').style.display = 'block';
+          document.getElementById('adminEventSubtitle').textContent = `فرح ${wedding.groom_name} & ${wedding.bride_name}`;
           loadGuests();
         } else {
-          errorMsg.textContent = 'الرقم السري غير مطابق!';
+          errorMsg.textContent = 'الرقم السري غير صحيح لهذا الفرح!';
           errorMsg.style.display = 'block';
         }
       } catch (err) {
-        errorMsg.textContent = 'تعذر الاتصال بقاعدة البيانات.';
+        errorMsg.textContent = 'تعذر الاتصال بقاعدة البيانات. تأكد من اتصال الإنترنت.';
         errorMsg.style.display = 'block';
       } finally {
         loginBtn.textContent = 'دخول اللوحة بأمان';
@@ -113,10 +129,10 @@
 
     async function loadGuests() {
       const container = document.getElementById('guestsListContainer');
-      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب الأسماء من السيرفر...</p>';
+      container.innerHTML = '<p style="font-size:12px; color:#888;">جاري جلب أسماء المعازيم من السيرفر...</p>';
 
       try {
-        const response = await fetch(`${CONFIG.supabaseUrl}/rest/v1/rsvps?invitation_slug=eq.${CONFIG.slug}&order=created_at.desc`, {
+        const response = await fetch(`${CONFIG.supabaseUrl}/rest/v1/rsvps?invitation_slug=eq.${encodeURIComponent(CONFIG.slug)}&order=created_at.desc`, {
           headers: {
             'apikey': CONFIG.supabaseKey,
             'Authorization': 'Bearer ' + CONFIG.supabaseKey
@@ -129,7 +145,7 @@
           container.innerHTML = '';
 
           if (loadedGuests.length === 0) {
-            container.innerHTML = '<p style="font-size:13px; color:#888; text-align:center; padding:20px;">لا توجد تسجيلات حتى الآن.</p>';
+            container.innerHTML = '<p style="font-size:13px; color:#888; text-align:center; padding:20px;">لا توجد تسجيلات حتى الآن لهذا الفرح.</p>';
             return;
           }
 
