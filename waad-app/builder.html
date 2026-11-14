@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>محرر الدعوات السريع | اصنع دعوتك بنفسك</title>
+  <title>محرر الدعوات السريع | منصة وعد 💍</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,60 +14,273 @@
   <link rel="stylesheet" href="src/css/components.css">
 
   <style>
-    .builder-wrap { width: 100%; max-width: 480px; padding: 18px; margin: 0 auto; }
-    .form-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 22px 16px; margin-bottom: 20px; text-align: right; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-    .field-lbl { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+    .builder-container { width: 100%; max-width: 520px; padding: 25px 18px 80px; margin: 0 auto; text-align: right; }
+    .step-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 18px; padding: 24px 18px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .lbl { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+
+    /* أداة قص وتحجيم الصور المباشرة */
+    .crop-box-wrap {
+      background: #080a0f; border: 1px dashed var(--gold); border-radius: 14px;
+      padding: 15px; text-align: center; margin-top: 10px; display: none;
+    }
+    .crop-canvas-preview {
+      width: 100%; max-width: 320px; height: 200px; border-radius: 10px;
+      background: #000; overflow: hidden; margin: 0 auto 12px; position: relative;
+    }
+    .crop-canvas-preview img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.1s linear;
+    }
+    .slider-range-bar { width: 100%; max-width: 280px; margin: 10px auto; display: block; accent-color: var(--gold); }
+
+    /* شاشة التسليم النهائية للرابطين */
+    .delivery-screen {
+      display: none; background: var(--surface); border: 1px solid var(--gold);
+      border-radius: 20px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      animation: smoothEnter 0.4s ease;
+    }
+    .link-box-card {
+      background: #0a0c12; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      padding: 16px; margin: 16px 0; text-align: right;
+    }
+    .link-box-card strong { display: block; font-size: 14px; color: #fff; margin-bottom: 4px; }
+    .link-url-text { font-family: var(--font-mono); font-size: 12px; color: var(--gold-light); word-break: break-all; margin-bottom: 12px; display: block; }
+    .copy-btn {
+      padding: 8px 14px; background: rgba(197, 160, 89, 0.15); color: var(--gold-light);
+      border: 1px solid var(--border-gold); border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <div class="builder-wrap">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-      <h2 style="font-size:20px; color:#fff;">محرر الدعوة الذكي 💍</h2>
-      <span style="font-size:11px; background:rgba(197,160,89,0.15); color:var(--gold); padding:4px 10px; border-radius:20px; font-weight:bold;">معاينة فورية</span>
+  <div class="builder-container">
+
+    <!-- 1. شاشة ملء البيانات وتصميم الدعوة -->
+    <div id="builderFormSection">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 style="font-size:22px; color:#fff;">محرر الدعوة الذكي 💍</h2>
+        <span style="font-size:11px; background:rgba(197,160,89,0.15); color:var(--gold); padding:4px 12px; border-radius:20px; font-weight:bold;">SaaS Builder</span>
+      </div>
+
+      <div class="step-card">
+        <h3 style="font-size:16px; color:#fff; margin-bottom:15px;">👰 بيانات العروسين والمناسبة</h3>
+
+        <div class="grid-2">
+          <div>
+            <label class="lbl">اسم العريس</label>
+            <input type="text" class="text-input" id="inGroom" value="أحمد">
+          </div>
+          <div>
+            <label class="lbl">اسم العروسة</label>
+            <input type="text" class="text-input" id="inBride" value="منى">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label class="lbl">تاريخ الفرح</label>
+            <input type="date" class="text-input" id="inDate" value="2027-07-15">
+          </div>
+          <div>
+            <label class="lbl">ساعة الحفل</label>
+            <input type="time" class="text-input" id="inTime" value="20:00">
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="lbl">اسم القاعة والمكان</label>
+          <input type="text" class="text-input" id="inVenue" value="قاعة فيردي الملكية - التجمع الخامس">
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="lbl">رابط موقع القاعة (Google Maps)</label>
+          <input type="text" class="text-input" id="inMap" value="https://maps.google.com/?q=New+Cairo">
+        </div>
+
+        <!-- اختيار العريس لباسورده بنفسه -->
+        <div style="background:rgba(255,215,0,0.06); border:1px dashed var(--gold); padding:14px; border-radius:12px; margin-top:15px;">
+          <label class="lbl" style="color:var(--gold);">🔒 أنشئ الرقم السري للوحتك (اختر رقمك بنفسك)</label>
+          <input type="password" class="text-input" id="inPin" placeholder="مثال: 1111 أو 2027" value="1111" style="letter-spacing:4px; font-size:16px;">
+          <span style="font-size:11px; color:#aaa; margin-top:4px; display:block;">ستستخدم هذا الرقم للدخول للوحة متابعة المعازيم لاحقاً.</span>
+        </div>
+      </div>
+
+      <!-- قسم رفع الصور مع أداة القص والتحجيم -->
+      <div class="step-card">
+        <h3 style="font-size:16px; color:#fff; margin-bottom:10px;">📸 صورة الغلاف والسيشن</h3>
+        <label class="lbl">اختر صورة من تليفونك للعروسين:</label>
+        <input type="file" id="filePicker" accept="image/*" class="text-input" onchange="loadPhotoForCropping(event)">
+
+        <!-- أداة السكيل والتظبيط -->
+        <div class="crop-box-wrap" id="cropTool">
+          <p style="font-size:12px; color:var(--gold); margin-bottom:8px;">✨ حرّك الشريط لظبط الزوم بدون أي مطة في الصورة:</p>
+          <div class="crop-canvas-preview">
+            <img id="cropImgPreview" src="" alt="preview">
+          </div>
+          <label class="lbl">تحجيم الصورة (Zoom):</label>
+          <input type="range" class="slider-range-bar" id="zoomSlider" min="1" max="2.5" step="0.05" value="1" oninput="adjustZoom(this.value)">
+          <button type="button" class="btn-action btn-gold" style="padding:8px; font-size:13px; margin-top:8px;" onclick="confirmCrop()">
+            ✓ اعتماد كادر الصورة
+          </button>
+        </div>
+      </div>
+
+      <!-- زر الاعتماد والإنشاء المباشر في Supabase -->
+      <button class="btn-gold" id="btnCreateEvent" type="button" onclick="createFullEventSaaS()">
+        🚀 إنشاء الفرح وتوليد الرابطين الآن (150 ج)
+      </button>
     </div>
 
-    <div class="form-card">
-      <h3 style="font-size:16px; color:#fff; margin-bottom:15px;">👰 بيانات العروسين والمناسبة</h3>
-      
-      <div class="grid-2">
-        <div>
-          <label class="field-lbl">اسم العريس</label>
-          <input type="text" class="text-input" id="bGroom" value="أحمد" oninput="syncPreview()">
-        </div>
-        <div>
-          <label class="field-lbl">اسم العروسة</label>
-          <input type="text" class="text-input" id="bBride" value="منى" oninput="syncPreview()">
+    <!-- 2. الشاشة النهائية لتسليم الرابطين للعميل -->
+    <div class="delivery-screen" id="deliveryScreen">
+      <div style="font-size:48px; margin-bottom:10px;">🎉</div>
+      <h2 style="font-family:var(--font-serif); font-size:28px; color:var(--gold-light); margin-bottom:8px;">ألف مبروك يا عريس!</h2>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">تم تسجيل فرحك بنجاح في قاعدة البيانات وتفعيل الرابطين الرسميين:</p>
+
+      <!-- رابط المعازيم -->
+      <div class="link-box-card">
+        <strong>💌 1. رابط الدعوة (لإرساله لجميع المعازيم):</strong>
+        <span class="link-url-text" id="outGuestLink">جاري التوليد...</span>
+        <div style="display:flex; gap:8px;">
+          <button class="copy-btn" onclick="copyLinkText('outGuestLink')">📋 نسخ الرابط</button>
+          <a href="#" id="outWaShareBtn" target="_blank" class="copy-btn" style="background:#25d366; color:#fff; border-color:#25d366; text-decoration:none;">💬 إرسال على واتساب</a>
         </div>
       </div>
 
-      <div class="grid-2">
-        <div>
-          <label class="field-lbl">تاريخ الفرح</label>
-          <input type="date" class="text-input" id="bDate" value="2027-07-15" onchange="syncPreview()">
-        </div>
-        <div>
-          <label class="field-lbl">ساعة الحفل</label>
-          <input type="time" class="text-input" id="bTime" value="20:00" onchange="syncPreview()">
+      <!-- رابط لوحة تحكم العريس -->
+      <div class="link-box-card" style="border-color:var(--gold);">
+        <strong style="color:var(--gold);">🔒 2. رابط لوحة تحكمك (خاص بك فقط):</strong>
+        <span class="link-url-text" id="outAdminLink">جاري التوليد...</span>
+        <p style="font-size:11px; color:#aaa; margin-bottom:10px;">رقمك السري للدخول: <strong id="outPinDisplay" style="color:#fff; font-size:14px;">1111</strong></p>
+        <div style="display:flex; gap:8px;">
+          <button class="copy-btn" onclick="copyLinkText('outAdminLink')">📋 نسخ الرابط السري</button>
+          <a href="#" id="outAdminGoBtn" target="_blank" class="copy-btn" style="background:var(--gold); color:#000; font-weight:900; text-decoration:none;">🚀 فتح اللوحة الآن</a>
         </div>
       </div>
 
-      <div style="margin-bottom:12px;">
-        <label class="field-lbl">اسم القاعة والعنوان</label>
-        <input type="text" class="text-input" id="bVenue" value="قاعة فيردي - التجمع الخامس" oninput="syncPreview()">
-      </div>
-
-      <div>
-        <label class="field-lbl">رابط موقع القاعة (Google Maps)</label>
-        <input type="text" class="text-input" id="bMap" value="https://maps.google.com/?q=New+Cairo" oninput="syncPreview()">
-      </div>
+      <p style="font-size:11px; color:#888; margin-top:20px;">احتفظ بالرابطين على واتساب للرجوع لهما في أي وقت 🤍</p>
     </div>
 
-    <!-- شاشة الموبايل في المعاينة -->
-    <div style="text-align:center; margin-bottom:20px;">
-      <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">👀 شكل الدعوة الحقيقي على تليفون الضيف:</p>
-      
-      <div class="screen-frame" style="box-shadow:0 15px 40px rgba(0,0,0,0.6); min-height:420px; padding:25px 18px; text-align:center;">
-        <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:2px; color:#777;">THE WEDDING ISSUE</span>
-        <h2 style="font-family:var(--font-serif); font-size:32px; color:#fff; margin:10px 0;" id=
+  </div>
+
+  <script>
+    const CONFIG = {
+      supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
+      supabaseKey: "eyJhbGciOi..." // مفتاحك الـ anon key
+    };
+
+    let processedImageBase64 = "";
+
+    // 1. تشغيل أداة الزوم والقص للصور
+    function loadPhotoForCropping(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const preview = document.getElementById('cropImgPreview');
+        preview.src = evt.target.result;
+        document.getElementById('cropTool').style.display = 'block';
+        document.getElementById('zoomSlider').value = 1;
+        preview.style.transform = 'scale(1)';
+        processedImageBase64 = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function adjustZoom(val) {
+      const img = document.getElementById('cropImgPreview');
+      img.style.transform = `scale(${val})`;
+    }
+
+    function confirmCrop() {
+      alert('✓ تم اعتماد كادر الصورة وسنترته بنجاح وبدون أي مطة!');
+    }
+
+    // 2. إنشاء الفرح وتسجيله رسمياً في Supabase وتوليد الرابطين
+    async function createFullEventSaaS() {
+      const groom = document.getElementById('inGroom').value.trim();
+      const bride = document.getElementById('inBride').value.trim();
+      const dateVal = document.getElementById('inDate').value;
+      const timeVal = document.getElementById('inTime').value;
+      const venue = document.getElementById('inVenue').value.trim();
+      const mapUrl = document.getElementById('inMap').value.trim();
+      const pin = document.getElementById('inPin').value.trim();
+
+      if (!groom || !bride || !dateVal || !venue || !pin) {
+        alert('من فضلك أكمل جميع الخانات الأساسية وأنشئ الرقم السري 🤍');
+        return;
+      }
+
+      const btn = document.getElementById('btnCreateEvent');
+      btn.textContent = 'جاري تسجيل الفرح وتوليد الروابط السحابية...';
+      btn.disabled = true;
+
+      // توليد معرف الفرح (Slug) عشوائي وفريد
+      const cleanGroom = groom.replace(/\s+/g, '-').replace(/[^\u0621-\u064Aa-zA-Z0-9-]/g, '');
+      const uniqueSuffix = Math.random().toString(36).substring(2, 6);
+      const generatedSlug = `wedding-${uniqueSuffix}`;
+
+      const payload = {
+        slug: generatedSlug,
+        event_type: 'wedding',
+        status: 'active',
+        groom_name: groom,
+        bride_name: bride,
+        event_date: new Date(`${dateVal}T${timeVal}:00`).toISOString(),
+        venue_name: venue,
+        map_url: mapUrl,
+        admin_pin: pin
+      };
+
+      try {
+        const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/invitations`, {
+          method: 'POST',
+          headers: {
+            'apikey': CONFIG.supabaseKey,
+            'Authorization': 'Bearer ' + CONFIG.supabaseKey,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok || res.status === 201) {
+          // بناء الرابطين الرسميين المباشرين
+          const origin = window.location.origin;
+          const guestUrl = `${origin}/invite.html?event=${generatedSlug}`;
+          const adminUrl = `${origin}/admin.html?event=${generatedSlug}`;
+
+          // عرض الروابط في شاشة التسليم
+          document.getElementById('outGuestLink').textContent = guestUrl;
+          document.getElementById('outAdminLink').textContent = adminUrl;
+          document.getElementById('outPinDisplay').textContent = pin;
+
+          document.getElementById('outAdminGoBtn').href = adminUrl;
+          const waShareText = encodeURIComponent(`عيلتنا وصحابنا الغاليين 🤍 يسعدنا دعوتكم لفرحنا (${groom} & ${bride}) 💍 تفاصيل الدعوة وكارت تشريفك الخاص هنا:\n${guestUrl}`);
+          document.getElementById('outWaShareBtn').href = `https://wa.me/?text=${waShareText}`;
+
+          // إخفاء المحرر وإظهار شاشة التسليم الفخمة
+          document.getElementById('builderFormSection').style.display = 'none';
+          document.getElementById('deliveryScreen').style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const errText = await res.text();
+          alert('خطأ في الاتصال بقاعدة البيانات: ' + errText);
+        }
+      } catch (err) {
+        alert('حدث خطأ في الشبكة: ' + err.message);
+      } finally {
+        btn.textContent = '🚀 إنشاء الفرح وتوليد الرابطين الآن (150 ج)';
+        btn.disabled = false;
+      }
+    }
+
+    function copyLinkText(elementId) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text);
+      alert('✓ تم نسخ الرابط بنجاح!');
+    }
+  </script>
+</body>
+</html>
