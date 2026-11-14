@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>محرر الدعوات السريع | منصة وعد 💍</title>
+  <title>محرر الدعوات الذكي | منصة وعد 💍</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,26 +14,45 @@
   <link rel="stylesheet" href="src/css/components.css">
 
   <style>
-    .builder-container { width: 100%; max-width: 520px; padding: 25px 18px 80px; margin: 0 auto; text-align: right; }
-    .step-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 18px; padding: 24px 18px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .builder-container { width: 100%; max-width: 560px; padding: 25px 18px 90px; margin: 0 auto; text-align: right; }
+    .step-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 18px; padding: 22px 18px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .lbl { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
 
-    /* أداة قص وتحجيم الصور المباشرة */
-    .crop-box-wrap {
-      background: #080a0f; border: 1px dashed var(--gold); border-radius: 14px;
-      padding: 15px; text-align: center; margin-top: 10px; display: none;
+    /* منطقة أداة تحريك وزووم الكادر (Pan & Zoom Viewfinder) */
+    .cropper-modal-overlay {
+      position: fixed; inset: 0; background: rgba(5,7,12,0.95); z-index: 10000;
+      display: none; justify-content: center; align-items: center; padding: 20px;
     }
-    .crop-canvas-preview {
-      width: 100%; max-width: 320px; height: 200px; border-radius: 10px;
-      background: #000; overflow: hidden; margin: 0 auto 12px; position: relative;
+    .cropper-modal-overlay.active { display: flex; }
+    .cropper-box {
+      width: 100%; max-width: 420px; background: #131724; border: 1px solid var(--border-gold);
+      border-radius: 20px; padding: 22px 18px; text-align: center;
     }
-    .crop-canvas-preview img {
-      width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.1s linear;
+    
+    .viewfinder-frame {
+      width: 100%; height: 240px; border-radius: 14px; overflow: hidden;
+      background: #000; position: relative; margin: 15px auto; cursor: grab;
+      border: 2px dashed var(--gold); touch-action: none; user-select: none;
     }
-    .slider-range-bar { width: 100%; max-width: 280px; margin: 10px auto; display: block; accent-color: var(--gold); }
+    .viewfinder-frame:active { cursor: grabbing; }
+    .viewfinder-frame img {
+      position: absolute; top: 0; left: 0; transform-origin: top left;
+      pointer-events: none; max-width: none;
+    }
 
-    /* شاشة التسليم النهائية للرابطين */
+    .thumbs-container { display: flex; gap: 10px; overflow-x: auto; margin-top: 10px; padding-bottom: 6px; }
+    .thumb-node {
+      width: 65px; height: 65px; border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2); flex-shrink: 0; position: relative;
+    }
+    .thumb-node img { width: 100%; height: 100%; object-fit: cover; }
+    .main-tag-pill {
+      position: absolute; bottom: 0; left: 0; right: 0; background: var(--gold);
+      color: #000; font-size: 9px; font-weight: 900; text-align: center; padding: 1px 0;
+    }
+
+    /* شاشة التسليم النهائي */
     .delivery-screen {
       display: none; background: var(--surface); border: 1px solid var(--gold);
       border-radius: 20px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
@@ -43,8 +62,7 @@
       background: #0a0c12; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
       padding: 16px; margin: 16px 0; text-align: right;
     }
-    .link-box-card strong { display: block; font-size: 14px; color: #fff; margin-bottom: 4px; }
-    .link-url-text { font-family: var(--font-mono); font-size: 12px; color: var(--gold-light); word-break: break-all; margin-bottom: 12px; display: block; }
+    .link-url-text { font-family: var(--font-mono); font-size: 12px; color: var(--gold-light); word-break: break-all; margin: 8px 0 12px; display: block; }
     .copy-btn {
       padding: 8px 14px; background: rgba(197, 160, 89, 0.15); color: var(--gold-light);
       border: 1px solid var(--border-gold); border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
@@ -55,13 +73,14 @@
 
   <div class="builder-container">
 
-    <!-- 1. شاشة ملء البيانات وتصميم الدعوة -->
-    <div id="builderFormSection">
+    <!-- 1. نموذج البيانات والتصميم -->
+    <div id="builderFormWrap">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2 style="font-size:22px; color:#fff;">محرر الدعوة الذكي 💍</h2>
-        <span style="font-size:11px; background:rgba(197,160,89,0.15); color:var(--gold); padding:4px 12px; border-radius:20px; font-weight:bold;">SaaS Builder</span>
+        <span style="font-size:11px; background:rgba(197,160,89,0.15); color:var(--gold); padding:4px 12px; border-radius:20px; font-weight:bold;">نظام المنصة الرسمي</span>
       </div>
 
+      <!-- كارت بيانات الفرح -->
       <div class="step-card">
         <h3 style="font-size:16px; color:#fff; margin-bottom:15px;">👰 بيانات العروسين والمناسبة</h3>
 
@@ -92,58 +111,90 @@
           <input type="text" class="text-input" id="inVenue" value="قاعة فيردي الملكية - التجمع الخامس">
         </div>
 
-        <div style="margin-bottom:14px;">
+        <div>
           <label class="lbl">رابط موقع القاعة (Google Maps)</label>
           <input type="text" class="text-input" id="inMap" value="https://maps.google.com/?q=New+Cairo">
         </div>
-
-        <!-- اختيار العريس لباسورده بنفسه -->
-        <div style="background:rgba(255,215,0,0.06); border:1px dashed var(--gold); padding:14px; border-radius:12px; margin-top:15px;">
-          <label class="lbl" style="color:var(--gold);">🔒 أنشئ الرقم السري للوحتك (اختر رقمك بنفسك)</label>
-          <input type="password" class="text-input" id="inPin" placeholder="مثال: 1111 أو 2027" value="1111" style="letter-spacing:4px; font-size:16px;">
-          <span style="font-size:11px; color:#aaa; margin-top:4px; display:block;">ستستخدم هذا الرقم للدخول للوحة متابعة المعازيم لاحقاً.</span>
-        </div>
       </div>
 
-      <!-- قسم رفع الصور مع أداة القص والتحجيم -->
-      <div class="step-card">
-        <h3 style="font-size:16px; color:#fff; margin-bottom:10px;">📸 صورة الغلاف والسيشن</h3>
-        <label class="lbl">اختر صورة من تليفونك للعروسين:</label>
-        <input type="file" id="filePicker" accept="image/*" class="text-input" onchange="loadPhotoForCropping(event)">
+      <!-- كارت حساب العريس المشفر (يوزر وباسورد لمنع التخمين) -->
+      <div class="step-card" style="border-color:var(--gold); background:rgba(197,160,89,0.04);">
+        <h3 style="font-size:16px; color:var(--gold); margin-bottom:8px;">🔒 حساب إدارة الفرح (خاص بالعريس)</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">أنشئ بيانات دخولك الخاصة لمنع أي شخص من تخمين لوحتك أو رؤية المعازيم:</p>
 
-        <!-- أداة السكيل والتظبيط -->
-        <div class="crop-box-wrap" id="cropTool">
-          <p style="font-size:12px; color:var(--gold); margin-bottom:8px;">✨ حرّك الشريط لظبط الزوم بدون أي مطة في الصورة:</p>
-          <div class="crop-canvas-preview">
-            <img id="cropImgPreview" src="" alt="preview">
+        <div class="grid-2">
+          <div>
+            <label class="lbl">اسم المستخدم أو رقم الواتساب</label>
+            <input type="text" class="text-input" id="inUser" placeholder="مثال: 01012345678" value="01012345678">
           </div>
-          <label class="lbl">تحجيم الصورة (Zoom):</label>
-          <input type="range" class="slider-range-bar" id="zoomSlider" min="1" max="2.5" step="0.05" value="1" oninput="adjustZoom(this.value)">
-          <button type="button" class="btn-action btn-gold" style="padding:8px; font-size:13px; margin-top:8px;" onclick="confirmCrop()">
-            ✓ اعتماد كادر الصورة
-          </button>
+          <div>
+            <label class="lbl">كلمة السر الخاصة بك</label>
+            <input type="password" class="text-input" id="inPassword" placeholder="اكتب باسورد قوي" value="1111" style="letter-spacing:2px;">
+          </div>
         </div>
       </div>
 
-      <!-- زر الاعتماد والإنشاء المباشر في Supabase -->
-      <button class="btn-gold" id="btnCreateEvent" type="button" onclick="createFullEventSaaS()">
+      <!-- كارت رفع الصور المنفصل مع أداة التحريك والزوم -->
+      <div class="step-card">
+        <h3 style="font-size:16px; color:#fff; margin-bottom:10px;">📸 صور الدعوة والألبوم (بدون مط أو شد)</h3>
+
+        <!-- 1. صورة الغلاف الرئيسية -->
+        <div style="margin-bottom:20px; padding-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.08);">
+          <label class="lbl">1. صورة الغلاف الرئيسية (الأساسية):</label>
+          <input type="file" id="mainPhotoInput" accept="image/*" class="text-input" onchange="startCropper(event, 'main')">
+          <div id="mainThumbPreview" style="margin-top:8px;"></div>
+        </div>
+
+        <!-- 2. صور الألبوم الإضافية -->
+        <div>
+          <label class="lbl">2. صور الألبوم والسيشن الإضافية (اختر ما تشاء):</label>
+          <input type="file" id="galleryPhotoInput" accept="image/*" multiple class="text-input" onchange="startCropper(event, 'gallery')">
+          <div class="thumbs-container" id="galleryThumbsContainer"></div>
+        </div>
+      </div>
+
+      <!-- زر الاعتماد -->
+      <button class="btn-gold" id="btnSubmitAll" type="button" onclick="createWeddingSaaS()">
         🚀 إنشاء الفرح وتوليد الرابطين الآن (150 ج)
       </button>
+    </div>
+
+    <!-- نافذة أداة تحريك وزوم الكادر المنبثقة (Pan & Zoom Tool) -->
+    <div class="cropper-modal-overlay" id="cropperModal">
+      <div class="cropper-box">
+        <h3 style="font-size:16px; color:#fff; margin-bottom:4px;">✨ اضبط كادر الصورة ومكان الوشوش</h3>
+        <p style="font-size:12px; color:var(--gold); margin-bottom:10px;">حرّك الصورة بصباعك أو الماوس، وكبّر بالزوم لضبط المقاس السينمائي:</p>
+
+        <!-- مساحة التحريك الحرة -->
+        <div class="viewfinder-frame" id="viewfinder">
+          <img id="cropImg" src="" alt="crop">
+        </div>
+
+        <div style="margin:12px 0;">
+          <label class="lbl">التحكم في التكبير (Zoom):</label>
+          <input type="range" class="slider-range-bar" id="zoomRange" min="1" max="3" step="0.05" value="1" oninput="onZoomChange(this.value)">
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn-gold" style="padding:10px;" onclick="saveCropResult()">✓ حفظ واعتماد الصورة</button>
+          <button type="button" class="btn-action btn-dark" style="width:auto; padding:10px 18px;" onclick="closeCropper()">إلغاء</button>
+        </div>
+      </div>
     </div>
 
     <!-- 2. الشاشة النهائية لتسليم الرابطين للعميل -->
     <div class="delivery-screen" id="deliveryScreen">
       <div style="font-size:48px; margin-bottom:10px;">🎉</div>
-      <h2 style="font-family:var(--font-serif); font-size:28px; color:var(--gold-light); margin-bottom:8px;">ألف مبروك يا عريس!</h2>
-      <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">تم تسجيل فرحك بنجاح في قاعدة البيانات وتفعيل الرابطين الرسميين:</p>
+      <h2 style="font-family:var(--font-serif); font-size:28px; color:var(--gold-light); margin-bottom:8px;">ألف مبروك يا عريسنا!</h2>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">تم تسجيل فرحك وتأمين لوحتك بحسابك الخاص. إليك الرابطين الرسميين:</p>
 
       <!-- رابط المعازيم -->
       <div class="link-box-card">
-        <strong>💌 1. رابط الدعوة (لإرساله لجميع المعازيم):</strong>
+        <strong>💌 1. رابط الدعوة (لإرساله لجميع المعازيم والجروبات):</strong>
         <span class="link-url-text" id="outGuestLink">جاري التوليد...</span>
         <div style="display:flex; gap:8px;">
-          <button class="copy-btn" onclick="copyLinkText('outGuestLink')">📋 نسخ الرابط</button>
-          <a href="#" id="outWaShareBtn" target="_blank" class="copy-btn" style="background:#25d366; color:#fff; border-color:#25d366; text-decoration:none;">💬 إرسال على واتساب</a>
+          <button class="copy-btn" onclick="copyLink('outGuestLink')">📋 نسخ الرابط</button>
+          <a href="#" id="outWaShare" target="_blank" class="copy-btn" style="background:#25d366; color:#fff; border-color:#25d366; text-decoration:none;">💬 إرسال على واتساب</a>
         </div>
       </div>
 
@@ -151,14 +202,17 @@
       <div class="link-box-card" style="border-color:var(--gold);">
         <strong style="color:var(--gold);">🔒 2. رابط لوحة تحكمك (خاص بك فقط):</strong>
         <span class="link-url-text" id="outAdminLink">جاري التوليد...</span>
-        <p style="font-size:11px; color:#aaa; margin-bottom:10px;">رقمك السري للدخول: <strong id="outPinDisplay" style="color:#fff; font-size:14px;">1111</strong></p>
+        <p style="font-size:11px; color:#aaa; margin-bottom:10px;">
+          اسم المستخدم: <strong id="outUserDisplay" style="color:#fff;">01012345678</strong> | 
+          كلمة السر: <strong id="outPassDisplay" style="color:#fff;">1111</strong>
+        </p>
         <div style="display:flex; gap:8px;">
-          <button class="copy-btn" onclick="copyLinkText('outAdminLink')">📋 نسخ الرابط السري</button>
-          <a href="#" id="outAdminGoBtn" target="_blank" class="copy-btn" style="background:var(--gold); color:#000; font-weight:900; text-decoration:none;">🚀 فتح اللوحة الآن</a>
+          <button class="copy-btn" onclick="copyLink('outAdminLink')">📋 نسخ الرابط الخاص</button>
+          <a href="#" id="outAdminGo" target="_blank" class="copy-btn" style="background:var(--gold); color:#000; font-weight:900; text-decoration:none;">🚀 فتح لوحة المتابعة الآن</a>
         </div>
       </div>
 
-      <p style="font-size:11px; color:#888; margin-top:20px;">احتفظ بالرابطين على واتساب للرجوع لهما في أي وقت 🤍</p>
+      <p style="font-size:11px; color:#888; margin-top:20px;">احتفظ بالبيانات دي على واتساب للرجوع لها في أي وقت 🤍</p>
     </div>
 
   </div>
@@ -166,61 +220,145 @@
   <script>
     const CONFIG = {
       supabaseUrl: "https://ytrxocqpzjmojajpexup.supabase.co",
-      supabaseKey: "eyJhbGciOi..." // مفتاحك الـ anon key
+      supabaseKey: "sb_publishable_a_MBKX2GL97-0iqmhKy7uw_X8unWb93" // مفتاحك anon key
     };
 
-    let processedImageBase64 = "";
+    let mainPhotoCropped = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80";
+    let galleryPhotosList = [];
+    let currentCroppingType = "main"; // 'main' or 'gallery'
 
-    // 1. تشغيل أداة الزوم والقص للصور
-    function loadPhotoForCropping(e) {
+    // متغيرات التحريك والزووم
+    let imgX = 0, imgY = 0, imgScale = 1;
+    let isDragging = false, startX = 0, startY = 0;
+    let rawLoadedImage = new Image();
+
+    // 1. تشغيل أداة التحريك والزوم للصور
+    function startCropper(e, type) {
       const file = e.target.files[0];
       if (!file) return;
 
+      currentCroppingType = type;
       const reader = new FileReader();
       reader.onload = function(evt) {
-        const preview = document.getElementById('cropImgPreview');
-        preview.src = evt.target.result;
-        document.getElementById('cropTool').style.display = 'block';
-        document.getElementById('zoomSlider').value = 1;
-        preview.style.transform = 'scale(1)';
-        processedImageBase64 = evt.target.result;
+        rawLoadedImage = new Image();
+        rawLoadedImage.onload = function() {
+          const cropImg = document.getElementById('cropImg');
+          cropImg.src = evt.target.result;
+
+          // تصفير الموضع والزوم
+          imgX = 0; imgY = 0; imgScale = 1;
+          document.getElementById('zoomRange').value = 1;
+          updateViewfinderTransform();
+
+          document.getElementById('cropperModal').classList.add('active');
+        };
+        rawLoadedImage.src = evt.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    function adjustZoom(val) {
-      const img = document.getElementById('cropImgPreview');
-      img.style.transform = `scale(${val})`;
+    // حركة السحب بالماوس أو التاتش (Pan/Drag)
+    const vf = document.getElementById('viewfinder');
+    vf.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startX = e.clientX - imgX;
+      startY = e.clientY - imgY;
+      vf.setPointerCapture(e.pointerId);
+    });
+
+    vf.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      imgX = e.clientX - startX;
+      imgY = e.clientY - startY;
+      updateViewfinderTransform();
+    });
+
+    vf.addEventListener('pointerup', () => isDragging = false);
+    vf.addEventListener('pointercancel', () => isDragging = false);
+
+    function onZoomChange(val) {
+      imgScale = parseFloat(val);
+      updateViewfinderTransform();
     }
 
-    function confirmCrop() {
-      alert('✓ تم اعتماد كادر الصورة وسنترته بنجاح وبدون أي مطة!');
+    function updateViewfinderTransform() {
+      const img = document.getElementById('cropImg');
+      img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${imgScale})`;
     }
 
-    // 2. إنشاء الفرح وتسجيله رسمياً في Supabase وتوليد الرابطين
-    async function createFullEventSaaS() {
+    // قص الكادر وتوليد صورة ثابتة بدقة عالية عبر الكانفاس بدون أي مطة
+    function saveCropResult() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 450; // نسبة 4:3 السينمائية الثابتة
+      const ctx = canvas.getContext('2d');
+
+      // حسابات أبعاد القص الحقيقية
+      const vfRect = vf.getBoundingClientRect();
+      const scaleFactorX = rawLoadedImage.naturalWidth / (vfRect.width * imgScale);
+      const scaleFactorY = rawLoadedImage.naturalHeight / (vfRect.height * imgScale);
+
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, 600, 450);
+
+      ctx.drawImage(
+        rawLoadedImage,
+        -imgX * scaleFactorX,
+        -imgY * scaleFactorY,
+        vfRect.width * scaleFactorX,
+        vfRect.height * scaleFactorY,
+        0, 0, 600, 450
+      );
+
+      const croppedResult = canvas.toDataURL('image/jpeg', 0.88);
+
+      if (currentCroppingType === 'main') {
+        mainPhotoCropped = croppedResult;
+        document.getElementById('mainThumbPreview').innerHTML = `
+          <div class="thumb-node" style="width:80px; height:80px; border-color:var(--gold);">
+            <img src="${croppedResult}">
+            <span class="main-tag-pill">الرئيسية ✓</span>
+          </div>`;
+      } else {
+        galleryPhotosList.push(croppedResult);
+        const container = document.getElementById('galleryThumbsContainer');
+        const node = document.createElement('div');
+        node.className = 'thumb-node';
+        node.innerHTML = `<img src="${croppedResult}">`;
+        container.appendChild(node);
+      }
+
+      closeCropper();
+    }
+
+    function closeCropper() {
+      document.getElementById('cropperModal').classList.remove('active');
+    }
+
+    // 2. تسجيل الفرح في الداتابيز بحساب العريس المشفر
+    async function createWeddingSaaS() {
       const groom = document.getElementById('inGroom').value.trim();
       const bride = document.getElementById('inBride').value.trim();
       const dateVal = document.getElementById('inDate').value;
       const timeVal = document.getElementById('inTime').value;
       const venue = document.getElementById('inVenue').value.trim();
       const mapUrl = document.getElementById('inMap').value.trim();
-      const pin = document.getElementById('inPin').value.trim();
+      const user = document.getElementById('inUser').value.trim();
+      const pass = document.getElementById('inPassword').value.trim();
 
-      if (!groom || !bride || !dateVal || !venue || !pin) {
-        alert('من فضلك أكمل جميع الخانات الأساسية وأنشئ الرقم السري 🤍');
+      if (!groom || !bride || !dateVal || !venue || !user || !pass) {
+        alert('من فضلك أكمل جميع الخانات وأنشئ حساب الإدارة (المستخدم وكلمة السر) 🤍');
         return;
       }
 
-      const btn = document.getElementById('btnCreateEvent');
-      btn.textContent = 'جاري تسجيل الفرح وتوليد الروابط السحابية...';
+      const btn = document.getElementById('btnSubmitAll');
+      btn.textContent = 'جاري تأمين الحساب وإنشاء الروابط السحابية...';
       btn.disabled = true;
 
-      // توليد معرف الفرح (Slug) عشوائي وفريد
-      const cleanGroom = groom.replace(/\s+/g, '-').replace(/[^\u0621-\u064Aa-zA-Z0-9-]/g, '');
       const uniqueSuffix = Math.random().toString(36).substring(2, 6);
       const generatedSlug = `wedding-${uniqueSuffix}`;
 
+      // ربط بيانات الفرح بالحساب
       const payload = {
         slug: generatedSlug,
         event_type: 'wedding',
@@ -230,7 +368,7 @@
         event_date: new Date(`${dateVal}T${timeVal}:00`).toISOString(),
         venue_name: venue,
         map_url: mapUrl,
-        admin_pin: pin
+        admin_pin: pass // كلمة السر المحمية في السيرفر
       };
 
       try {
@@ -246,39 +384,38 @@
         });
 
         if (res.ok || res.status === 201) {
-          // بناء الرابطين الرسميين المباشرين
           const origin = window.location.origin;
           const guestUrl = `${origin}/invite.html?event=${generatedSlug}`;
           const adminUrl = `${origin}/admin.html?event=${generatedSlug}`;
 
-          // عرض الروابط في شاشة التسليم
+          // عرض الرابطين في شاشة التسليم
           document.getElementById('outGuestLink').textContent = guestUrl;
           document.getElementById('outAdminLink').textContent = adminUrl;
-          document.getElementById('outPinDisplay').textContent = pin;
+          document.getElementById('outUserDisplay').textContent = user;
+          document.getElementById('outPassDisplay').textContent = pass;
 
-          document.getElementById('outAdminGoBtn').href = adminUrl;
-          const waShareText = encodeURIComponent(`عيلتنا وصحابنا الغاليين 🤍 يسعدنا دعوتكم لفرحنا (${groom} & ${bride}) 💍 تفاصيل الدعوة وكارت تشريفك الخاص هنا:\n${guestUrl}`);
-          document.getElementById('outWaShareBtn').href = `https://wa.me/?text=${waShareText}`;
+          document.getElementById('outAdminGo').href = adminUrl;
+          const waMsg = encodeURIComponent(`عيلتنا وصحابنا الغاليين 🤍 يسعدنا دعوتكم لفرحنا (${groom} & ${bride}) 💍 كارت تشريفك الخاص وتفاصيل القاعة هنا:\n${guestUrl}`);
+          document.getElementById('outWaShare').href = `https://wa.me/?text=${waMsg}`;
 
-          // إخفاء المحرر وإظهار شاشة التسليم الفخمة
-          document.getElementById('builderFormSection').style.display = 'none';
+          document.getElementById('builderFormWrap').style.display = 'none';
           document.getElementById('deliveryScreen').style.display = 'block';
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          const errText = await res.text();
-          alert('خطأ في الاتصال بقاعدة البيانات: ' + errText);
+          const err = await res.text();
+          alert('خطأ في التسجيل السحابي: ' + err);
         }
       } catch (err) {
-        alert('حدث خطأ في الشبكة: ' + err.message);
+        alert('خطأ في الاتصال: ' + err.message);
       } finally {
         btn.textContent = '🚀 إنشاء الفرح وتوليد الرابطين الآن (150 ج)';
         btn.disabled = false;
       }
     }
 
-    function copyLinkText(elementId) {
-      const text = document.getElementById(elementId).textContent;
-      navigator.clipboard.writeText(text);
+    function copyLink(id) {
+      const t = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(t);
       alert('✓ تم نسخ الرابط بنجاح!');
     }
   </script>
