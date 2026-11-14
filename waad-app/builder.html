@@ -14,39 +14,50 @@
   <link rel="stylesheet" href="src/css/components.css">
 
   <style>
-    .builder-container { width: 100%; max-width: 560px; padding: 25px 18px 90px; margin: 0 auto; text-align: right; }
+    .builder-container { width: 100%; max-width: 540px; padding: 25px 18px 90px; margin: 0 auto; text-align: right; }
     .step-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 18px; padding: 22px 18px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .lbl { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
 
-    /* منطقة أداة تحريك وزووم الكادر (Pan & Zoom Viewfinder) */
+    /* ================= أداة قص وتحجيم الصور المظبوطة ================= */
     .cropper-modal-overlay {
-      position: fixed; inset: 0; background: rgba(5,7,12,0.95); z-index: 10000;
+      position: fixed; inset: 0; background: rgba(5,7,12,0.96); z-index: 10000;
       display: none; justify-content: center; align-items: center; padding: 20px;
     }
-    .cropper-modal-overlay.active { display: flex; }
+    .cropper-modal-overlay.active { display: flex; animation: smoothEnter 0.25s ease; }
     .cropper-box {
-      width: 100%; max-width: 420px; background: #131724; border: 1px solid var(--border-gold);
-      border-radius: 20px; padding: 22px 18px; text-align: center;
+      width: 100%; max-width: 400px; background: #131724; border: 1px solid var(--border-gold);
+      border-radius: 20px; padding: 24px 18px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.9);
     }
     
+    /* كادر المعاينة بنسبة 4:3 ثابتة لمنع المطة */
     .viewfinder-frame {
       width: 100%; height: 240px; border-radius: 14px; overflow: hidden;
       background: #000; position: relative; margin: 15px auto; cursor: grab;
-      border: 2px dashed var(--gold); touch-action: none; user-select: none;
+      border: 2px solid var(--gold); touch-action: none; user-select: none;
     }
     .viewfinder-frame:active { cursor: grabbing; }
     .viewfinder-frame img {
-      position: absolute; top: 0; left: 0; transform-origin: top left;
-      pointer-events: none; max-width: none;
+      position: absolute; transform-origin: center center;
+      pointer-events: none; user-select: none;
+      /* ضبط الحجم التلقائي المبدئي */
+      max-width: 100%; max-height: 100%; object-fit: contain;
     }
 
+    .crop-controls-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 12px 0; }
+    .btn-quick-pos {
+      flex: 1; padding: 7px 4px; font-size: 11px; font-weight: 700;
+      background: #1f2536; color: var(--gold-light); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; cursor: pointer;
+    }
+
+    /* شريط الصور المصغرة */
     .thumbs-container { display: flex; gap: 10px; overflow-x: auto; margin-top: 10px; padding-bottom: 6px; }
     .thumb-node {
-      width: 65px; height: 65px; border-radius: 10px; overflow: hidden;
+      width: 70px; height: 70px; border-radius: 10px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.2); flex-shrink: 0; position: relative;
     }
-    .thumb-node img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-node img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
     .main-tag-pill {
       position: absolute; bottom: 0; left: 0; right: 0; background: var(--gold);
       color: #000; font-size: 9px; font-weight: 900; text-align: center; padding: 1px 0;
@@ -77,7 +88,7 @@
     <div id="builderFormWrap">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2 style="font-size:22px; color:#fff;">محرر الدعوة الذكي 💍</h2>
-        <span style="font-size:11px; background:rgba(197,160,89,0.15); color:var(--gold); padding:4px 12px; border-radius:20px; font-weight:bold;">نظام المنصة الرسمي</span>
+        <span style="font-size:11px; background:rgba(197,160,89,0.15); color:var(--gold); padding:4px 12px; border-radius:20px; font-weight:bold;">SaaS Builder</span>
       </div>
 
       <!-- كارت بيانات الفرح -->
@@ -134,7 +145,7 @@
         </div>
       </div>
 
-      <!-- كارت رفع الصور المنفصل مع أداة التحريك والزوم -->
+      <!-- كارت رفع الصور المنفصل مع أداة التحريك والزوم المظبوطة -->
       <div class="step-card">
         <h3 style="font-size:16px; color:#fff; margin-bottom:10px;">📸 صور الدعوة والألبوم (بدون مط أو شد)</h3>
 
@@ -159,25 +170,32 @@
       </button>
     </div>
 
-    <!-- نافذة أداة تحريك وزوم الكادر المنبثقة (Pan & Zoom Tool) -->
+    <!-- نافذة أداة تحريك وزوم الكادر المنبثقة (Pan & Zoom Tool المظبوطة) -->
     <div class="cropper-modal-overlay" id="cropperModal">
       <div class="cropper-box">
         <h3 style="font-size:16px; color:#fff; margin-bottom:4px;">✨ اضبط كادر الصورة ومكان الوشوش</h3>
-        <p style="font-size:12px; color:var(--gold); margin-bottom:10px;">حرّك الصورة بصباعك أو الماوس، وكبّر بالزوم لضبط المقاس السينمائي:</p>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">حرّك الصورة بصباعك أو الماوس، وكبّر بالزوم لسنترة الكادر بدون أي مطة:</p>
 
-        <!-- مساحة التحريك الحرة -->
+        <!-- مساحة التحريك الحرة بحجم متناسق -->
         <div class="viewfinder-frame" id="viewfinder">
           <img id="cropImg" src="" alt="crop">
         </div>
 
-        <div style="margin:12px 0;">
-          <label class="lbl">التحكم في التكبير (Zoom):</label>
-          <input type="range" class="slider-range-bar" id="zoomRange" min="1" max="3" step="0.05" value="1" oninput="onZoomChange(this.value)">
+        <!-- أزرار الضبط السريع لراحة الدماغ -->
+        <div class="crop-controls-row">
+          <button type="button" class="btn-quick-pos" onclick="snapPosition('top')">👤 الوشوش فوق</button>
+          <button type="button" class="btn-quick-pos" onclick="snapPosition('center')">🎯 سنترة بالوسط</button>
+          <button type="button" class="btn-quick-pos" onclick="resetCrop()">🔄 إعادة ضبط</button>
         </div>
 
-        <div style="display:flex; gap:10px;">
-          <button type="button" class="btn-gold" style="padding:10px;" onclick="saveCropResult()">✓ حفظ واعتماد الصورة</button>
-          <button type="button" class="btn-action btn-dark" style="width:auto; padding:10px 18px;" onclick="closeCropper()">إلغاء</button>
+        <div style="margin:12px 0;">
+          <label class="lbl">التكبير والتصغير (Zoom):</label>
+          <input type="range" class="slider-range-bar" id="zoomRange" min="1" max="2.5" step="0.02" value="1" oninput="onZoomChange(this.value)">
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:15px;">
+          <button type="button" class="btn-gold" style="padding:10px; flex:2;" onclick="saveCropResult()">✓ اعتماد الصورة</button>
+          <button type="button" class="btn-action btn-dark" style="padding:10px; flex:1;" onclick="closeCropper()">إلغاء</button>
         </div>
       </div>
     </div>
@@ -225,14 +243,18 @@
 
     let mainPhotoCropped = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80";
     let galleryPhotosList = [];
-    let currentCroppingType = "main"; // 'main' or 'gallery'
+    let currentCroppingType = "main";
 
-    // متغيرات التحريك والزووم
-    let imgX = 0, imgY = 0, imgScale = 1;
+    // متغيرات حسابات التحريك والزووم المظبوطة هندسياً
+    let imgX = 0, imgY = 0, userZoom = 1;
+    let baseWidth = 0, baseHeight = 0;
     let isDragging = false, startX = 0, startY = 0;
-    let rawLoadedImage = new Image();
+    let rawImgElement = new Image();
 
-    // 1. تشغيل أداة التحريك والزوم للصور
+    const vf = document.getElementById('viewfinder');
+    const cropImg = document.getElementById('cropImg');
+
+    // 1. فتح أداة القص مع الضبط المبدئي التلقائي للأبعاد
     function startCropper(e, type) {
       const file = e.target.files[0];
       if (!file) return;
@@ -240,25 +262,40 @@
       currentCroppingType = type;
       const reader = new FileReader();
       reader.onload = function(evt) {
-        rawLoadedImage = new Image();
-        rawLoadedImage.onload = function() {
-          const cropImg = document.getElementById('cropImg');
+        rawImgElement = new Image();
+        rawImgElement.onload = function() {
           cropImg.src = evt.target.result;
 
-          // تصفير الموضع والزوم
-          imgX = 0; imgY = 0; imgScale = 1;
-          document.getElementById('zoomRange').value = 1;
-          updateViewfinderTransform();
+          // حسابات التحجيم التلقائي عشان الصورة تملى الكادر بنعومة بدون زووم مبالغ فيه
+          const vfW = 320;
+          const vfH = 240;
+          const imgAspect = rawImgElement.naturalWidth / rawImgElement.naturalHeight;
+          const frameAspect = vfW / vfH;
+
+          if (imgAspect > frameAspect) {
+            // الصورة بالعرض: نثبت الارتفاع
+            baseHeight = vfH;
+            baseWidth = vfH * imgAspect;
+          } else {
+            // الصورة بالطول: نثبت العرض
+            baseWidth = vfW;
+            baseHeight = vfW / imgAspect;
+          }
+
+          cropImg.style.width = baseWidth + 'px';
+          cropImg.style.height = baseHeight + 'px';
+
+          // سنترة مبدئية في النص
+          resetCrop();
 
           document.getElementById('cropperModal').classList.add('active');
         };
-        rawLoadedImage.src = evt.target.result;
+        rawImgElement.src = evt.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    // حركة السحب بالماوس أو التاتش (Pan/Drag)
-    const vf = document.getElementById('viewfinder');
+    // حركة السحب باللمس أو الماوس
     vf.addEventListener('pointerdown', (e) => {
       isDragging = true;
       startX = e.clientX - imgX;
@@ -270,52 +307,72 @@
       if (!isDragging) return;
       imgX = e.clientX - startX;
       imgY = e.clientY - startY;
-      updateViewfinderTransform();
+      applyTransform();
     });
 
     vf.addEventListener('pointerup', () => isDragging = false);
     vf.addEventListener('pointercancel', () => isDragging = false);
 
     function onZoomChange(val) {
-      imgScale = parseFloat(val);
-      updateViewfinderTransform();
+      userZoom = parseFloat(val);
+      applyTransform();
     }
 
-    function updateViewfinderTransform() {
-      const img = document.getElementById('cropImg');
-      img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${imgScale})`;
+    function applyTransform() {
+      cropImg.style.transform = `translate(${imgX}px, ${imgY}px) scale(${userZoom})`;
     }
 
-    // قص الكادر وتوليد صورة ثابتة بدقة عالية عبر الكانفاس بدون أي مطة
+    function resetCrop() {
+      const vfW = vf.clientWidth || 320;
+      const vfH = 240;
+      imgX = (vfW - baseWidth) / 2;
+      imgY = (vfH - baseHeight) / 2;
+      userZoom = 1;
+      document.getElementById('zoomRange').value = 1;
+      applyTransform();
+    }
+
+    // سنترة سريعة على الوشوش (برفع الصورة لفوق)
+    function snapPosition(pos) {
+      const vfW = vf.clientWidth || 320;
+      imgX = (vfW - baseWidth * userZoom) / 2;
+      if (pos === 'top') {
+        imgY = 0; // يظهر أعلى الصورة مكان الوشوش
+      } else {
+        const vfH = 240;
+        imgY = (vfH - baseHeight * userZoom) / 2;
+      }
+      applyTransform();
+    }
+
+    // قص الكادر وتوليد صورة بنسبة 4:3 ثابتة لمنع أي مطة
     function saveCropResult() {
       const canvas = document.createElement('canvas');
-      canvas.width = 600;
-      canvas.height = 450; // نسبة 4:3 السينمائية الثابتة
+      canvas.width = 640;
+      canvas.height = 480; // نسبة 4:3 السينمائية الثابتة
       const ctx = canvas.getContext('2d');
 
-      // حسابات أبعاد القص الحقيقية
-      const vfRect = vf.getBoundingClientRect();
-      const scaleFactorX = rawLoadedImage.naturalWidth / (vfRect.width * imgScale);
-      const scaleFactorY = rawLoadedImage.naturalHeight / (vfRect.height * imgScale);
+      const vfW = vf.clientWidth || 320;
+      const vfH = 240;
 
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, 600, 450);
+      // حسابات الإحداثيات بالنسبة للصورة الأصلية
+      const ratio = rawImgElement.naturalWidth / (baseWidth * userZoom);
+      const sx = Math.max(0, -imgX * ratio);
+      const sy = Math.max(0, -imgY * ratio);
+      const sWidth = Math.min(rawImgElement.naturalWidth - sx, vfW * ratio);
+      const sHeight = Math.min(rawImgElement.naturalHeight - sy, vfH * ratio);
 
-      ctx.drawImage(
-        rawLoadedImage,
-        -imgX * scaleFactorX,
-        -imgY * scaleFactorY,
-        vfRect.width * scaleFactorX,
-        vfRect.height * scaleFactorY,
-        0, 0, 600, 450
-      );
+      ctx.fillStyle = '#0a0d14';
+      ctx.fillRect(0, 0, 640, 480);
+
+      ctx.drawImage(rawImgElement, sx, sy, sWidth, sHeight, 0, 0, 640, 480);
 
       const croppedResult = canvas.toDataURL('image/jpeg', 0.88);
 
       if (currentCroppingType === 'main') {
         mainPhotoCropped = croppedResult;
         document.getElementById('mainThumbPreview').innerHTML = `
-          <div class="thumb-node" style="width:80px; height:80px; border-color:var(--gold);">
+          <div class="thumb-node" style="width:75px; height:75px; border-color:var(--gold);">
             <img src="${croppedResult}">
             <span class="main-tag-pill">الرئيسية ✓</span>
           </div>`;
@@ -335,7 +392,7 @@
       document.getElementById('cropperModal').classList.remove('active');
     }
 
-    // 2. تسجيل الفرح في الداتابيز بحساب العريس المشفر
+    // 2. تسجيل الفرح وتوليد الرابطين
     async function createWeddingSaaS() {
       const groom = document.getElementById('inGroom').value.trim();
       const bride = document.getElementById('inBride').value.trim();
@@ -358,7 +415,6 @@
       const uniqueSuffix = Math.random().toString(36).substring(2, 6);
       const generatedSlug = `wedding-${uniqueSuffix}`;
 
-      // ربط بيانات الفرح بالحساب
       const payload = {
         slug: generatedSlug,
         event_type: 'wedding',
@@ -368,7 +424,7 @@
         event_date: new Date(`${dateVal}T${timeVal}:00`).toISOString(),
         venue_name: venue,
         map_url: mapUrl,
-        admin_pin: pass // كلمة السر المحمية في السيرفر
+        admin_pin: pass
       };
 
       try {
@@ -388,14 +444,13 @@
           const guestUrl = `${origin}/invite.html?event=${generatedSlug}`;
           const adminUrl = `${origin}/admin.html?event=${generatedSlug}`;
 
-          // عرض الرابطين في شاشة التسليم
           document.getElementById('outGuestLink').textContent = guestUrl;
           document.getElementById('outAdminLink').textContent = adminUrl;
           document.getElementById('outUserDisplay').textContent = user;
           document.getElementById('outPassDisplay').textContent = pass;
 
           document.getElementById('outAdminGo').href = adminUrl;
-          const waMsg = encodeURIComponent(`عيلتنا وصحابنا الغاليين 🤍 يسعدنا دعوتكم لفرحنا (${groom} & ${bride}) 💍 كارت تشريفك الخاص وتفاصيل القاعة هنا:\n${guestUrl}`);
+          const waMsg = encodeURIComponent(`عيلتنا وصحابنا الغاليين 🤍 يسعدنا دعوتكم لفرحنا (${groom} & ${bride}) 💍 كارت تشريفك الخاص هنا:\n${guestUrl}`);
           document.getElementById('outWaShare').href = `https://wa.me/?text=${waMsg}`;
 
           document.getElementById('builderFormWrap').style.display = 'none';
